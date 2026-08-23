@@ -1,15 +1,46 @@
 """
 Global configuration for AgriSense AI - Smart Farming Advisory Platform.
 Loads environment variables and establishes application-wide constants.
+Provides resilient type parsing so empty/whitespace environment variables on Vercel never cause ValueError.
 """
 
 import os
 from pathlib import Path
+
 try:
     from dotenv import load_dotenv
     load_dotenv()
 except ImportError:
     pass
+
+
+# Helper functions to safely parse environment variables with robust fallbacks
+def _get_env_int(key: str, default: int) -> int:
+    val = os.getenv(key)
+    if val is None or not str(val).strip():
+        return default
+    try:
+        return int(str(val).strip())
+    except (ValueError, TypeError):
+        return default
+
+
+def _get_env_float(key: str, default: float) -> float:
+    val = os.getenv(key)
+    if val is None or not str(val).strip():
+        return default
+    try:
+        return float(str(val).strip())
+    except (ValueError, TypeError):
+        return default
+
+
+def _get_env_str(key: str, default: str = "") -> str:
+    val = os.getenv(key)
+    if val is None or not str(val).strip():
+        return default
+    return str(val).strip()
+
 
 # Base directories
 BASE_DIR = Path(__file__).resolve().parent
@@ -36,11 +67,11 @@ for d in [DATA_DIR, SAMPLE_DOCS_DIR, ASSETS_DIR]:
         pass
 
 # LLM API configuration
-OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-OPENAI_MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
-GROQ_API_KEY = os.getenv("GROQ_API_KEY", "")
-GROQ_MODEL = os.getenv("GROQ_MODEL", "llama-3.1-70b-versatile")
-OPENWEATHER_API_KEY = os.getenv("OPENWEATHER_API_KEY", "")
+OPENAI_API_KEY = _get_env_str("OPENAI_API_KEY", "")
+OPENAI_MODEL = _get_env_str("OPENAI_MODEL", "gpt-4o-mini")
+GROQ_API_KEY = _get_env_str("GROQ_API_KEY", "")
+GROQ_MODEL = _get_env_str("GROQ_MODEL", "llama-3.1-70b-versatile")
+OPENWEATHER_API_KEY = _get_env_str("OPENWEATHER_API_KEY", "")
 
 # Project Branding
 PROJECT_NAME = "AgriSense AI - Smart Farming Advisory Platform"
@@ -143,8 +174,8 @@ MODERN_TECHNOLOGIES = [
     "Smart IoT Grain Silos & Cold Chain Storage",
 ]
 
-# Vector & RAG Parameters
-RAG_CHUNK_SIZE = int(os.getenv("RAG_CHUNK_SIZE", 600))
-RAG_CHUNK_OVERLAP = int(os.getenv("RAG_CHUNK_OVERLAP", 100))
-RAG_TOP_K = int(os.getenv("RAG_TOP_K", 4))
-RAG_HYBRID_ALPHA = float(os.getenv("RAG_HYBRID_ALPHA", 0.55))
+# Vector & RAG Parameters (Robust fallbacks for empty Vercel environment variables)
+RAG_CHUNK_SIZE = _get_env_int("RAG_CHUNK_SIZE", 600)
+RAG_CHUNK_OVERLAP = _get_env_int("RAG_CHUNK_OVERLAP", 100)
+RAG_TOP_K = _get_env_int("RAG_TOP_K", 4)
+RAG_HYBRID_ALPHA = _get_env_float("RAG_HYBRID_ALPHA", 0.55)
