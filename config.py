@@ -175,7 +175,7 @@ MODERN_TECHNOLOGIES = [
 ]
 
 # Vector & RAG Parameters (Robust fallbacks for empty Vercel environment variables)
-RAG_CHUNK_SIZE = _get_env_int("RAG_CHUNK_SIZE", 600)
-RAG_CHUNK_OVERLAP = _get_env_int("RAG_CHUNK_OVERLAP", 100)
-RAG_TOP_K = _get_env_int("RAG_TOP_K", 4)
-RAG_HYBRID_ALPHA = _get_env_float("RAG_HYBRID_ALPHA", 0.55)
+RAG_CHUNK_SIZE = int(os.getenv("RAG_CHUNK_SIZE") or 600)
+RAG_CHUNK_OVERLAP = int(os.getenv("RAG_CHUNK_OVERLAP") or 100)
+RAG_TOP_K = int(os.getenv("RAG_TOP_K") or 4)
+RAG_HYBRID_ALPHA = float(os.getenv("RAG_HYBRID_ALPHA") or 0.55)
