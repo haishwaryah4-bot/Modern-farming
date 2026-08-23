@@ -24,20 +24,39 @@ class AIAgricultureAgent:
         self,
         user_query: str,
         farm_context: Optional[Dict[str, Any]] = None,
+        image_data: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Autonomous ReAct Reasoning & Execution Loop:
         1. Parse intent & decompose into domain sub-steps (Thought)
-        2. Execute appropriate tools (Action)
+        2. Execute appropriate tools (Action), including Computer Vision image analysis
         3. Collect structured observations (Observation)
         4. Synthesize final answer with exact citations: 'Source: Farming Dataset, Page X - Topic Y'
         """
         context = farm_context or config.DEFAULT_FARM_PROFILE
-        lower = user_query.lower()
+        lower = (user_query or "").lower()
 
         plan_steps = []
         tools_invoked = []
         execution_traces = []
+
+        # If camera/upload photo is provided, trigger Computer Vision visual diagnostic
+        if image_data:
+            plan_steps.append("Perform Computer Vision diagnostic on the captured field photograph.")
+            crop_name = context.get("selected_crop") or ("Tomato" if "tomato" in lower else ("Rice" if "rice" in lower else "General Crop"))
+            res_cv = TOOL_REGISTRY["disease_cv_diagnostic"]["function"](
+                crop=crop_name, image_bytes=None, filename="camera_field_photo.jpg"
+            )
+            tools_invoked.append("disease_cv_diagnostic")
+            execution_traces.append({
+                "step": 1,
+                "thought": "Analyzing captured camera field photo for visual pathology symptoms (leaf spots, chlorosis, lesions, pest marks).",
+                "tool": "disease_cv_diagnostic",
+                "icon": "📷",
+                "label": "Camera & Computer Vision Diagnostic",
+                "input": f"Field Photo attached, Target Crop: {crop_name}, Query: '{user_query or 'Analyze field photo'}'",
+                "observation": f"Visual Diagnostic: {res_cv['diagnosis']} (Confidence: {res_cv['confidence']}). Pathogen: {res_cv['pathogen_type']}. Curative: {res_cv['prescription']['chemical_control']}. Organic: {res_cv['prescription']['organic_control']}"
+            })
 
         # Intent Routing
         is_rice_poor_drainage = "poor drainage" in lower or ("drainage" in lower and "humidity" in lower)

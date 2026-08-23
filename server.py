@@ -64,15 +64,16 @@ except ImportError:
                     body = json.dumps(res).encode("utf-8")
                     await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json"), (b"access-control-allow-origin", b"*")]})
                     await send({"type": "http.response.body", "body": body})
-                elif path == "/api/chat" and method == "POST":
+                elif (path == "/api/chat" or path == "/chat") and method == "POST":
                     msg = payload.get("message", "")
                     sess = payload.get("session_id", "default_session")
                     f_ctx = payload.get("farm_context")
-                    res = handle_chat_query(msg, sess, f_ctx)
+                    img_d = payload.get("image_data")
+                    res = handle_chat_query(msg, sess, f_ctx, img_d)
                     body = json.dumps(res).encode("utf-8")
                     await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json; charset=utf-8"), (b"access-control-allow-origin", b"*")]})
                     await send({"type": "http.response.body", "body": body})
-                elif path == "/api/rag/query" and method == "POST":
+                elif (path == "/api/rag/query" or path == "/rag/query") and method == "POST":
                     q = payload.get("query", "")
                     res = handle_rag_query(q)
                     body = json.dumps(res).encode("utf-8")
@@ -159,9 +160,10 @@ if HAS_FASTAPI and CORSMiddleware:
 
 # --- REQUEST & RESPONSE DATA SCHEMAS ---
 class ChatRequest(BaseModel):
-    message: str = Field(..., description="Farmer question or inquiry")
+    message: str = Field(default="", description="Farmer question or inquiry")
     session_id: Optional[str] = Field(default="default_session", description="Session identifier for memory")
     farm_context: Optional[Dict[str, Any]] = Field(default=None, description="Optional farm profile parameters")
+    image_data: Optional[str] = Field(default=None, description="Base64 encoded photo from camera or field upload")
 
 
 class ChatResponse(BaseModel):
@@ -192,14 +194,16 @@ class RAGQueryResponse(BaseModel):
 
 
 # --- CORE BUSINESS LOGIC HANDLERS (LAZY-LOADED ON DEMAND) ---
-def handle_chat_query(user_query: str, session_id: str = "default_session", farm_context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+def handle_chat_query(user_query: str, session_id: str = "default_session", farm_context: Optional[Dict[str, Any]] = None, image_data: Optional[str] = None) -> Dict[str, Any]:
     from src.agents.agent_core import ai_agent
-    lower = user_query.lower()
+    lower = (user_query or "").lower()
     intent = "General Agronomic Inquiry"
     clarification_needed = False
     clarification_q = None
 
-    if "rice" in lower and "plan" in lower and not any(w in lower for w in ["stage", "tillering", "sowing", "flowering", "transplant"]):
+    if image_data:
+        intent = "Camera & Visual Pathology Diagnostic"
+    elif "rice" in lower and "plan" in lower and not any(w in lower for w in ["stage", "tillering", "sowing", "flowering", "transplant"]):
         intent = "Crop Action Planning"
         clarification_needed = True
         clarification_q = "To provide the most accurate precision advice for your Rice crop, could you clarify your current growth stage (e.g. Nursery, Active Tillering, Flowering, or Grain Filling) and soil type?"
@@ -215,7 +219,7 @@ def handle_chat_query(user_query: str, session_id: str = "default_session", farm
         intent = "Soil Health Amelioration"
 
     farm_ctx = farm_context or config.DEFAULT_FARM_PROFILE
-    res = ai_agent.plan_and_execute(user_query=user_query, farm_context=farm_ctx)
+    res = ai_agent.plan_and_execute(user_query=user_query, farm_context=farm_ctx, image_data=image_data)
 
     citations = []
     for trace in res.get("execution_traces", []):
@@ -267,8 +271,13 @@ def health_check():
 @app.post("/api/chat", response_model=ChatResponse if HAS_FASTAPI else None)
 @app.post("/chat", response_model=ChatResponse if HAS_FASTAPI else None)
 def chat_with_agent(req: ChatRequest):
-    """Main conversational AI agent endpoint with multi-agent orchestration and visual images."""
-    data = handle_chat_query(req.message, req.session_id, req.farm_context)
+    """Main conversational AI agent endpoint with multi-agent orchestration, camera image diagnostics, and visual images."""
+    data = handle_chat_query(
+        user_query=req.message,
+        session_id=getattr(req, "session_id", "default_session"),
+        farm_context=getattr(req, "farm_context", None),
+        image_data=getattr(req, "image_data", None)
+    )
     return ChatResponse(**data)
 
 
@@ -419,11 +428,12 @@ class AgriSenseHTTPHandler(BaseHTTPRequestHandler):
         except Exception:
             payload = {}
 
-        if path == "/api/chat":
+        if path == "/api/chat" or path == "/chat":
             msg = payload.get("message", "").strip()
             sess_id = payload.get("session_id", "default_session")
             farm_ctx = payload.get("farm_context")
-            resp_data = handle_chat_query(user_query=msg, session_id=sess_id, farm_context=farm_ctx)
+            img_d = payload.get("image_data")
+            resp_data = handle_chat_query(user_query=msg, session_id=sess_id, farm_context=farm_ctx, image_data=img_d)
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self._send_cors_headers()
