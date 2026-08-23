@@ -130,6 +130,9 @@ app = FastAPI(
     redoc_url="/redoc",
 )
 
+# Vercel Runtime Alias
+handler = app
+
 # Configure CORS Middleware
 if HAS_FASTAPI and CORSMiddleware:
     app.add_middleware(
@@ -263,11 +266,13 @@ def query_rag(req: RAGQueryRequest):
 @app.get("/api/documents")
 def list_documents():
     """Lists all active and indexed knowledge base documents."""
-    from src.rag.rag_engine import rag_engine
+    from src.rag.rag_engine import get_rag_engine
+    engine = get_rag_engine()
+    engine._ensure_initialized()
     return {
-        "total_documents": len(rag_engine.indexed_files),
-        "total_chunks": rag_engine.total_chunks,
-        "files": [{"filename": fname, "status": "Indexed & Active"} for fname in rag_engine.indexed_files],
+        "total_documents": len(engine.indexed_files),
+        "total_chunks": engine.total_chunks,
+        "files": [{"filename": fname, "status": "Indexed & Active"} for fname in engine.indexed_files],
     }
 
 
