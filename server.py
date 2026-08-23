@@ -1,15 +1,62 @@
 """
-Backend Server for AgriSense AI - Production Agriculture AI Agent, Advanced RAG & Visual Data.
-Supports both FastAPI (if available) and native multi-threaded Python HTTP Server with CORS.
+FastAPI Backend Server for AgriSense AI - Production Agriculture AI Agent, Advanced RAG & Visual Ingestion.
+Defines the top-level `app = FastAPI(...)` ASGI entrypoint required by Vercel, Uvicorn, and Cloud hosting.
 """
 
 import os
 import json
 import mimetypes
 from pathlib import Path
-from http.server import HTTPServer, BaseHTTPRequestHandler
-from socketserver import ThreadingMixIn
 from typing import List, Dict, Any, Optional
+
+try:
+    from pydantic import BaseModel, Field
+except ImportError:
+    class BaseModel:
+        def __init__(self, **kwargs):
+            for k, v in kwargs.items():
+                setattr(self, k, v)
+        def dict(self):
+            return self.__dict__
+    def Field(*args, **kwargs):
+        return kwargs.get("default", None)
+
+try:
+    from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query, Request
+    from fastapi.middleware.cors import CORSMiddleware
+    from fastapi.responses import HTMLResponse, JSONResponse, FileResponse
+    from fastapi.staticfiles import StaticFiles
+    HAS_FASTAPI = True
+except ImportError:
+    HAS_FASTAPI = False
+    class FastAPI:
+        def __init__(self, *args, **kwargs):
+            self.routes = []
+        def get(self, path: str, *args, **kwargs):
+            def decorator(f): return f
+            return decorator
+        def post(self, path: str, *args, **kwargs):
+            def decorator(f): return f
+            return decorator
+        def add_middleware(self, *args, **kwargs): pass
+        def mount(self, *args, **kwargs): pass
+        async def __call__(self, scope, receive, send):
+            # Fallback ASGI application responder
+            if scope["type"] == "http":
+                path = scope.get("path", "/")
+                if path == "/api/health":
+                    body = json.dumps({"status": "healthy", "service": "AgriSense AI API (ASGI Fallback)"}).encode("utf-8")
+                    await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json"), (b"access-control-allow-origin", b"*")]})
+                    await send({"type": "http.response.body", "body": body})
+                else:
+                    body = b"AgriSense AI Backend Running"
+                    await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"text/plain")]})
+                    await send({"type": "http.response.body", "body": body})
+    HTMLResponse = None
+    JSONResponse = None
+    FileResponse = None
+    StaticFiles = None
+    CORSMiddleware = None
 
 import config
 from src.rag.rag_engine import rag_engine
@@ -21,23 +68,31 @@ from src.services.disease_service import disease_service
 from src.services.image_retriever_service import image_retriever
 
 
-# Pydantic dummy classes for compatibility
-class BaseModel:
-    def __init__(self, **kwargs):
-        for k, v in kwargs.items():
-            setattr(self, k, v)
-    def dict(self):
-        return self.__dict__
+# --- TOP-LEVEL FASTAPI ASGI APP INSTANCE (REQUIRED FOR VERCEL & UVICORN) ---
+app = FastAPI(
+    title="AgriSense AI - Agriculture Agent & RAG API",
+    description="Production-grade REST API for agricultural decision support, multi-agent execution, and visual farming dataset retrieval.",
+    version="2.0.0",
+    docs_url="/docs",
+    redoc_url="/redoc",
+)
+
+# Configure CORS Middleware
+if HAS_FASTAPI and CORSMiddleware:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],
+        allow_credentials=True,
+        allow_methods=["*"],
+        allow_headers=["*"],
+    )
 
 
-def Field(*args, **kwargs):
-    return kwargs.get("default", None)
-
-
+# --- REQUEST & RESPONSE DATA SCHEMAS ---
 class ChatRequest(BaseModel):
-    message: str = ""
-    session_id: str = "default_session"
-    farm_context: Optional[Dict[str, Any]] = None
+    message: str = Field(..., description="Farmer question or inquiry")
+    session_id: Optional[str] = Field(default="default_session", description="Session identifier for memory")
+    farm_context: Optional[Dict[str, Any]] = Field(default=None, description="Optional farm profile parameters")
 
 
 class ChatResponse(BaseModel):
@@ -52,10 +107,10 @@ class ChatResponse(BaseModel):
 
 
 class RAGQueryRequest(BaseModel):
-    query: str
-    top_k: int = 4
-    filters: Optional[Dict[str, Any]] = None
-    use_reranker: bool = True
+    query: str = Field(..., description="Search query")
+    top_k: int = Field(default=4, description="Top K chunks")
+    filters: Optional[Dict[str, Any]] = Field(default=None, description="Metadata filters")
+    use_reranker: bool = Field(default=True, description="Enable cross-score re-ranking")
 
 
 class RAGQueryResponse(BaseModel):
@@ -67,7 +122,7 @@ class RAGQueryResponse(BaseModel):
     retrieval_method: str
 
 
-# Core Business Logic Handlers
+# --- CORE BUSINESS LOGIC HANDLERS ---
 def handle_chat_query(user_query: str, session_id: str = "default_session", farm_context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     lower = user_query.lower()
     intent = "General Agronomic Inquiry"
@@ -115,10 +170,106 @@ def handle_rag_query(query: str, top_k: int = 4, filters: Optional[Dict[str, Any
     return rag_engine.query(question=query, top_k=top_k, filters=filters, use_reranker=use_reranker)
 
 
-# Standalone Multi-Threaded HTTP Server with CORS & Static Assets
+# --- FASTAPI ROUTE DEFINITIONS ---
+
+@app.get("/", response_class=HTMLResponse if HAS_FASTAPI else None)
+def read_root():
+    """Serves the interactive React web application."""
+    index_file = config.BASE_DIR / "static" / "index.html"
+    if index_file.exists():
+        with open(index_file, "r", encoding="utf-8") as f:
+            return HTMLResponse(content=f.read())
+    return HTMLResponse(content="<h1>AgriSense AI Backend API Active</h1>")
+
+
+@app.get("/api/health")
+def health_check():
+    """Health check and knowledge base telemetry endpoint."""
+    return {
+        "status": "healthy",
+        "service": "AgriSense AI REST API",
+        "version": "2.0.0",
+        "total_vector_chunks": rag_engine.total_chunks,
+        "knowledge_chunks": rag_engine.total_chunks,
+        "images_indexed": len(image_retriever.dataset),
+    }
+
+
+@app.post("/api/chat", response_model=ChatResponse if HAS_FASTAPI else None)
+def chat_with_agent(req: ChatRequest):
+    """Main conversational AI agent endpoint with multi-agent orchestration and visual images."""
+    data = handle_chat_query(req.message, req.session_id, req.farm_context)
+    return ChatResponse(**data)
+
+
+@app.post("/api/rag/query", response_model=RAGQueryResponse if HAS_FASTAPI else None)
+def query_rag(req: RAGQueryRequest):
+    """Direct Hybrid RAG query endpoint with citations and re-ranking."""
+    data = handle_rag_query(req.query, req.top_k, req.filters, req.use_reranker)
+    return RAGQueryResponse(**data)
+
+
+@app.get("/api/documents")
+def list_documents():
+    """Lists all active and indexed knowledge base documents."""
+    return {
+        "total_documents": len(rag_engine.indexed_files),
+        "total_chunks": rag_engine.total_chunks,
+        "files": [{"filename": fname, "status": "Indexed & Active"} for fname in rag_engine.indexed_files],
+    }
+
+
+@app.post("/api/admin/reindex")
+def reindex_knowledge_base():
+    """Admin endpoint to re-index all agricultural documents and image metadata."""
+    rag_engine.indexed_files = []
+    rag_engine._auto_index_sample_docs()
+    image_retriever._load_dataset()
+    return {
+        "status": "success",
+        "total_files_indexed": len(rag_engine.indexed_files),
+        "total_chunks": rag_engine.total_chunks,
+        "total_images": len(image_retriever.dataset),
+        "message": "Knowledge base re-indexed successfully.",
+    }
+
+
+@app.get("/api/openai/status")
+def openai_status():
+    """Checks live status of OpenAI model connection."""
+    from src.services.llm_service import llm_client
+    return {
+        "is_configured": llm_client.is_live,
+        "model": llm_client.model,
+        "mode": "Live OpenAI Engine" if llm_client.is_live else "Grounded Semantic Reasoning Engine",
+    }
+
+
+# Static Asset Handling
+@app.get("/static/{asset_name}")
+def get_static_asset(asset_name: str):
+    """Serves static assets and photographic dataset files."""
+    asset_path = config.BASE_DIR / "static" / asset_name
+    if not asset_path.exists():
+        asset_path = config.BASE_DIR / "assets" / "images" / asset_name
+
+    if asset_path.exists() and asset_path.is_file():
+        mime, _ = mimetypes.guess_type(str(asset_path))
+        if HAS_FASTAPI and FileResponse:
+            return FileResponse(str(asset_path), media_type=mime or "application/octet-stream")
+        with open(asset_path, "rb") as f:
+            return HTMLResponse(content=f.read(), media_type=mime or "application/octet-stream")
+    if HAS_FASTAPI:
+        raise HTTPException(status_code=404, detail="Asset not found")
+    return {"error": "Asset not found"}
+
+
+# Standalone Multi-Threaded HTTP Server for Local Offline Execution
+from http.server import HTTPServer, BaseHTTPRequestHandler
+from socketserver import ThreadingMixIn
+
 class ThreadingHTTPServer(ThreadingMixIn, HTTPServer):
     daemon_threads = True
-
 
 class AgriSenseHTTPHandler(BaseHTTPRequestHandler):
     def _send_cors_headers(self):
@@ -133,8 +284,6 @@ class AgriSenseHTTPHandler(BaseHTTPRequestHandler):
 
     def do_GET(self):
         path = self.path.split("?")[0]
-
-        # Root / index.html
         if path == "/" or path == "/index.html":
             index_path = config.BASE_DIR / "static" / "index.html"
             if index_path.exists():
@@ -145,76 +294,41 @@ class AgriSenseHTTPHandler(BaseHTTPRequestHandler):
                 with open(index_path, "rb") as f:
                     self.wfile.write(f.read())
                 return
-            else:
-                self.send_error(404, "index.html not found")
-                return
-
-        # Static assets
         if path.startswith("/static/"):
             rel_path = path[8:]
             asset_path = config.BASE_DIR / "static" / rel_path
             if not asset_path.exists():
                 asset_path = config.BASE_DIR / "assets" / "images" / rel_path
-
             if asset_path.exists() and asset_path.is_file():
                 mime, _ = mimetypes.guess_type(str(asset_path))
                 self.send_response(200)
                 self.send_header("Content-Type", mime or "application/octet-stream")
-                self.send_header("Cache-Control", "public, max-age=86400")
                 self._send_cors_headers()
                 self.end_headers()
                 with open(asset_path, "rb") as f:
                     self.wfile.write(f.read())
                 return
-            else:
-                self.send_error(404, f"Asset {rel_path} not found")
-                return
-
-        # API: Health
         if path == "/api/health":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self._send_cors_headers()
             self.end_headers()
-            data = {
-                "status": "healthy",
-                "service": "AgriSense AI REST API",
-                "version": "2.0.0",
-                "knowledge_chunks": rag_engine.total_chunks,
-                "images_indexed": len(image_retriever.dataset),
-            }
-            self.wfile.write(json.dumps(data).encode("utf-8"))
+            self.wfile.write(json.dumps(health_check()).encode("utf-8"))
             return
-
-        # API: Documents
         if path == "/api/documents":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self._send_cors_headers()
             self.end_headers()
-            data = {
-                "total_documents": len(rag_engine.indexed_files),
-                "total_chunks": rag_engine.total_chunks,
-                "files": [{"filename": fname, "status": "Indexed & Active"} for fname in rag_engine.indexed_files],
-            }
-            self.wfile.write(json.dumps(data).encode("utf-8"))
+            self.wfile.write(json.dumps(list_documents()).encode("utf-8"))
             return
-
-        # API: OpenAI Status
         if path == "/api/openai/status":
-            from src.services.llm_service import llm_client
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self._send_cors_headers()
             self.end_headers()
-            data = {
-                "is_configured": llm_client.is_live,
-                "model": llm_client.model,
-                "mode": "Live OpenAI Engine" if llm_client.is_live else "Grounded Offline Reasoning Engine",
-            }
-            self.wfile.write(json.dumps(data).encode("utf-8"))
+            self.wfile.write(json.dumps(openai_status()).encode("utf-8"))
             return
-
         self.send_error(404, "Not Found")
 
     def do_POST(self):
@@ -226,17 +340,11 @@ class AgriSenseHTTPHandler(BaseHTTPRequestHandler):
         except Exception:
             payload = {}
 
-        # API: Chat
         if path == "/api/chat":
             msg = payload.get("message", "").strip()
-            if not msg:
-                self.send_error(400, "Message cannot be empty")
-                return
-
             sess_id = payload.get("session_id", "default_session")
             farm_ctx = payload.get("farm_context")
             resp_data = handle_chat_query(user_query=msg, session_id=sess_id, farm_context=farm_ctx)
-
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self._send_cors_headers()
@@ -244,15 +352,12 @@ class AgriSenseHTTPHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(resp_data).encode("utf-8"))
             return
 
-        # API: RAG Query
         if path == "/api/rag/query":
             q = payload.get("query", "").strip()
             top_k = payload.get("top_k", 4)
             filters = payload.get("filters")
             use_reranker = payload.get("use_reranker", True)
-
             resp_data = handle_rag_query(query=q, top_k=top_k, filters=filters, use_reranker=use_reranker)
-
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self._send_cors_headers()
@@ -260,68 +365,23 @@ class AgriSenseHTTPHandler(BaseHTTPRequestHandler):
             self.wfile.write(json.dumps(resp_data).encode("utf-8"))
             return
 
-        # API: Admin Re-Index
-        if path == "/api/admin/reindex":
-            rag_engine.indexed_files = []
-            rag_engine._auto_index_sample_docs()
-            image_retriever._load_dataset()
-
-            self.send_response(200)
-            self.send_header("Content-Type", "application/json")
-            self._send_cors_headers()
-            self.end_headers()
-            data = {
-                "status": "success",
-                "total_files_indexed": len(rag_engine.indexed_files),
-                "total_chunks": rag_engine.total_chunks,
-                "message": f"Knowledge base re-indexed ({rag_engine.total_chunks} chunks, {len(image_retriever.dataset)} images).",
-            }
-            self.wfile.write(json.dumps(data).encode("utf-8"))
-            return
-
         self.send_error(404, "Not Found")
 
     def log_message(self, format, *args):
-        # Clean logging
         pass
 
 
 def run_server(port: int = 8000):
-    server = ThreadingHTTPServer(("0.0.0.0", port), AgriSenseHTTPHandler)
-    print(f"[AgriSense AI] Backend Server running at http://0.0.0.0:{port}")
     try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        server.server_close()
-
-
-# Export FastAPI app shim for test_api.py
-def health_check():
-    return {
-        "status": "healthy",
-        "service": "AgriSense AI REST API",
-        "version": "2.0.0",
-        "total_vector_chunks": rag_engine.total_chunks,
-        "knowledge_chunks": rag_engine.total_chunks,
-    }
-
-
-def chat_with_agent(req: ChatRequest):
-    data = handle_chat_query(req.message, getattr(req, "session_id", "default_session"), getattr(req, "farm_context", None))
-    return ChatResponse(**data)
-
-
-def query_rag(req: RAGQueryRequest):
-    data = handle_rag_query(req.query, getattr(req, "top_k", 4), getattr(req, "filters", None), getattr(req, "use_reranker", True))
-    return RAGQueryResponse(**data)
-
-
-def list_documents():
-    return {
-        "total_documents": len(rag_engine.indexed_files),
-        "total_chunks": rag_engine.total_chunks,
-        "files": [{"filename": fname, "status": "Indexed & Active"} for fname in rag_engine.indexed_files],
-    }
+        import uvicorn
+        uvicorn.run("server:app", host="0.0.0.0", port=port, reload=False)
+    except Exception:
+        server = ThreadingHTTPServer(("0.0.0.0", port), AgriSenseHTTPHandler)
+        print(f"[AgriSense AI] Backend Server running at http://0.0.0.0:{port}")
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            server.server_close()
 
 
 if __name__ == "__main__":
