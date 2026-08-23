@@ -16,19 +16,34 @@ from src.utils.language_processor import normalize_farmer_query
 class ImageRetrieverService:
     def __init__(self, dataset_path: Optional[Path] = None):
         self.dataset_path = dataset_path or (config.DATA_DIR / "farming_images_dataset.json")
-        self.dataset: List[Dict[str, Any]] = []
-        self._load_dataset()
+        self._dataset: List[Dict[str, Any]] = []
+        self._loaded: bool = False
+
+    @property
+    def dataset(self) -> List[Dict[str, Any]]:
+        self._ensure_loaded()
+        return self._dataset
+
+    @dataset.setter
+    def dataset(self, val: List[Dict[str, Any]]):
+        self._dataset = val
+        self._loaded = True
+
+    def _ensure_loaded(self):
+        if not self._loaded:
+            self._load_dataset()
+            self._loaded = True
 
     def _load_dataset(self):
-        """Loads or reloads the dataset dynamically from JSON disk."""
+        """Loads or reloads the dataset dynamically from JSON disk on demand."""
         if self.dataset_path.exists():
             try:
                 with open(self.dataset_path, "r", encoding="utf-8") as f:
-                    self.dataset = json.load(f)
+                    self._dataset = json.load(f)
             except Exception:
-                self.dataset = []
+                self._dataset = []
         else:
-            self.dataset = []
+            self._dataset = []
 
     def get_image_base64(self, image_name: str) -> str:
         """Returns base64 encoded data URI for image with fallback paths."""

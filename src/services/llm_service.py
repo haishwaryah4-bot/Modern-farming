@@ -23,23 +23,29 @@ class LLMService:
 
     @property
     def api_key(self) -> str:
-        try:
-            import streamlit as st
-            if "openai_api_key" in st.session_state and st.session_state["openai_api_key"]:
-                return st.session_state["openai_api_key"].strip()
-        except Exception:
-            pass
-        return self._api_key or os.environ.get("OPENAI_API_KEY") or config.OPENAI_API_KEY or config.GROQ_API_KEY or ""
+        key = os.environ.get("OPENAI_API_KEY") or getattr(config, "OPENAI_API_KEY", "") or getattr(config, "GROQ_API_KEY", "") or ""
+        if not key:
+            try:
+                import sys
+                if "streamlit" in sys.modules:
+                    import streamlit as st
+                    if "openai_api_key" in st.session_state and st.session_state["openai_api_key"]:
+                        return st.session_state["openai_api_key"].strip()
+            except Exception:
+                pass
+        return self._api_key or key
 
     @property
     def model(self) -> str:
         try:
-            import streamlit as st
-            if "openai_model" in st.session_state and st.session_state["openai_model"]:
-                return st.session_state["openai_model"]
+            import sys
+            if "streamlit" in sys.modules:
+                import streamlit as st
+                if "openai_model" in st.session_state and st.session_state["openai_model"]:
+                    return st.session_state["openai_model"]
         except Exception:
             pass
-        return self._model or os.environ.get("OPENAI_MODEL") or config.OPENAI_MODEL or "gpt-4o-mini"
+        return self._model or os.environ.get("OPENAI_MODEL") or getattr(config, "OPENAI_MODEL", "gpt-4o-mini") or "gpt-4o-mini"
 
     @property
     def is_live(self) -> bool:

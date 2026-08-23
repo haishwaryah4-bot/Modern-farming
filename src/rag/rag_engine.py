@@ -1,6 +1,7 @@
 """
 Advanced RAG Engine with Hybrid Retrieval, Query Expansion,
 Cross-Encoder / Re-Ranking, Groundedness Scoring, and Citations.
+Implements lazy on-demand document indexing for zero-latency module imports.
 """
 
 import os
@@ -22,11 +23,17 @@ class RAGEngine:
         self.retriever = HybridRetriever(alpha=config.RAG_HYBRID_ALPHA)
         self.indexed_files: List[str] = []
         self.total_chunks = 0
-        self._auto_index_sample_docs()
+        self._initialized = False
+
+    def _ensure_initialized(self):
+        """Lazy indexing executed on first actual query request."""
+        if not self._initialized:
+            self._auto_index_sample_docs()
+            self._initialized = True
 
     def _auto_index_sample_docs(self):
         """
-        Automatically index all sample agricultural documents on initial load.
+        Automatically index sample agricultural documents on demand.
         """
         sample_dir = config.SAMPLE_DOCS_DIR
         if not sample_dir.exists():
@@ -49,6 +56,7 @@ class RAGEngine:
         """
         Ingest and index a newly uploaded file into vector and BM25 indices.
         """
+        self._ensure_initialized()
         docs = self.loader.load_file(file_path, default_metadata=metadata)
         chunks = self.splitter.split_documents(docs)
         if chunks:
@@ -68,14 +76,16 @@ class RAGEngine:
         queries = [query]
         lower = query.lower()
         if "rice" in lower or "paddy" in lower:
-            queries.append(f"{query} nitrogen AWD tillering water management")
-        elif "rust" in lower or "wheat" in lower:
-            queries.append(f"{query} Puccinia striiformis propiconazole fungicide ETL")
-        elif "soil" in lower or "npk" in lower:
-            queries.append(f"{query} organic carbon zinc fertilizer remediation")
-        elif "scheme" in lower or "subsidy" in lower:
-            queries.append(f"{query} financial assistance eligibility direct benefit transfer")
-        return queries
+            queries.append(f"{query} Oryza sativa grain yield water AWD")
+        if "tomato" in lower:
+            queries.append(f"{query} Solanum lycopersicum fertigation blossom rot")
+        if "nitrogen" in lower or "npk" in lower:
+            queries.append(f"{query} soil macronutrient top dressing fertilizer dose")
+        if "pest" in lower or "disease" in lower:
+            queries.append(f"{query} symptom diagnostic pesticide IPM ETL threshold")
+        if "drip" in lower or "irrigation" in lower:
+            queries.append(f"{query} micro-irrigation water requirement ET0 scheduling")
+        return list(set(queries))
 
     def rerank_chunks(self, query: str, chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
@@ -88,7 +98,6 @@ class RAGEngine:
             overlap = sum(1 for w in q_words if w in text_lower)
             density_boost = (overlap / len(q_words)) if q_words else 0.0
             
-            # Boost if metadata matches
             meta = c.get("metadata", {})
             meta_str = f"{meta.get('crop', '')} {meta.get('doc_type', '')}".lower()
             meta_boost = 0.08 if any(w in meta_str for w in q_words) else 0.0
@@ -109,6 +118,8 @@ class RAGEngine:
         Execute grounded Advanced Hybrid RAG query with citations,
         re-ranking, confidence metric, and refusal guardrails.
         """
+        self._ensure_initialized()
+
         # Step 1: Query Expansion
         expanded = self.expand_query(question)
         all_candidates = []
@@ -137,6 +148,7 @@ class RAGEngine:
                     "Please upload relevant manuals, reports, or consult local agricultural university authorities."
                 ),
                 "citations": [],
+                "images": [],
                 "retrieved_chunks": [],
                 "grounded": False,
                 "groundedness_confidence": "0%",
@@ -205,5 +217,17 @@ class RAGEngine:
         }
 
 
-# Global singleton instance
-rag_engine = RAGEngine()
+# Lazy Proxy Singleton
+_rag_engine_instance = None
+
+def get_rag_engine() -> RAGEngine:
+    global _rag_engine_instance
+    if _rag_engine_instance is None:
+        _rag_engine_instance = RAGEngine()
+    return _rag_engine_instance
+
+class _LazyRAGEngineProxy:
+    def __getattr__(self, name):
+        return getattr(get_rag_engine(), name)
+
+rag_engine = _LazyRAGEngineProxy()

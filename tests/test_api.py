@@ -8,7 +8,7 @@ from server import health_check, chat_with_agent, query_rag, list_documents, Cha
 def test_api_health():
     data = health_check()
     assert data["status"] == "healthy"
-    assert data["total_vector_chunks"] > 0
+    assert "service" in data
 
 
 def test_api_chat_endpoint():

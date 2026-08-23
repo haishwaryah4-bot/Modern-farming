@@ -23,13 +23,18 @@ class LightweightEmbedder:
         self.dim = 384
 
     def _get_api_key(self) -> Optional[str]:
-        try:
-            import streamlit as st
-            if "openai_api_key" in st.session_state and st.session_state["openai_api_key"]:
-                return st.session_state["openai_api_key"].strip()
-        except Exception:
-            pass
-        return os.environ.get("OPENAI_API_KEY") or config.OPENAI_API_KEY or ""
+        # Safely read from environment / config without hard streamlit dependency
+        key = os.environ.get("OPENAI_API_KEY") or getattr(config, "OPENAI_API_KEY", "") or ""
+        if not key:
+            try:
+                import sys
+                if "streamlit" in sys.modules:
+                    import streamlit as st
+                    if "openai_api_key" in st.session_state and st.session_state["openai_api_key"]:
+                        return st.session_state["openai_api_key"].strip()
+            except Exception:
+                pass
+        return key
 
     def embed_documents(self, texts: List[str]) -> List[List[float]]:
         """
@@ -47,7 +52,7 @@ class LightweightEmbedder:
                     "Content-Type": "application/json"
                 }
                 payload = {
-                    "input": texts[:32],  # Batch of texts
+                    "input": texts[:32],
                     "model": "text-embedding-3-small",
                     "dimensions": self.dim
                 }

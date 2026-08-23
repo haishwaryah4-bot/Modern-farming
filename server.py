@@ -1,6 +1,6 @@
 """
 FastAPI Backend Server for AgriSense AI - Production Agriculture AI Agent, Advanced RAG & Visual Ingestion.
-Defines the top-level `app = FastAPI(...)` ASGI entrypoint required by Vercel, Uvicorn, and Cloud hosting.
+Defines top-level `app = FastAPI(...)` ASGI entrypoint with lazy service initialization for instant, safe imports on Vercel.
 """
 
 import os
@@ -9,6 +9,7 @@ import mimetypes
 from pathlib import Path
 from typing import List, Dict, Any, Optional
 
+# --- SAFE PYDANTIC DATA SCHEMAS ---
 try:
     from pydantic import BaseModel, Field
 except ImportError:
@@ -21,6 +22,8 @@ except ImportError:
     def Field(*args, **kwargs):
         return kwargs.get("default", None)
 
+
+# --- SAFE FASTAPI / ASGI ENGINE ---
 try:
     from fastapi import FastAPI, UploadFile, File, Form, HTTPException, Query, Request
     from fastapi.middleware.cors import CORSMiddleware
@@ -81,6 +84,7 @@ except ImportError:
                     await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json"), (b"access-control-allow-origin", b"*")]})
                     await send({"type": "http.response.body", "body": body})
                 elif path == "/" or path == "/index.html":
+                    import config
                     index_path = config.BASE_DIR / "static" / "index.html"
                     if index_path.exists():
                         with open(index_path, "rb") as f:
@@ -91,6 +95,7 @@ except ImportError:
                         await send({"type": "http.response.start", "status": 404, "headers": [(b"content-type", b"text/plain")]})
                         await send({"type": "http.response.body", "body": b"Not Found"})
                 elif path.startswith("/static/"):
+                    import config
                     rel = path[8:]
                     ap = config.BASE_DIR / "static" / rel
                     if not ap.exists():
@@ -114,13 +119,6 @@ except ImportError:
     CORSMiddleware = None
 
 import config
-from src.rag.rag_engine import rag_engine
-from src.agents.agent_core import ai_agent
-from src.services.weather_service import weather_service
-from src.services.market_service import market_service
-from src.services.soil_service import soil_service
-from src.services.disease_service import disease_service
-from src.services.image_retriever_service import image_retriever
 
 
 # --- TOP-LEVEL FASTAPI ASGI APP INSTANCE (REQUIRED FOR VERCEL & UVICORN) ---
@@ -177,8 +175,9 @@ class RAGQueryResponse(BaseModel):
     retrieval_method: str
 
 
-# --- CORE BUSINESS LOGIC HANDLERS ---
+# --- CORE BUSINESS LOGIC HANDLERS (LAZY-LOADED ON DEMAND) ---
 def handle_chat_query(user_query: str, session_id: str = "default_session", farm_context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    from src.agents.agent_core import ai_agent
     lower = user_query.lower()
     intent = "General Agronomic Inquiry"
     clarification_needed = False
@@ -222,6 +221,7 @@ def handle_chat_query(user_query: str, session_id: str = "default_session", farm
 
 
 def handle_rag_query(query: str, top_k: int = 4, filters: Optional[Dict[str, Any]] = None, use_reranker: bool = True) -> Dict[str, Any]:
+    from src.rag.rag_engine import rag_engine
     return rag_engine.query(question=query, top_k=top_k, filters=filters, use_reranker=use_reranker)
 
 
@@ -239,14 +239,10 @@ def read_root():
 
 @app.get("/api/health")
 def health_check():
-    """Health check and knowledge base telemetry endpoint."""
+    """Lightweight health check endpoint for instant response on Vercel without loading RAG."""
     return {
         "status": "healthy",
-        "service": "AgriSense AI REST API",
-        "version": "2.0.0",
-        "total_vector_chunks": rag_engine.total_chunks,
-        "knowledge_chunks": rag_engine.total_chunks,
-        "images_indexed": len(image_retriever.dataset),
+        "service": "AgriSense AI REST API"
     }
 
 
@@ -267,6 +263,7 @@ def query_rag(req: RAGQueryRequest):
 @app.get("/api/documents")
 def list_documents():
     """Lists all active and indexed knowledge base documents."""
+    from src.rag.rag_engine import rag_engine
     return {
         "total_documents": len(rag_engine.indexed_files),
         "total_chunks": rag_engine.total_chunks,
@@ -277,6 +274,8 @@ def list_documents():
 @app.post("/api/admin/reindex")
 def reindex_knowledge_base():
     """Admin endpoint to re-index all agricultural documents and image metadata."""
+    from src.rag.rag_engine import rag_engine
+    from src.services.image_retriever_service import image_retriever
     rag_engine.indexed_files = []
     rag_engine._auto_index_sample_docs()
     image_retriever._load_dataset()
