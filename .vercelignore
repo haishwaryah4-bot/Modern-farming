@@ -1,0 +1,14 @@
+# Vercel Deployment Exclusions
+dataset/
+scratch/
+tests/
+.git/
+.github/
+.vscode/
+.idea/
+__pycache__/
+*.pyc
+*.log
+*.bat
+*.ps1
+uploads/

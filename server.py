@@ -41,17 +41,72 @@ except ImportError:
         def add_middleware(self, *args, **kwargs): pass
         def mount(self, *args, **kwargs): pass
         async def __call__(self, scope, receive, send):
-            # Fallback ASGI application responder
             if scope["type"] == "http":
                 path = scope.get("path", "/")
+                method = scope.get("method", "GET")
+                body_bytes = b""
+                if method == "POST":
+                    while True:
+                        message = await receive()
+                        body_bytes += message.get("body", b"")
+                        if not message.get("more_body", False):
+                            break
+                try:
+                    payload = json.loads(body_bytes.decode("utf-8")) if body_bytes else {}
+                except Exception:
+                    payload = {}
+
                 if path == "/api/health":
-                    body = json.dumps({"status": "healthy", "service": "AgriSense AI API (ASGI Fallback)"}).encode("utf-8")
+                    res = health_check()
+                    body = json.dumps(res).encode("utf-8")
                     await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json"), (b"access-control-allow-origin", b"*")]})
                     await send({"type": "http.response.body", "body": body})
-                else:
-                    body = b"AgriSense AI Backend Running"
-                    await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"text/plain")]})
+                elif path == "/api/chat" and method == "POST":
+                    msg = payload.get("message", "")
+                    sess = payload.get("session_id", "default_session")
+                    f_ctx = payload.get("farm_context")
+                    res = handle_chat_query(msg, sess, f_ctx)
+                    body = json.dumps(res).encode("utf-8")
+                    await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json; charset=utf-8"), (b"access-control-allow-origin", b"*")]})
                     await send({"type": "http.response.body", "body": body})
+                elif path == "/api/rag/query" and method == "POST":
+                    q = payload.get("query", "")
+                    res = handle_rag_query(q)
+                    body = json.dumps(res).encode("utf-8")
+                    await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json; charset=utf-8"), (b"access-control-allow-origin", b"*")]})
+                    await send({"type": "http.response.body", "body": body})
+                elif path == "/api/documents":
+                    res = list_documents()
+                    body = json.dumps(res).encode("utf-8")
+                    await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json"), (b"access-control-allow-origin", b"*")]})
+                    await send({"type": "http.response.body", "body": body})
+                elif path == "/" or path == "/index.html":
+                    index_path = config.BASE_DIR / "static" / "index.html"
+                    if index_path.exists():
+                        with open(index_path, "rb") as f:
+                            body = f.read()
+                        await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"text/html; charset=utf-8"), (b"access-control-allow-origin", b"*")]})
+                        await send({"type": "http.response.body", "body": body})
+                    else:
+                        await send({"type": "http.response.start", "status": 404, "headers": [(b"content-type", b"text/plain")]})
+                        await send({"type": "http.response.body", "body": b"Not Found"})
+                elif path.startswith("/static/"):
+                    rel = path[8:]
+                    ap = config.BASE_DIR / "static" / rel
+                    if not ap.exists():
+                        ap = config.BASE_DIR / "assets" / "images" / rel
+                    if ap.exists() and ap.is_file():
+                        mime, _ = mimetypes.guess_type(str(ap))
+                        with open(ap, "rb") as f:
+                            body = f.read()
+                        await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", (mime or "application/octet-stream").encode("utf-8")), (b"access-control-allow-origin", b"*")]})
+                        await send({"type": "http.response.body", "body": body})
+                    else:
+                        await send({"type": "http.response.start", "status": 404, "headers": [(b"content-type", b"text/plain")]})
+                        await send({"type": "http.response.body", "body": b"Not Found"})
+                else:
+                    await send({"type": "http.response.start", "status": 404, "headers": [(b"content-type", b"text/plain")]})
+                    await send({"type": "http.response.body", "body": b"Not Found"})
     HTMLResponse = None
     JSONResponse = None
     FileResponse = None
