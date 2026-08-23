@@ -19,8 +19,8 @@
     :root {
       --bg-dark: #020904;
       --bg-surface: #071a10;
-      --bg-card: rgba(8, 28, 17, 0.86);
-      --bg-card-hover: rgba(12, 42, 26, 0.96);
+      --bg-card: rgba(8, 28, 17, 0.84);
+      --bg-card-hover: rgba(12, 42, 26, 0.94);
       
       --emerald-50: #ecfdf5;
       --emerald-100: #d1fae5;
@@ -34,42 +34,65 @@
       --gold-400: #fbbf24;
       
       --text-white: #ffffff;
-      --text-gray-100: #f1f5f9;
+      --text-gray-100: #f8fafc;
+      --text-gray-200: #e2e8f0;
       --text-gray-300: #cbd5e1;
       --text-gray-400: #94a3b8;
       
-      --border-light: rgba(16, 185, 129, 0.28);
+      --border-light: rgba(16, 185, 129, 0.32);
       --border-focus: #10b981;
-      --border-glow: 0 0 22px rgba(16, 185, 129, 0.45);
+      --border-glow: 0 0 24px rgba(16, 185, 129, 0.5);
       
       --radius-sm: 10px;
       --radius-md: 16px;
       --radius-lg: 24px;
       --radius-pill: 9999px;
       
-      --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.35);
-      --shadow-md: 0 10px 32px rgba(0, 0, 0, 0.45);
-      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.65), 0 0 35px rgba(16, 185, 129, 0.2);
+      --shadow-sm: 0 4px 14px rgba(0, 0, 0, 0.4);
+      --shadow-md: 0 10px 32px rgba(0, 0, 0, 0.55);
+      --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 35px rgba(16, 185, 129, 0.25);
       
       --transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    /* Fixed High-Visibility Photorealistic Background Layer */
+    .bg-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -2;
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      transition: background-image 0.6s ease-in-out;
+      transform: scale(1.02);
+    }
+
+    .bg-gradient-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -1;
+      background: linear-gradient(175deg, rgba(2, 10, 5, 0.42) 0%, rgba(4, 22, 11, 0.38) 45%, rgba(2, 12, 6, 0.58) 100%);
+      pointer-events: none;
+    }
+
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
-      background-color: var(--bg-dark);
-      background-image: 
-        linear-gradient(175deg, rgba(2, 9, 4, 0.86) 0%, rgba(4, 20, 11, 0.82) 40%, rgba(6, 30, 16, 0.89) 100%),
-        url('/static/modern_agriculture_bg.jpg');
-      background-size: cover;
-      background-position: center top;
-      background-attachment: fixed;
       color: var(--text-gray-100);
       min-height: 100vh;
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
+      background: transparent;
     }
 
     /* Modern Navbar */
@@ -77,14 +100,14 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(3, 14, 8, 0.88);
-      backdrop-filter: blur(24px);
+      background: rgba(3, 16, 9, 0.88);
+      backdrop-filter: blur(28px);
       border-bottom: 1.5px solid var(--border-light);
-      padding: 14px 32px;
+      padding: 12px 32px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.6);
     }
 
     .nav-brand {
@@ -104,7 +127,7 @@
       align-items: center;
       justify-content: center;
       font-size: 1.45rem;
-      box-shadow: 0 0 18px rgba(16, 185, 129, 0.55);
+      box-shadow: 0 0 18px rgba(16, 185, 129, 0.6);
     }
 
     .brand-text h1 {
@@ -114,6 +137,7 @@
       letter-spacing: -0.02em;
       color: #ffffff;
       line-height: 1.1;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.5);
     }
 
     .brand-text p {
@@ -127,21 +151,36 @@
     .nav-status {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .theme-picker-select {
+      background: rgba(4, 24, 13, 0.85);
+      border: 1.5px solid #10b981;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      outline: none;
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
     }
 
     .status-pill {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(16, 185, 129, 0.16);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      padding: 7px 16px;
+      background: rgba(16, 185, 129, 0.22);
+      border: 1px solid rgba(16, 185, 129, 0.5);
+      padding: 6px 16px;
       border-radius: var(--radius-pill);
       font-size: 0.82rem;
       font-weight: 700;
-      color: #6ee7b7;
-      box-shadow: 0 0 14px rgba(16, 185, 129, 0.2);
+      color: #a7f3d0;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
     }
 
     .pulse-dot {
@@ -170,22 +209,25 @@
       flex: 1;
     }
 
-    /* Hero Banner with Rich Picture Background */
+    /* Hero Banner with Glass Layer */
     .hero-box {
-      background: linear-gradient(135deg, rgba(3, 20, 10, 0.88) 0%, rgba(6, 36, 18, 0.82) 60%, rgba(2, 14, 7, 0.94) 100%),
-                  url('/static/modern_farm_hero.jpg') center/cover no-repeat;
+      background: linear-gradient(135deg, rgba(3, 20, 10, 0.84) 0%, rgba(6, 36, 18, 0.78) 60%, rgba(2, 14, 7, 0.90) 100%),
+                  url('/static/modern_farm_hero.jpg'), url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1200&q=80');
+      background-size: cover;
+      background-position: center;
       border: 1.5px solid var(--border-light);
       border-radius: var(--radius-lg);
       padding: 36px 40px;
       box-shadow: var(--shadow-lg);
       position: relative;
       overflow: hidden;
+      backdrop-filter: blur(12px);
     }
 
     .hero-box::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0; height: 3.5px;
+      top: 0; left: 0; right: 0; height: 4px;
       background: linear-gradient(90deg, #10b981, #f59e0b, #34d399);
     }
 
@@ -199,21 +241,22 @@
 
     .hero-content h2 {
       font-family: 'Outfit', sans-serif;
-      font-size: 2.2rem;
-      font-weight: 800;
+      font-size: 2.3rem;
+      font-weight: 900;
       color: #ffffff;
       line-height: 1.2;
       margin-bottom: 8px;
       letter-spacing: -0.02em;
-      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.8);
+      text-shadow: 0 4px 16px rgba(0, 0, 0, 0.9);
     }
 
     .hero-content p {
-      color: #e2e8f0;
-      font-size: 1rem;
+      color: #f1f5f9;
+      font-size: 1.02rem;
       max-width: 820px;
       line-height: 1.6;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9);
+      font-weight: 500;
     }
 
     /* Quick Action Chips */
@@ -225,27 +268,27 @@
     }
 
     .chip-btn {
-      background: rgba(4, 20, 11, 0.75);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(16, 185, 129, 0.35);
+      background: rgba(3, 18, 9, 0.82);
+      backdrop-filter: blur(14px);
+      border: 1.5px solid rgba(16, 185, 129, 0.45);
       color: #ffffff;
       padding: 8px 16px;
       border-radius: var(--radius-pill);
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 6px;
       transition: var(--transition);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
     }
 
     .chip-btn:hover {
-      background: rgba(16, 185, 129, 0.3);
-      border-color: #10b981;
+      background: rgba(16, 185, 129, 0.4);
+      border-color: #34d399;
       transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+      box-shadow: 0 6px 18px rgba(16, 185, 129, 0.6);
       color: #fff;
     }
 
@@ -253,20 +296,20 @@
     .tabs-bar {
       display: flex;
       gap: 10px;
-      border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1.5px solid rgba(255, 255, 255, 0.15);
       padding-bottom: 6px;
       overflow-x: auto;
     }
 
     .tab-item {
-      background: rgba(2, 14, 8, 0.6);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      color: var(--text-gray-300);
-      padding: 10px 20px;
+      background: rgba(2, 16, 8, 0.72);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #cbd5e1;
+      padding: 11px 22px;
       font-family: 'Outfit', sans-serif;
       font-weight: 700;
-      font-size: 0.96rem;
+      font-size: 0.98rem;
       border-radius: var(--radius-sm);
       cursor: pointer;
       display: inline-flex;
@@ -278,15 +321,15 @@
 
     .tab-item:hover {
       color: #ffffff;
-      background: rgba(16, 185, 129, 0.12);
-      border-color: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.2);
+      border-color: rgba(16, 185, 129, 0.4);
     }
 
     .tab-item.active {
       color: #34d399;
-      background: rgba(16, 185, 129, 0.22);
-      border: 1px solid #10b981;
-      box-shadow: 0 0 16px rgba(16, 185, 129, 0.25);
+      background: rgba(16, 185, 129, 0.3);
+      border: 1.5px solid #10b981;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.35);
     }
 
     /* Workspace 2-Column Grid */
@@ -304,18 +347,19 @@
       border-radius: var(--radius-md);
       padding: 22px;
       box-shadow: var(--shadow-md);
-      backdrop-filter: blur(24px);
+      backdrop-filter: blur(28px);
     }
 
     .panel-title {
       font-family: 'Outfit', sans-serif;
-      font-weight: 700;
-      font-size: 1.1rem;
+      font-weight: 800;
+      font-size: 1.15rem;
       color: #ffffff;
       margin-bottom: 14px;
       display: flex;
       align-items: center;
       gap: 8px;
+      text-shadow: 0 2px 6px rgba(0,0,0,0.5);
     }
 
     /* Chat Box Container */
@@ -328,11 +372,11 @@
       flex-direction: column;
       height: 650px;
       overflow: hidden;
-      backdrop-filter: blur(28px);
+      backdrop-filter: blur(32px);
     }
 
     .chat-top-header {
-      background: rgba(4, 20, 11, 0.9);
+      background: rgba(4, 20, 11, 0.94);
       border-bottom: 1.5px solid var(--border-light);
       padding: 14px 22px;
       display: flex;
@@ -352,7 +396,7 @@
       border-radius: 50%;
       border: 2px solid #10b981;
       object-fit: cover;
-      box-shadow: 0 0 14px rgba(16, 185, 129, 0.5);
+      box-shadow: 0 0 16px rgba(16, 185, 129, 0.6);
     }
 
     .ai-title-wrap h3 {
@@ -394,7 +438,7 @@
     .msg-bubble {
       border-radius: 18px;
       padding: 14px 18px;
-      font-size: 0.94rem;
+      font-size: 0.95rem;
       line-height: 1.6;
       box-shadow: var(--shadow-sm);
       position: relative;
@@ -404,13 +448,13 @@
       background: linear-gradient(135deg, #059669, #047857);
       color: #ffffff;
       border-bottom-right-radius: 4px;
-      border: 1.5px solid rgba(52, 211, 153, 0.5);
+      border: 1.5px solid rgba(52, 211, 153, 0.6);
       font-weight: 500;
     }
 
     .msg-row.assistant .msg-bubble {
-      background: rgba(10, 36, 22, 0.95);
-      color: #e2e8f0;
+      background: rgba(8, 30, 18, 0.96);
+      color: #f1f5f9;
       border-bottom-left-radius: 4px;
       border: 1.5px solid var(--border-light);
     }
@@ -431,9 +475,9 @@
     }
 
     .action-icon-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      color: var(--text-gray-300);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: var(--text-gray-200);
       border-radius: 6px;
       padding: 5px 10px;
       font-size: 0.76rem;
@@ -446,7 +490,7 @@
     }
 
     .action-icon-btn:hover {
-      background: rgba(16, 185, 129, 0.28);
+      background: rgba(16, 185, 129, 0.35);
       color: #ffffff;
       border-color: #10b981;
     }
@@ -456,7 +500,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      background: rgba(16, 185, 129, 0.18);
+      background: rgba(16, 185, 129, 0.22);
       border: 1.5px dashed #10b981;
       border-radius: 12px;
       padding: 8px 14px;
@@ -495,7 +539,7 @@
 
     /* Chat Input Area */
     .chat-footer {
-      background: rgba(4, 20, 11, 0.94);
+      background: rgba(4, 20, 11, 0.96);
       border-top: 1.5px solid var(--border-light);
       padding: 14px 20px;
     }
@@ -504,7 +548,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: rgba(10, 36, 22, 0.85);
+      background: rgba(10, 36, 22, 0.9);
       border: 1.5px solid var(--border-light);
       border-radius: var(--radius-pill);
       padding: 6px 8px 6px 16px;
@@ -515,7 +559,7 @@
     .input-row:focus-within {
       border-color: #10b981;
       box-shadow: var(--border-glow);
-      background: rgba(12, 42, 26, 0.98);
+      background: rgba(12, 44, 28, 0.98);
     }
 
     .chat-input {
@@ -529,15 +573,15 @@
     }
 
     .chat-input::placeholder {
-      color: #64748b;
+      color: #94a3b8;
     }
 
     .tool-btn {
       width: 38px;
       height: 38px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
       color: #ffffff;
       font-size: 1.1rem;
       cursor: pointer;
@@ -548,7 +592,7 @@
     }
 
     .tool-btn:hover {
-      background: rgba(16, 185, 129, 0.3);
+      background: rgba(16, 185, 129, 0.35);
       border-color: #10b981;
       color: #34d399;
       transform: scale(1.05);
@@ -574,13 +618,13 @@
       align-items: center;
       gap: 6px;
       transition: var(--transition);
-      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.45);
+      box-shadow: 0 4px 14px rgba(5, 150, 105, 0.5);
     }
 
     .send-btn:hover:not(:disabled) {
       background: linear-gradient(135deg, #34d399, #10b981);
       transform: translateY(-1px);
-      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.65);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.7);
     }
 
     .send-btn:disabled {
@@ -592,11 +636,11 @@
     .media-card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
-      gap: 18px;
+      gap: 20px;
     }
 
     .media-card {
-      background: rgba(6, 26, 15, 0.9);
+      background: rgba(6, 26, 15, 0.92);
       border: 1.5px solid var(--border-light);
       border-radius: var(--radius-md);
       overflow: hidden;
@@ -604,23 +648,24 @@
       cursor: pointer;
       display: flex;
       flex-direction: column;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.4);
     }
 
     .media-card:hover {
-      transform: translateY(-4px);
+      transform: translateY(-5px);
       border-color: #10b981;
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 20px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.7), 0 0 24px rgba(16, 185, 129, 0.4);
     }
 
     .media-card-img {
       width: 100%;
-      height: 160px;
+      height: 165px;
       object-fit: cover;
       border-bottom: 1.5px solid var(--border-light);
     }
 
     .media-card-body {
-      padding: 16px;
+      padding: 18px;
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -630,7 +675,7 @@
     .media-card-body h4 {
       font-family: 'Outfit', sans-serif;
       font-weight: 800;
-      font-size: 0.98rem;
+      font-size: 1rem;
       color: #ffffff;
       margin-bottom: 6px;
       display: flex;
@@ -639,9 +684,9 @@
     }
 
     .media-card-body p {
-      font-size: 0.82rem;
-      color: var(--text-gray-300);
-      line-height: 1.45;
+      font-size: 0.84rem;
+      color: var(--text-gray-200);
+      line-height: 1.5;
       margin-bottom: 12px;
     }
 
@@ -649,12 +694,12 @@
       display: inline-flex;
       align-items: center;
       gap: 4px;
-      background: rgba(16, 185, 129, 0.2);
-      border: 1px solid rgba(16, 185, 129, 0.4);
+      background: rgba(16, 185, 129, 0.25);
+      border: 1px solid rgba(16, 185, 129, 0.5);
       color: #6ee7b7;
-      font-size: 0.72rem;
+      font-size: 0.74rem;
       font-weight: 700;
-      padding: 3px 8px;
+      padding: 4px 10px;
       border-radius: var(--radius-pill);
       align-self: flex-start;
     }
@@ -663,8 +708,8 @@
     .camera-modal-overlay {
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.88);
+      backdrop-filter: blur(14px);
       z-index: 1000;
       display: flex;
       align-items: center;
@@ -679,7 +724,7 @@
       max-width: 540px;
       width: 100%;
       overflow: hidden;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(16, 185, 129, 0.3);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 30px rgba(16, 185, 129, 0.4);
       display: flex;
       flex-direction: column;
     }
@@ -722,8 +767,8 @@
 
     /* Sidebar Widgets */
     .widget-item {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       border-radius: var(--radius-sm);
       padding: 12px;
       margin-bottom: 10px;
@@ -732,13 +777,13 @@
     }
 
     .widget-item:hover {
-      background: rgba(16, 185, 129, 0.1);
-      border-color: rgba(16, 185, 129, 0.4);
-      transform: translateX(3px);
+      background: rgba(16, 185, 129, 0.15);
+      border-color: rgba(16, 185, 129, 0.45);
+      transform: translateX(4px);
     }
 
     .widget-item h4 {
-      font-size: 0.88rem;
+      font-size: 0.9rem;
       font-weight: 700;
       color: #ffffff;
       margin-bottom: 4px;
@@ -748,8 +793,8 @@
     }
 
     .widget-item p {
-      font-size: 0.78rem;
-      color: var(--text-gray-400);
+      font-size: 0.8rem;
+      color: var(--text-gray-300);
       line-height: 1.4;
     }
 
@@ -769,7 +814,28 @@
   <script type="text/babel">
     const { useState, useEffect, useRef } = React;
 
+    // Theme Background Options
+    const THEMES = {
+      sunrise: {
+        name: '🌅 Sunrise Smart Farm',
+        bg: "url('/static/modern_agriculture_bg.jpg'), url('https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1920&q=80')"
+      },
+      greenhouse: {
+        name: '🌿 High-Tech Polyhouse',
+        bg: "url('/static/greenhouse_polyhouse.jpg'), url('https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=1920&q=80')"
+      },
+      drip: {
+        name: '💧 Drip Crop Canopy',
+        bg: "url('/static/modern_farm_hero.jpg'), url('https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=1920&q=80')"
+      },
+      iot: {
+        name: '🛰️ Precision IoT Fields',
+        bg: "url('/static/precision_iot_farming.jpg'), url('https://images.unsplash.com/photo-1592417817098-8f3d6eb22500?w=1920&q=80')"
+      }
+    };
+
     function App() {
+      const [currentTheme, setCurrentTheme] = useState('sunrise');
       const [activeTab, setActiveTab] = useState('chat');
       const [messages, setMessages] = useState([
         {
@@ -984,6 +1050,13 @@
 
       return (
         <div>
+          {/* Active Dynamic Photorealistic Background Layer */}
+          <div 
+            className="bg-backdrop" 
+            style={{ backgroundImage: THEMES[currentTheme].bg }}
+          ></div>
+          <div className="bg-gradient-overlay"></div>
+
           {/* Navigation Bar */}
           <nav className="navbar">
             <a href="#" className="nav-brand">
@@ -993,10 +1066,24 @@
                 <p>National Smart Agriculture Portal</p>
               </div>
             </a>
+
             <div className="nav-status">
+              {/* Background Theme Selector */}
+              <select 
+                className="theme-picker-select"
+                value={currentTheme}
+                onChange={(e) => setCurrentTheme(e.target.value)}
+                title="Change Agriculture Background Theme"
+              >
+                <option value="sunrise">🌅 Sunrise Smart Farm</option>
+                <option value="greenhouse">🌿 High-Tech Polyhouse</option>
+                <option value="drip">💧 Drip Crop Canopy</option>
+                <option value="iot">🛰️ Precision IoT Fields</option>
+              </select>
+
               <div className="status-pill">
                 <div className="pulse-dot"></div>
-                <span>145 RAG Chunks • 16 Dataset Photos • Camera AI Active</span>
+                <span>145 RAG Chunks • 16 Photos • Camera AI Active</span>
               </div>
             </div>
           </nav>
@@ -1013,11 +1100,22 @@
                     Ground-truth agronomy engine powered by Multi-Agent RAG, camera computer vision diagnostics, and verified photographic dataset evidence. Ask any question in plain English, speak hands-free, or snap a field photo.
                   </p>
                 </div>
-                <div>
+                <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                  <button 
+                    onClick={() => {
+                      const keys = Object.keys(THEMES);
+                      const next = keys[(keys.indexOf(currentTheme) + 1) % keys.length];
+                      setCurrentTheme(next);
+                    }}
+                    className="action-icon-btn"
+                    style={{ padding: '8px 16px', background: 'rgba(16, 185, 129, 0.25)', borderColor: '#10b981', color: '#a7f3d0' }}
+                  >
+                    🖼️ Switch Background ({THEMES[currentTheme].name.split(' ')[1]})
+                  </button>
                   <button 
                     onClick={handleAdminReindex}
                     className="action-icon-btn" 
-                    style={{ padding: '8px 16px', background: 'rgba(16, 185, 129, 0.25)', borderColor: '#10b981', color: '#6ee7b7' }}
+                    style={{ padding: '8px 16px', background: 'rgba(16, 185, 129, 0.25)', borderColor: '#10b981', color: '#a7f3d0' }}
                   >
                     ⚡ {adminMsg || 'Re-Sync Knowledge Base'}
                   </button>
@@ -1083,7 +1181,7 @@
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                   <div className="glass-card">
                     <div className="panel-title">📸 Visual Camera Copilot</div>
-                    <p style={{ fontSize: '0.84rem', color: '#94a3b8', lineHeight: 1.5, marginBottom: '14px' }}>
+                    <p style={{ fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.5, marginBottom: '14px' }}>
                       Take a live picture of your affected crop leaf, stem, or pest with your camera to get an instant diagnosis and treatment protocol.
                     </p>
                     <button 
@@ -1127,7 +1225,7 @@
 
                   <div className="glass-card">
                     <div className="panel-title">🎙️ Voice Assistant</div>
-                    <div style={{ fontSize: '0.8rem', color: '#34d399', fontWeight: 600 }}>
+                    <div style={{ fontSize: '0.82rem', color: '#34d399', fontWeight: 600 }}>
                       {voiceStatus || '🟢 Voice & Speech Recognition ready'}
                     </div>
                   </div>
@@ -1149,7 +1247,7 @@
                       </div>
                     </div>
                     <div>
-                      <span style={{ fontSize: '0.78rem', color: '#94a3b8', fontWeight: 600 }}>
+                      <span style={{ fontSize: '0.78rem', color: '#cbd5e1', fontWeight: 600 }}>
                         Camera + Voice + RAG
                       </span>
                     </div>
@@ -1210,8 +1308,8 @@
                       <div className="attachment-preview-bar">
                         <img src={attachedImage} alt="Attached crop" className="attached-thumb" />
                         <div>
-                          <div style={{ fontSize: '0.82rem', fontWeight: '700', color: '#34d399' }}>📸 Crop Photo Attached</div>
-                          <div style={{ fontSize: '0.74rem', color: '#94a3b8' }}>Ready for visual disease & pest analysis</div>
+                          <div style={{ fontSize: '0.84rem', fontWeight: '700', color: '#34d399' }}>📸 Crop Photo Attached</div>
+                          <div style={{ fontSize: '0.74rem', color: '#cbd5e1' }}>Ready for visual disease & pest analysis</div>
                         </div>
                         <button 
                           className="remove-att-btn" 
@@ -1268,7 +1366,7 @@
             {activeTab === 'diagnostics' && (
               <div className="glass-card">
                 <div className="panel-title">🔬 Verified Disease & Pest Pathology Catalog</div>
-                <p style={{ color: '#94a3b8', fontSize: '0.92rem', marginBottom: '20px' }}>
+                <p style={{ color: '#cbd5e1', fontSize: '0.94rem', marginBottom: '20px' }}>
                   Explore verified pathology specimens, visual symptoms, and Economic Threshold Level (ETL) management protocols.
                 </p>
                 <div className="media-card-grid">
@@ -1323,7 +1421,7 @@
             {activeTab === 'irrigation' && (
               <div className="glass-card">
                 <div className="panel-title">💧 Precision Irrigation & Subsidy Explorer</div>
-                <p style={{ color: '#94a3b8', fontSize: '0.92rem', marginBottom: '20px' }}>
+                <p style={{ color: '#cbd5e1', fontSize: '0.94rem', marginBottom: '20px' }}>
                   Water optimization benchmarks and central/state subsidy schemes verified by ICAR.
                 </p>
                 <div className="media-card-grid">
@@ -1400,7 +1498,7 @@
             {activeTab === 'soil' && (
               <div className="glass-card">
                 <div className="panel-title">📊 Soil Fertility & Mandi Market Intelligence</div>
-                <p style={{ color: '#94a3b8', fontSize: '0.92rem', marginBottom: '20px' }}>
+                <p style={{ color: '#cbd5e1', fontSize: '0.94rem', marginBottom: '20px' }}>
                   Soil macronutrient benchmarks, micronutrient correction, and live commodity price trends.
                 </p>
                 <div className="media-card-grid">
