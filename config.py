@@ -16,13 +16,24 @@ BASE_DIR = Path(__file__).resolve().parent
 DATA_DIR = BASE_DIR / "data"
 SAMPLE_DOCS_DIR = DATA_DIR / "sample_docs"
 ASSETS_DIR = BASE_DIR / "assets"
-UPLOADS_DIR = BASE_DIR / "uploads"
 
-# Ensure runtime directories exist
-DATA_DIR.mkdir(exist_ok=True)
-SAMPLE_DOCS_DIR.mkdir(parents=True, exist_ok=True)
-ASSETS_DIR.mkdir(exist_ok=True)
-UPLOADS_DIR.mkdir(exist_ok=True)
+# On read-only serverless environments like Vercel, use /tmp for uploads
+UPLOADS_DIR = BASE_DIR / "uploads"
+try:
+    UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+except (OSError, PermissionError):
+    UPLOADS_DIR = Path("/tmp/uploads")
+    try:
+        UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
+    except Exception:
+        pass
+
+# Ensure directories exist safely without throwing errors on read-only environments
+for d in [DATA_DIR, SAMPLE_DOCS_DIR, ASSETS_DIR]:
+    try:
+        d.mkdir(parents=True, exist_ok=True)
+    except (OSError, PermissionError):
+        pass
 
 # LLM API configuration
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
