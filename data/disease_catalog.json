@@ -1,0 +1,176 @@
+[
+  {
+    "id": "rice_blast",
+    "crop": "Rice (Paddy)",
+    "disease_name": "Rice Blast (Magnaporthe oryzae)",
+    "type": "Fungal",
+    "confidence_baseline": 0.94,
+    "symptoms": [
+      "Spindle-shaped or diamond-shaped lesions on leaf blades",
+      "Lesions have greyish-white centers with dark brown borders",
+      "Severe lesions coalesce, causing complete blighting of leaves",
+      "Neck rot: brown/black ring at panicle base causing empty chalky grains"
+    ],
+    "favorable_conditions": "High relative humidity (> 90%), prolonged leaf wetness, cloudy skies, and excessive nitrogen application.",
+    "prevention": [
+      "Use certified resistant seed varieties.",
+      "Avoid excessive top-dressing with nitrogenous fertilizers.",
+      "Seed treatment with Tricyclazole (2g/kg seed).",
+      "Ensure proper plant spacing for canopy aeration."
+    ],
+    "treatment": [
+      "Spray Tricyclazole 75% WP @ 0.6 g/liter of water.",
+      "Or Isoprothiolane 40% EC @ 1.5 ml/liter.",
+      "Or Azoxystrobin 18.2% + Difenoconazole 11.4% SC @ 1 ml/liter.",
+      "Repeat spray after 10-12 days if disease pressure persists."
+    ]
+  },
+  {
+    "id": "wheat_yellow_rust",
+    "crop": "Wheat",
+    "disease_name": "Yellow / Stripe Rust (Puccinia striiformis)",
+    "type": "Fungal",
+    "confidence_baseline": 0.96,
+    "symptoms": [
+      "Linear stripes of bright yellow powdery pustules (uredinia) on leaves",
+      "Chlorotic stripes running parallel to leaf veins",
+      "Pustules rupture releasing masses of yellow airborne spores",
+      "Yellow powder stains fingers or cloth when brushed against leaf"
+    ],
+    "favorable_conditions": "Cool temperatures (10-18°C), free moisture from dew or light fog, susceptible cultivars.",
+    "prevention": [
+      "Grow rust-resistant cultivars (e.g. PBW-725, DBW-187, DBW-303).",
+      "Timely sowing before mid-November in rust-prone zones.",
+      "Avoid excess nitrogen fertilizer."
+    ],
+    "treatment": [
+      "Spray Propiconazole 25% EC (Tilt) @ 1.0 ml/liter of water.",
+      "Or Tebuconazole 25.9% EC @ 1.2 ml/liter of water.",
+      "Spray uniformly covering the entire foliage upon detecting initial isolated foci."
+    ]
+  },
+  {
+    "id": "tomato_early_blight",
+    "crop": "Tomato",
+    "disease_name": "Early Blight (Alternaria solani)",
+    "type": "Fungal",
+    "confidence_baseline": 0.92,
+    "symptoms": [
+      "Dark brown to black circular spots with characteristic concentric rings (target-board effect)",
+      "Yellow halo surrounding the concentric leaf lesions",
+      "Infection begins on oldest lower leaves and progresses upwards",
+      "Collar rot on stems and dark sunken leathery lesions on stem-end of fruit"
+    ],
+    "favorable_conditions": "Warm temperatures (24-29°C) accompanied by heavy dew, rain, or frequent overhead irrigation.",
+    "prevention": [
+      "Practice 3-year crop rotation with non-solanaceous crops.",
+      "Mulch soil around plants to prevent splash dispersal of soil spores.",
+      "Prune lower leaves that touch the soil.",
+      "Use drip irrigation instead of overhead sprinklers."
+    ],
+    "treatment": [
+      "Spray Mancozeb 75% WP @ 2.5 g/liter as prophylactic.",
+      "For active infection: Azoxystrobin 23% SC @ 1 ml/liter or Chlorothalonil 75% WP @ 2 g/liter.",
+      "Bio-control: Trichoderma harzianum soil and foliar drench."
+    ]
+  },
+  {
+    "id": "tomato_leaf_curl",
+    "crop": "Tomato",
+    "disease_name": "Tomato Leaf Curl Virus (ToLCV)",
+    "type": "Viral (Whitefly Vector)",
+    "confidence_baseline": 0.91,
+    "symptoms": [
+      "Severe upward curling and puckering of leaves",
+      "Stunted bushy plant growth with shortened internodes",
+      "Interveinal chlorosis and thick leathery leaf texture",
+      "Flower abortion and failure of fruit set"
+    ],
+    "favorable_conditions": "High whitefly (Bemisia tabaci) population during warm, dry weather.",
+    "prevention": [
+      "Raise nursery seedlings under 40-mesh insect-proof nylon nets.",
+      "Install yellow sticky traps @ 15 traps/acre.",
+      "Grow barrier crops like 2-3 border rows of Maize or Sorghum.",
+      "Plant ToLCV-tolerant hybrid varieties."
+    ],
+    "treatment": [
+      "Direct viral cure is not possible; manage whitefly vector promptly.",
+      "Spray Diafenthiuron 50% WP @ 1.2 g/liter or Spiromesifen 22.9% SC @ 1 ml/liter.",
+      "Spray Neem oil (10,000 ppm) @ 2 ml/liter as deterrent.",
+      "Uproot and burn severely infected individual plants."
+    ]
+  },
+  {
+    "id": "cotton_bacterial_blight",
+    "crop": "Cotton",
+    "disease_name": "Bacterial Blight / Angular Leaf Spot (Xanthomonas citri pv. malvacearum)",
+    "type": "Bacterial",
+    "confidence_baseline": 0.89,
+    "symptoms": [
+      "Water-soaked angular spots bounded by veinlets on leaves",
+      "Lesions turn reddish-brown to dark black",
+      "Black arm symptom: elongated dark cankers on stems causing breakage",
+      "Water-soaked oily spots on cotton bolls resulting in boll rot"
+    ],
+    "favorable_conditions": "Warm humid climate (28-32°C, relative humidity > 80%) with driving rain or overhead sprinkler irrigation.",
+    "prevention": [
+      "Acid delinting of cotton seeds with concentrated sulfuric acid.",
+      "Seed treatment with Streptocycline (100 ppm) + Copper Oxychloride (2g/kg).",
+      "Destruction of infected crop residues after harvest."
+    ],
+    "treatment": [
+      "Spray Copper Oxychloride 50% WP @ 2.5 g/L + Streptocycline @ 0.1 g/liter.",
+      "Or Copper Hydroxide 53.8% DF @ 2 g/liter.",
+      "Avoid irrigation during peak disease intensity."
+    ]
+  },
+  {
+    "id": "healthy_crop_canopy",
+    "crop": "Multi-Crop",
+    "disease_name": "Healthy Canopy (No Disease Detected)",
+    "type": "Healthy",
+    "confidence_baseline": 0.98,
+    "symptoms": [
+      "Vibrant green, uniform leaf color without chlorosis or necrosis",
+      "Intact leaf lamina with no spots, lesions, or wilting",
+      "Strong turgidity and healthy vascular system",
+      "Normal physiological growth appropriate for current stage"
+    ],
+    "favorable_conditions": "Balanced soil fertility, adequate sunlight, and optimal moisture management.",
+    "prevention": [
+      "Maintain balanced NPK fertigation according to soil test.",
+      "Regular scouting for early pest appearance.",
+      "Good drainage to prevent waterlogging."
+    ],
+    "treatment": [
+      "No chemical fungicides or bactericides required.",
+      "Continue standard agronomic care and balanced nutrition."
+    ]
+  },
+  {
+    "id": "aphid_pest_infestation",
+    "crop": "Cotton / Vegetables / Rice / Pulses",
+    "disease_name": "Aphids & Sucking Pest Complex (Aphis gossypii / Myzus persicae)",
+    "type": "Insect Pest (Hemiptera / Aphididae)",
+    "confidence_baseline": 0.97,
+    "symptoms": [
+      "Colonies of small green/black pear-shaped aphids clustered along the midrib and leaf margins",
+      "Curling, crinkling, and cupping of terminal leaves with stunted vegetative growth",
+      "Sticky glistening honeydew excretion covering leaf surface attracting black sooty mold (Capnodium spp.)",
+      "Vectoring of viral pathogens across tender shoots and leaf veins"
+    ],
+    "favorable_conditions": "Cloudy, humid weather with mild temperatures (18-28°C), dry spells after rains, and excess vegetative lushness from surplus nitrogen application.",
+    "prevention": [
+      "Install yellow sticky traps (15-20 traps/acre) to monitor and mass-trap winged aphids.",
+      "Conserve natural biological predators: Ladybird beetles (Coccinellids), hoverfly larvae (Syrphids), and green lacewings (Chrysoperla carnea).",
+      "Avoid excessive top-dressing with nitrogenous fertilizers which stimulate succulent vegetative growth.",
+      "Spray 5% Neem Seed Kernel Extract (NSKE) or Azadirachtin 10,000 ppm @ 2 ml/liter as prophylactic barrier."
+    ],
+    "treatment": [
+      "Bio-pesticide: Spray Verticillium lecanii or Beauveria bassiana @ 5 g/liter at evening hours under high humidity.",
+      "Chemical Control: Spray Imidacloprid 17.8% SL @ 0.3 ml/liter or Acetamiprid 20% SP @ 0.2 g/liter.",
+      "Alternative Systemic: Flonicamid 50% WG @ 0.3 g/liter or Thiamethoxam 25% WG @ 0.25 g/liter.",
+      "Ensure thorough spray coverage targeting the undersides of foliage."
+    ]
+  }
+]

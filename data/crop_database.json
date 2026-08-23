@@ -1,0 +1,186 @@
+{
+  "Rice (Paddy)": {
+    "optimal_ph": "5.5 - 7.0",
+    "soil_types": ["Alluvial Soil", "Clay Loam"],
+    "season": "Kharif (Monsoon)",
+    "water_requirement_mm": "1200 - 1500",
+    "growth_duration_days": "120 - 145",
+    "npk_ratio_kg_acre": {"N": 50, "P": 25, "K": 20},
+    "stages": {
+      "Seedling / Nursery": {
+        "irrigation": "Keep nursery bed moist; avoid deep flooding for first 7 days.",
+        "fertilizer": "1 kg Urea per 100 sq.m nursery bed.",
+        "pests_diseases": "Brown spot, damping off.",
+        "action": "Ensure drainage after heavy showers."
+      },
+      "Vegetative Growth": {
+        "irrigation": "Maintain 2-3 cm shallow standing water.",
+        "fertilizer": "Apply first top-dressing of Urea (35 kg/acre) at 21 DAT.",
+        "pests_diseases": "Stem borer, leaf folder.",
+        "action": "Hand weeding or early post-emergence herbicide."
+      },
+      "Tillering / Branching": {
+        "irrigation": "Alternate Wetting and Drying (AWD) cycle of 3-4 days.",
+        "fertilizer": "Apply second split of Urea (35 kg/acre) + Zinc Sulfate if deficient.",
+        "pests_diseases": "Sheath blight, Brown Plant Hopper.",
+        "action": "Monitor tillering density and water level."
+      },
+      "Flowering & Panicle Initiation": {
+        "irrigation": "Maintain 4-5 cm continuous ponded water; avoid any water stress.",
+        "fertilizer": "Foliar spray of 1% 13-0-45 (Potassium Nitrate) for grain weight.",
+        "pests_diseases": "Neck blast, false smut.",
+        "action": "Prophylactic fungicide spray if humidity > 85%."
+      },
+      "Grain Filling / Fruiting": {
+        "irrigation": "Shallow water 2-3 cm; irrigate when topsoil begins to dry.",
+        "fertilizer": "Nil. Avoid late nitrogen.",
+        "pests_diseases": "Grain discolouration, rats.",
+        "action": "Prepare for pre-harvest water drainage."
+      },
+      "Maturity & Pre-Harvest": {
+        "irrigation": "Drain all standing water 10-14 days before harvest.",
+        "fertilizer": "Nil.",
+        "pests_diseases": "Bird damage, lodging.",
+        "action": "Harvest when 80-85% grains turn golden yellow."
+      }
+    }
+  },
+  "Wheat": {
+    "optimal_ph": "6.0 - 7.5",
+    "soil_types": ["Alluvial Soil", "Clay Loam", "Sandy Loam"],
+    "season": "Rabi (Winter)",
+    "water_requirement_mm": "400 - 550",
+    "growth_duration_days": "115 - 135",
+    "npk_ratio_kg_acre": {"N": 50, "P": 25, "K": 15},
+    "stages": {
+      "Seedling / Nursery": {
+        "irrigation": "Pre-sowing irrigation (Rauni); first irrigation at Crown Root Initiation (CRI) 21 DAS.",
+        "fertilizer": "Basal: Full DAP (55 kg/acre) + 20 kg MOP + 25 kg Urea.",
+        "pests_diseases": "Termites, foot rot.",
+        "action": "Seed treatment with Chlorpyrifos + Tebuconazole."
+      },
+      "Vegetative Growth": {
+        "irrigation": "Irrigate at tillering stage (40-45 DAS).",
+        "fertilizer": "Top dress 40 kg Urea before second irrigation.",
+        "pests_diseases": "Broadleaf & grassy weeds (Phalaris minor).",
+        "action": "Apply post-emergence weedicide at 30-35 DAS."
+      },
+      "Tillering / Branching": {
+        "irrigation": "Irrigate at late jointing (60-65 DAS).",
+        "fertilizer": "Apply remaining Urea split (25 kg/acre).",
+        "pests_diseases": "Yellow rust, powdery mildew.",
+        "action": "Scout northern sub-montane fields for yellow rust stripes."
+      },
+      "Flowering & Panicle Initiation": {
+        "irrigation": "Critical irrigation at booting/flowering (80-85 DAS).",
+        "fertilizer": "Foliar spray of 0.5% Zinc Sulfate + 2% Urea if leaves pale.",
+        "pests_diseases": "Aphids, loose smut.",
+        "action": "Ensure light irrigation on calm non-windy days to avoid lodging."
+      },
+      "Grain Filling / Fruiting": {
+        "irrigation": "Milking/Dough stage irrigation (100-105 DAS).",
+        "fertilizer": "Foliar spray of 1% 0-0-50 (SOP) to combat terminal heat.",
+        "pests_diseases": "Armyworm, heat stress.",
+        "action": "Monitor soil moisture to prevent premature grain shriveling."
+      },
+      "Maturity & Pre-Harvest": {
+        "irrigation": "Withhold irrigation.",
+        "fertilizer": "Nil.",
+        "pests_diseases": "Field rodents.",
+        "action": "Harvest at 12-14% grain moisture."
+      }
+    }
+  },
+  "Cotton": {
+    "optimal_ph": "6.5 - 8.0",
+    "soil_types": ["Black (Regur) Soil", "Alluvial Soil"],
+    "season": "Kharif (Monsoon)",
+    "water_requirement_mm": "700 - 1000",
+    "growth_duration_days": "150 - 180",
+    "npk_ratio_kg_acre": {"N": 60, "P": 30, "K": 30},
+    "stages": {
+      "Seedling / Nursery": {
+        "irrigation": "First irrigation 4-5 days after sowing if rain delayed.",
+        "fertilizer": "Basal: 30 kg DAP + 20 kg MOP + 10 kg Magnesium Sulfate.",
+        "pests_diseases": "Thrips, Jassids, Seedling damping off.",
+        "action": "Gap filling and thinning at 15 DAS."
+      },
+      "Vegetative Growth": {
+        "irrigation": "Irrigate at 12-15 day intervals.",
+        "fertilizer": "Split 1: 30 kg Urea at 35 DAS.",
+        "pests_diseases": "Whitefly, Leaf curl virus.",
+        "action": "Install yellow sticky traps (10/acre)."
+      },
+      "Tillering / Branching": {
+        "irrigation": "Square formation stage irrigation.",
+        "fertilizer": "Split 2: 30 kg Urea + 15 kg MOP at 60 DAS.",
+        "pests_diseases": "Spotted bollworm, Mirid bugs.",
+        "action": "Nipping/De-topping after 80-90 days to encourage sympodial branches."
+      },
+      "Flowering & Panicle Initiation": {
+        "irrigation": "Peak flowering - critical water stage.",
+        "fertilizer": "Foliar spray of 2% DAP or Planofix (NAA) @ 4 ml/15L water to prevent square dropping.",
+        "pests_diseases": "Pink Bollworm, Grey mildew.",
+        "action": "Pheromone traps for pink bollworm monitoring."
+      },
+      "Grain Filling / Fruiting": {
+        "irrigation": "Boll development stage - maintain uniform moisture.",
+        "fertilizer": "Foliar spray of 1% 13-0-45 + 0.1% Boron for boll bursting.",
+        "pests_diseases": "Boll rot, Mealybugs.",
+        "action": "Pick mature open bolls in dry morning hours."
+      },
+      "Maturity & Pre-Harvest": {
+        "irrigation": "Stop irrigation when 30% bolls have opened.",
+        "fertilizer": "Nil.",
+        "pests_diseases": "Stained lint.",
+        "action": "Periodic manual picking; dry clean cotton in shade."
+      }
+    }
+  },
+  "Tomato": {
+    "optimal_ph": "6.0 - 7.0",
+    "soil_types": ["Sandy Loam", "Clay Loam", "Red & Yellow Soil"],
+    "season": "Rabi (Winter)",
+    "water_requirement_mm": "500 - 700",
+    "growth_duration_days": "110 - 130",
+    "npk_ratio_kg_acre": {"N": 45, "P": 35, "K": 40},
+    "stages": {
+      "Seedling / Nursery": {
+        "irrigation": "Nursery beds watered daily with fine rose-can.",
+        "fertilizer": "Well-decomposed vermicompost + Trichoderma.",
+        "pests_diseases": "Damping off, Whitefly.",
+        "action": "Cover nursery with 40-mesh insect-proof net."
+      },
+      "Vegetative Growth": {
+        "irrigation": "Drip irrigation 2-3 hours every alternate day.",
+        "fertilizer": "Basal: 50 kg SSP + 25 kg MOP + 25 kg 19-19-19.",
+        "pests_diseases": "Leaf miner, Early blight.",
+        "action": "Staking with bamboo poles or trellis twine."
+      },
+      "Tillering / Branching": {
+        "irrigation": "Uniform drip fertigation.",
+        "fertilizer": "Fertigation with 12-61-00 (MAP) @ 3 kg/acre weekly.",
+        "pests_diseases": "Bacterial wilt, Leaf curl virus.",
+        "action": "Pruning of lateral suckers below first flower cluster."
+      },
+      "Flowering & Panicle Initiation": {
+        "irrigation": "Maintain constant root zone moisture; avoid moisture fluctuations.",
+        "fertilizer": "Fertigation with Calcium Nitrate (3 kg/acre) + Boron (500g/acre) to prevent Blossom End Rot.",
+        "pests_diseases": "Fruit borer (Helicoverpa), Blossom end rot.",
+        "action": "Release Trichogramma parasitoids; spray neem oil 1500 ppm."
+      },
+      "Grain Filling / Fruiting": {
+        "irrigation": "Regular deficit-free drip irrigation.",
+        "fertilizer": "Fertigation with 0-0-50 (SOP) @ 4 kg/acre for fruit color and brix.",
+        "pests_diseases": "Late blight, Fruit cracking.",
+        "action": "Harvest mature green or breaker stage for distant transport."
+      },
+      "Maturity & Pre-Harvest": {
+        "irrigation": "Moderate irrigation.",
+        "fertilizer": "Nil.",
+        "pests_diseases": "Fruit flies.",
+        "action": "Multi-pick harvest every 3-4 days."
+      }
+    }
+  }
+}

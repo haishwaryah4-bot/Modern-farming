@@ -1,0 +1,30 @@
+Title: Comprehensive Guide to Modern Rice (Paddy) Cultivation & Agronomy
+Category: Crop Production Manual
+Crop: Rice (Paddy)
+Geography: Indo-Gangetic Plains & Sub-tropical Zones
+Year: 2024
+Language: English
+
+1. FIELD PREPARATION & SOWING
+Paddy requires well-levelled, puddled clay or clay-loam soils with high water retention capacity.
+- Nursery Sowing Time: May 20 to June 15 for nursery raising; transplanting 25-30 days after sowing.
+- Seed Rate: 8-10 kg/acre for short/medium varieties; 5-6 kg/acre for basmati varieties.
+- Seed Treatment: Treat seeds with Carbendazim (2g/kg) or Trichoderma viride (5g/kg) to prevent blast and foot-rot.
+
+2. WATER MANAGEMENT & IRRIGATION
+- Transplanting to Tillering Stage: Maintain shallow standing water depth of 2-3 cm for the first 15 days to suppress weed emergence.
+- Tillering to Panicle Initiation: Alternate Wetting and Drying (AWD) is recommended. Irrigate 2-3 days after ponded water has disappeared to conserve up to 30% irrigation water without reducing yield.
+- Flowering & Grain Filling: Maintain continuous submergence of 3-5 cm. Water stress during anthesis causes sterility and high chaff percentage.
+- Pre-Harvest Drainage: Drain water 10-12 days before anticipated harvest to facilitate mechanized combine harvesting.
+
+3. NUTRIENT & FERTILIZER SCHEDULE (Per Acre Recommendation)
+- Basal Dose (At Transplanting): 25 kg DAP (Diammonium Phosphate) + 20 kg MOP (Muriate of Potash) + 10 kg Zinc Sulfate (21% Zn).
+- First Top Dressing (21 Days After Transplanting / Active Tillering): 35 kg Urea.
+- Second Top Dressing (42-45 Days After Transplanting / Panicle Initiation): 35 kg Urea.
+- Note: Avoid excessive nitrogen (>120 kg N/ha) which predisposes the canopy to Brown Plant Hopper (BPH) and Bacterial Leaf Blight.
+
+4. DISEASE & PEST MANAGEMENT
+- Rice Blast (Magnaporthe oryzae): Symptoms include spindle-shaped lesions on leaves with brown borders and grey centers. Spray Tricyclazole 75% WP @ 0.6g/L or Isoprothiolane 40% EC @ 1.5 ml/L.
+- Sheath Blight (Rhizoctonia solani): Oval grayish-green lesions on leaf sheaths near water line. Apply Hexaconazole 5% SC @ 2 ml/L or Azoxystrobin 18.2% + Difenoconazole 11.4% SC @ 1 ml/L.
+- Brown Plant Hopper (Nilaparvata lugens): Causes "hopper burn" circular drying patches in dense foliage. Use Pymetrozine 50% WDG @ 0.6g/L or Triflumezopyrim 10% SC @ 0.5 ml/L.
+- Stem Borer (Scirpophaga incertulas): Produces "dead hearts" in vegetative stage and "white ears" in reproductive stage. Apply Chlorantraniliprole 0.4% GR @ 4 kg/acre.

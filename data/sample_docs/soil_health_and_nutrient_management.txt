@@ -1,0 +1,48 @@
+Title: Soil Health Assessment, Soil Chemistry & Nutrient Management Handbook
+Category: Soil Science & Nutrition
+Crop: General / Multi-Crop
+Geography: National
+Year: 2024
+Language: English
+
+1. SOIL TEST PARAMETERS & INTERPRETATION BENCHMARKS
+A complete soil health analysis examines chemical, physical, and biological fertility indices:
+
+- Soil Reaction (pH):
+  * Acidic: pH < 6.5 (Requires agricultural lime/calcite CaCo3 application @ 1-2 tons/ha)
+  * Optimal / Neutral: pH 6.5 - 7.5 (Maximum availability of macronutrients and trace elements)
+  * Alkaline / Sodic: pH > 8.2 (Requires agricultural Gypsum CaSO4.2H2O application + green manuring)
+
+- Electrical Conductivity (EC - Salinity in dS/m):
+  * Normal: < 1.0 dS/m
+  * Critical / Saline stress: > 2.0 dS/m (Leaching with good quality water required)
+
+- Organic Carbon (OC %):
+  * Low: < 0.50% (Depleted soil biology; apply 5-10 tonnes/acre Farm Yard Manure (FYM) or vermicompost)
+  * Medium: 0.50% - 0.75%
+  * High: > 0.75% (Excellent organic microbial activity and cation exchange capacity)
+
+- Available Nitrogen (N in kg/ha):
+  * Low: < 280 kg/ha (Requires 25% boost in basal and split nitrogen doses)
+  * Medium: 280 - 560 kg/ha (Apply standard recommended dose of fertilizer)
+  * High: > 560 kg/ha (Reduce nitrogen input by 20% to avoid lodging and pest outbreak)
+
+- Available Phosphorus (P2O5 in kg/ha):
+  * Low: < 23 kg/ha (Apply Single Super Phosphate (SSP) or DAP with mycorrhiza biofertilizer)
+  * Medium: 23 - 56 kg/ha
+  * High: > 56 kg/ha
+
+- Available Potassium (K2O in kg/ha):
+  * Low: < 140 kg/ha (Apply Muriate of Potash (MOP) or Sulfate of Potash (SOP))
+  * Medium: 140 - 280 kg/ha
+  * High: > 280 kg/ha
+
+- Micronutrients (Zinc, Iron, Boron, Sulfur):
+  * Zinc (DTPA extractable): Critical level is 0.6 ppm. Deficient soils require 10-15 kg Zinc Sulfate/acre.
+  * Iron: Critical level is 4.5 ppm. In calcareous soils, foliar spray of 0.5% FeSO4 is recommended.
+  * Boron: Critical level is 0.5 ppm. Deficiency causes hollow heart in potato and fruit cracking in tomato. Apply 2-3 kg Borax/acre.
+  * Sulfur: Critical level is 10 ppm. Highly responsive in oilseeds (Mustard, Groundnut) and pulses.
+
+2. INTEGRATED NUTRIENT MANAGEMENT (INM) RECOMMENDATIONS
+- Combine 70% chemical fertilizers with 30% organic manures and Azotobacter / Rhizobium / PSB biofertilizers.
+- Incorporate legume green manures (Dhaincha - Sesbania aculeata or Sunn hemp) before Kharif planting.

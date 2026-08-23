@@ -1,0 +1,55 @@
+---
+Title: Aphids & Sucking Pest Complex Management (Aphis gossypii & Myzus persicae)
+Crop Categories: Cotton, Chilli, Tomato, Brinjal, Rice, Pulses, Brassica
+Author: ICAR - National Research Centre for Integrated Pest Management (NCIPM)
+Page: 1
+---
+# Chapter 1: Identification, Biology & Crop Damage
+
+Aphids (Aphis gossypii Glover, Myzus persicae Sulzer) belong to the family Aphididae (Order: Hemiptera). They are tiny, soft-bodied, pear-shaped sucking insects (1.5–2.5 mm in length) ranging from yellowish-green to dark olive green or black.
+
+### Mode of Damage:
+1. Direct Sucking of Plant Sap: Both nymphs and adults cluster densely in colonies on the ventral surface of young tender leaves, terminal shoots, and floral buds.
+2. Distortion & Leaf Cupping: Heavy feeding causes downward curling, crinkling, chlorotic mottling, and severe stunting of vegetative growth.
+3. Sooty Mold Development: Aphids excrete copius quantities of sweet, glistening honeydew. This honeydew serves as a substrate for the black sooty mold fungus (Capnodium spp.), which covers leaf laminae and drastically impairs photosynthetic efficiency.
+4. Viral Disease Vectoring: Aphids serve as highly efficient vectors transmitting devastating plant viruses, including Cucumber Mosaic Virus (CMV), Potato Virus Y (PVY), and Papaya Ringspot Virus.
+
+---
+Title: Aphids & Sucking Pest Complex Management (Aphis gossypii & Myzus persicae)
+Crop Categories: Cotton, Chilli, Tomato, Brinjal, Rice, Pulses, Brassica
+Author: ICAR - National Research Centre for Integrated Pest Management (NCIPM)
+Page: 2
+---
+# Chapter 2: Economic Threshold Levels (ETL) & Scouting Protocol
+
+### Field Scouting Procedure:
+- Inspect 20 randomly selected plants across a zigzag or 'W' transect twice weekly during morning hours.
+- Examine 3 leaves per plant (top, middle, and bottom canopy).
+
+### Economic Threshold Levels (ETL):
+- Cotton: 10% affected plants or 15–20 aphids per leaf.
+- Vegetables (Tomato / Chilli / Brinjal): 5–10 aphids per leaf before flowering stage.
+- Brassica / Mustard: 20–25 aphids per 10 cm terminal central shoot or 1.5 cm aphid colony length.
+
+---
+Title: Aphids & Sucking Pest Complex Management (Aphis gossypii & Myzus persicae)
+Crop Categories: Cotton, Chilli, Tomato, Brinjal, Rice, Pulses, Brassica
+Author: ICAR - National Research Centre for Integrated Pest Management (NCIPM)
+Page: 3
+---
+# Chapter 3: Integrated Pest Management (IPM) & Recommended Interventions
+
+### Cultural & Mechanical Controls:
+- Install Yellow Sticky Traps @ 15–20 traps/acre at crop canopy level to monitor and mass-trap winged alates.
+- Conserve natural predators including Ladybird beetles (Coccinella septempunctata, Cheilomenes sexmaculata), Syrphid hoverfly larvae, and Chrysoperla carnea.
+- Avoid excessive nitrogen fertilization, which produces succulent lush foliage highly attractive to sucking pests.
+
+### Biological Control:
+- Foliar spray of entomopathogenic fungus *Verticillium lecanii* (1x10^8 CFU/g) or *Beauveria bassiana* @ 5 g/liter of water in late afternoon under high relative humidity (>80%).
+
+### Certified Chemical Control (Package of Practices):
+- **Imidacloprid 17.8% SL**: 0.3 ml per liter of water (50–60 ml/acre).
+- **Acetamiprid 20% SP**: 0.2 g per liter of water (40 g/acre).
+- **Flonicamid 50% WG**: 0.3 g per liter of water (60 g/acre) — selective against sucking pests and safe for pollinators/natural enemies.
+- **Thiamethoxam 25% WG**: 0.25 g per liter of water (40–50 g/acre).
+- Always ensure complete spray coverage directed at the undersides of the leaves.

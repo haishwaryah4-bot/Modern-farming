@@ -1,0 +1,26 @@
+Crop,Market_Mandi,State,Modal_Price_Quintal,Min_Price_Quintal,Max_Price_Quintal,Arrival_Date,Price_Trend,MSP_Quintal,Weekly_Change_Pct
+Rice (Paddy),Khanna,Punjab,2320,2180,2450,2024-10-22,Up,2203,+2.8
+Rice (Paddy),Karnal,Haryana,2350,2210,2480,2024-10-22,Up,2203,+3.1
+Rice (Paddy),Burdwan,West Bengal,2280,2150,2390,2024-10-22,Stable,2203,+0.4
+Wheat,Ludhiana,Punjab,2480,2350,2600,2024-10-22,Up,2275,+1.6
+Wheat,Indore,Madhya Pradesh,2540,2400,2680,2024-10-22,Up,2275,+2.2
+Wheat,Kota,Rajasthan,2510,2380,2630,2024-10-22,Stable,2275,+0.8
+Cotton,Rajkot,Gujarat,7450,7100,7800,2024-10-22,Down,7020,-1.5
+Cotton,Bathinda,Punjab,7380,6950,7650,2024-10-22,Down,7020,-2.1
+Cotton,Adilabad,Telangana,7520,7150,7880,2024-10-22,Stable,7020,+0.3
+Tomato,Kolar,Karnataka,1850,1400,2300,2024-10-22,Down,1600,-6.4
+Tomato,Nashik,Maharashtra,1920,1500,2400,2024-10-22,Down,1600,-4.8
+Tomato,Madanapalle,Andhra Pradesh,1780,1350,2250,2024-10-22,Down,1600,-7.2
+Potato,Agra,Uttar Pradesh,1640,1450,1820,2024-10-22,Up,1500,+4.5
+Potato,Jalandhar,Punjab,1580,1400,1750,2024-10-22,Up,1500,+3.9
+Potato,Hooghly,West Bengal,1690,1500,1880,2024-10-22,Up,1500,+5.1
+Onion,Lasalgaon,Maharashtra,3150,2400,3800,2024-10-22,Up,2500,+8.2
+Onion,Pimpalgaon,Maharashtra,3220,2500,3900,2024-10-22,Up,2500,+9.1
+Onion,Hubli,Karnataka,2980,2300,3650,2024-10-22,Up,2500,+6.4
+Soybean,Indore,Madhya Pradesh,4680,4400,4900,2024-10-22,Stable,4600,+0.5
+Soybean,Akola,Maharashtra,4620,4350,4850,2024-10-22,Stable,4600,-0.2
+Mustard,Bharatpur,Rajasthan,5750,5400,6050,2024-10-22,Up,5650,+1.9
+Mustard,Hisar,Haryana,5680,5350,5980,2024-10-22,Up,5650,+1.4
+Chickpea (Gram),Bikaner,Rajasthan,6200,5800,6500,2024-10-22,Up,5440,+2.5
+Chickpea (Gram),Latur,Maharashtra,6150,5750,6420,2024-10-22,Up,5440,+1.8
+Groundnut,Rajkot,Gujarat,6850,6300,7200,2024-10-22,Stable,6377,+0.7

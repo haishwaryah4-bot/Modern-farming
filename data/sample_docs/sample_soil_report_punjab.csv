@@ -1,0 +1,11 @@
+Parameter,Measured_Value,Unit,Benchmark_Status,Standard_Range
+Soil pH,7.8,pH scale,Slightly Alkaline,6.5 - 7.5
+Electrical Conductivity (EC),0.42,dS/m,Normal,< 1.0
+Organic Carbon (OC),0.41,%,Low,0.50 - 0.75
+Available Nitrogen (N),210.5,kg/ha,Low,280 - 560
+Available Phosphorus (P2O5),18.2,kg/ha,Low,23 - 56
+Available Potassium (K2O),310.0,kg/ha,High,140 - 280
+Available Zinc (Zn),0.48,ppm,Deficient,0.6 - 1.2
+Available Iron (Fe),5.20,ppm,Sufficient,4.5 - 9.0
+Available Boron (B),0.38,ppm,Deficient,0.5 - 1.0
+Available Sulfur (S),8.40,ppm,Deficient,10.0 - 20.0

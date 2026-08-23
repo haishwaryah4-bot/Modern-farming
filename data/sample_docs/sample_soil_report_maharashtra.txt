@@ -1,0 +1,29 @@
+========================================================================
+KRISHI VIGYAN KENDRA SOIL HEALTH TESTING LABORATORY
+SOIL TEST CERTIFICATE & NUTRIENT STATUS REPORT
+========================================================================
+Farmer Name: Santosh Jadhav
+Location: Nashik, Maharashtra
+Soil Type: Medium Black Soil (Vertisol)
+Sample ID: MH-NSK-2024-8841
+Date of Testing: 15-Oct-2024
+
+LABORATORY TEST RESULTS:
+------------------------------------------------------------------------
+Parameter                  Value         Unit        Rating
+------------------------------------------------------------------------
+Soil Reaction (pH)         6.80          pH units    Neutral / Optimal
+Electrical Cond (EC)       0.31          dS/m        Normal
+Organic Carbon (OC)        0.65          %           Medium
+Available Nitrogen (N)     260.0         kg/ha       Low
+Available Phosphorus (P)   34.5          kg/ha       Medium
+Available Potassium (K)    220.0         kg/ha       Medium
+Zinc (DTPA extractable)    0.85          ppm         Sufficient
+Iron (DTPA extractable)    6.10          ppm         Sufficient
+Boron                      0.55          ppm         Sufficient
+Sulfur (S)                 14.2          ppm         Sufficient
+========================================================================
+AGRONOMIST SUMMARY:
+Soil pH and micronutrients are well balanced. Available Nitrogen is deficient.
+Recommended base application of 4 tonnes Farm Yard Manure plus standard NPK dose with a 15% increase in starter nitrogen.
+========================================================================
