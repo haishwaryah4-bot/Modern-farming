@@ -112,9 +112,22 @@ except ImportError:
                 else:
                     await send({"type": "http.response.start", "status": 404, "headers": [(b"content-type", b"text/plain")]})
                     await send({"type": "http.response.body", "body": b"Not Found"})
-    HTMLResponse = None
-    JSONResponse = None
-    FileResponse = None
+    class HTMLResponse:
+        def __init__(self, content: str = "", status_code: int = 200, **kwargs):
+            self.body = content.encode("utf-8") if isinstance(content, str) else content
+            self.status_code = status_code
+    class JSONResponse:
+        def __init__(self, content: Any = None, status_code: int = 200, **kwargs):
+            self.body = json.dumps(content).encode("utf-8") if not isinstance(content, bytes) else content
+            self.status_code = status_code
+    class FileResponse:
+        def __init__(self, path: str, media_type: str = None, **kwargs):
+            self.path = path
+            self.media_type = media_type
+    class HTTPException(Exception):
+        def __init__(self, status_code: int = 400, detail: str = ""):
+            self.status_code = status_code
+            self.detail = detail
     StaticFiles = None
     CORSMiddleware = None
 
@@ -231,6 +244,7 @@ def handle_rag_query(query: str, top_k: int = 4, filters: Optional[Dict[str, Any
 # --- FASTAPI ROUTE DEFINITIONS ---
 
 @app.get("/", response_class=HTMLResponse if HAS_FASTAPI else None)
+@app.get("/api/index.py", response_class=HTMLResponse if HAS_FASTAPI else None)
 def read_root():
     """Serves the interactive React web application."""
     index_file = config.BASE_DIR / "static" / "index.html"
@@ -241,6 +255,7 @@ def read_root():
 
 
 @app.get("/api/health")
+@app.get("/health")
 def health_check():
     """Lightweight health check endpoint for instant response on Vercel without loading RAG."""
     return {
@@ -250,6 +265,7 @@ def health_check():
 
 
 @app.post("/api/chat", response_model=ChatResponse if HAS_FASTAPI else None)
+@app.post("/chat", response_model=ChatResponse if HAS_FASTAPI else None)
 def chat_with_agent(req: ChatRequest):
     """Main conversational AI agent endpoint with multi-agent orchestration and visual images."""
     data = handle_chat_query(req.message, req.session_id, req.farm_context)
@@ -257,6 +273,7 @@ def chat_with_agent(req: ChatRequest):
 
 
 @app.post("/api/rag/query", response_model=RAGQueryResponse if HAS_FASTAPI else None)
+@app.post("/rag/query", response_model=RAGQueryResponse if HAS_FASTAPI else None)
 def query_rag(req: RAGQueryRequest):
     """Direct Hybrid RAG query endpoint with citations and re-ranking."""
     data = handle_rag_query(req.query, req.top_k, req.filters, req.use_reranker)
@@ -264,6 +281,7 @@ def query_rag(req: RAGQueryRequest):
 
 
 @app.get("/api/documents")
+@app.get("/documents")
 def list_documents():
     """Lists all active and indexed knowledge base documents."""
     from src.rag.rag_engine import get_rag_engine
@@ -277,6 +295,7 @@ def list_documents():
 
 
 @app.post("/api/admin/reindex")
+@app.post("/admin/reindex")
 def reindex_knowledge_base():
     """Admin endpoint to re-index all agricultural documents and image metadata."""
     from src.rag.rag_engine import rag_engine
@@ -294,6 +313,7 @@ def reindex_knowledge_base():
 
 
 @app.get("/api/openai/status")
+@app.get("/openai/status")
 def openai_status():
     """Checks live status of OpenAI model connection."""
     from src.services.llm_service import llm_client

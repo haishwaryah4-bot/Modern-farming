@@ -651,7 +651,7 @@
         setLoading(true);
 
         try {
-          const res = await fetch('http://localhost:8000/api/chat', {
+          const res = await fetch('/api/chat', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: text, session_id: 'react_web_session' })
@@ -691,7 +691,7 @@
       const handleAdminReindex = async () => {
         setAdminMsg('Re-indexing...');
         try {
-          const res = await fetch('http://localhost:8000/api/admin/reindex', { method: 'POST' });
+          const res = await fetch('/api/admin/reindex', { method: 'POST' });
           const data = await res.json();
           setAdminMsg('✅ Re-indexed ' + data.total_chunks + ' chunks successfully!');
         } catch (e) {
