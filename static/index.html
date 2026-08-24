@@ -995,41 +995,59 @@
         setAttachedImage(null);
         setLoading(true);
 
-        try {
-          const res = await fetch('/api/chat', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-              message: text || 'Analyze this crop photograph for disease, pest, or nutrient deficiency.',
-              session_id: 'react_web_session',
-              image_data: photoToSend
-            })
-          });
+        const payload = { 
+          message: text || 'Analyze this crop photograph for disease, pest, or nutrient deficiency.',
+          session_id: 'react_web_session',
+          image_data: photoToSend
+        };
 
-          if (!res.ok) throw new Error('API request failed');
-          const data = await res.json();
+        let responseData = null;
+        const apiEndpoints = [
+          '/api/chat',
+          '/api',
+          'http://127.0.0.1:8000/api/chat',
+          'http://127.0.0.1:8000/api',
+          'http://localhost:8000/api/chat',
+          'http://localhost:8000/api'
+        ];
 
-          setMessages((prev) => [
-            ...prev,
-            {
-              role: 'assistant',
-              content: data.answer,
-              intent: data.intent,
-              citations: data.citations || []
+        for (const ep of apiEndpoints) {
+          try {
+            const res = await fetch(ep, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            });
+            if (res.ok) {
+              responseData = await res.json();
+              break;
             }
-          ]);
-        } catch (err) {
-          setMessages((prev) => [
-            ...prev,
-            {
-              role: 'assistant',
-              content: `**Answer:**\nBased on visual disease diagnostics, the crop shows early leaf spot / pest damage. Follow verified integrated management.\n\n**Possible problem:**\n- Early Blight / Aphid Complex\n\n**What to do:**\n- Spray Mancozeb 75% WP @ 2.5 g/L or Imidacloprid 17.8% SL @ 0.3 ml/L.\n- Maintain balanced root aeration.`,
-              intent: 'Visual Pathology Diagnostic'
-            }
-          ]);
-        } finally {
-          setLoading(false);
+          } catch (e) {
+            // try next endpoint
+          }
         }
+
+        if (responseData && responseData.answer) {
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: 'assistant',
+              content: responseData.answer,
+              intent: responseData.intent || 'Modern Farming RAG',
+              citations: responseData.citations || []
+            }
+          ]);
+        } else {
+          setMessages((prev) => [
+            ...prev,
+            {
+              role: 'assistant',
+              content: `⚠️ **Unable to connect to the backend API.**\n\nPlease ensure the backend server is started with \`python server.py\` at \`http://127.0.0.1:8000\`.`,
+              intent: 'Connection Notice'
+            }
+          ]);
+        }
+        setLoading(false);
       };
 
       const handleAdminReindex = async () => {
@@ -1037,7 +1055,7 @@
         try {
           const res = await fetch('/api/admin/reindex', { method: 'POST' });
           const data = await res.json();
-          setAdminMsg(`✅ Indexed ${data.total_chunks} chunks & ${data.total_images} photos.`);
+          setAdminMsg(`✅ Indexed ${data.total_chunks} chunks.`);
         } catch (e) {
           setAdminMsg('✅ Knowledge base indexed & active.');
         }
@@ -1045,7 +1063,18 @@
       };
 
       const formatMessageContent = (content) => {
-        return { __html: content.replace(/\n/g, '<br/>') };
+        if (!content) return { __html: '' };
+        // If content already contains formatted HTML tags (like verified image cards), pass through cleanly
+        if (content.includes('<div') || content.includes('<img') || content.includes('<table')) {
+          return { __html: content };
+        }
+        let html = content
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em>$1</em>')
+          .replace(/`([^`]+)`/g, '<code style="background: rgba(16, 185, 129, 0.18); color: #34d399; padding: 2px 6px; border-radius: 4px;">$1</code>')
+          .replace(/\n\n/g, '<br/><br/>')
+          .replace(/\n/g, '<br/>');
+        return { __html: html };
       };
 
       return (
