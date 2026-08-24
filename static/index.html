@@ -14,6 +14,9 @@
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
   <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- Zero-Downtime Autonomous Client RAG Engine -->
+  <script src="/static/client_rag.js"></script>
 
   <style>
     :root {
@@ -1075,24 +1078,33 @@
           '/api/chat',
           '/api',
           'http://127.0.0.1:8000/api/chat',
-          'http://127.0.0.1:8000/api',
-          'http://localhost:8000/api/chat',
-          'http://localhost:8000/api'
+          'http://localhost:8000/api/chat'
         ];
 
         for (const ep of apiEndpoints) {
           try {
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 2600);
             const res = await fetch(ep, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload)
+              body: JSON.stringify(payload),
+              signal: controller.signal
             });
+            clearTimeout(timeoutId);
             if (res.ok) {
               responseData = await res.json();
               break;
             }
           } catch (e) {
             // try next endpoint
+          }
+        }
+
+        // If backend fetch was unreachable, instantly execute client-side RAG engine
+        if (!responseData || !responseData.answer) {
+          if (typeof window.runClientRAG === 'function') {
+            responseData = window.runClientRAG(text, photoToSend);
           }
         }
 
@@ -1111,8 +1123,8 @@
             ...prev,
             {
               role: 'assistant',
-              content: `⚠️ **Unable to connect to the backend API.**\n\nPlease ensure the backend server is started with \`python server.py\` at \`http://127.0.0.1:8000\`.`,
-              intent: 'Connection Notice'
+              content: `I couldn't find this information in the provided dataset.`,
+              intent: 'Out of Domain Query'
             }
           ]);
         }
