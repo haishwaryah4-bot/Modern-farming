@@ -1344,92 +1344,87 @@ PAGE 70: COMPREHENSIVE PRODUCTION PACKAGE FOR SOYBEAN
 --- [PAGE 71] ---
 Document: Farming Dataset
 Page: 71
-Topic: Complete Agronomic Package of Practices: Chickpea (Gram)
-Crop: Chickpea (Gram)
+Topic: Dairy Cattle & Buffalo Management
+Crop: Gir, Sahiwal, Murrah, Crossbred HF
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 71: COMPREHENSIVE PRODUCTION PACKAGE FOR CHICKPEA (GRAM)
-1. Climate & Soil: Well-drained fertile loam with pH 6.0 to 7.8.
-2. High-Yielding Varieties: Certified seeds with >98% purity and >85% germination rate.
-3. Sowing / Planting: Follow recommended spacing and seed rate. Treat seed with fungicide + biofertilizers before sowing.
-4. Fertilizer Schedule (NPK kg/ha): Apply balanced N:P2O5:K2O according to soil test card recommendations.
-5. Water Management: Irrigate at critical growth milestones, avoiding waterlogging and extreme moisture deficit.
-6. Plant Protection: Follow Integrated Pest Management (IPM) with Economic Threshold Level (ETL) monitoring.
-7. Expected Yield: High yield with good management practices.
+PAGE 71: LIVESTOCK FARMING - DAIRY CATTLE & BUFFALO MANAGEMENT
+Core Practices for Profitable Dairy:
+1. Breeds & Genetics: High-yielding indigenous breeds (Gir, Sahiwal, Rathi) and buffaloes (Murrah, Nili-Ravi) yielding 12-18 L/day with high A2 milk and fat content (7-8% in buffaloes).
+2. Balanced Nutrition & TMR: Feed Total Mixed Ration (TMR) comprising 60% green fodder (25-30 kg/day), 20% dry roughage (5-6 kg wheat/paddy straw), and 20% concentrate feed with 20% crude protein + 50 g mineral mixture.
+3. Housing & Milking Hygiene: Free-stall loose housing with grooved non-slip concrete flooring, automated nipple drinkers, and fly/mosquito netting. Wash udder with potassium permanganate solution before milking.
+4. Health & Mastitis Prevention: Practice post-milking teat dipping in 0.5% povidone-iodine. Routine vaccination against Foot & Mouth Disease (FMD), Hemorrhagic Septicemia (HS), and Black Quarter (BQ).
 
 --- [PAGE 72] ---
 Document: Farming Dataset
 Page: 72
-Topic: Complete Agronomic Package of Practices: Groundnut
-Crop: Groundnut
+Topic: Green Fodder Production & Silage Making
+Crop: Napier Hybrid CO-4, Berseem, Maize, Lucerne
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 72: COMPREHENSIVE PRODUCTION PACKAGE FOR GROUNDNUT
-1. Climate & Soil: Well-drained fertile loam with pH 6.0 to 7.8.
-2. High-Yielding Varieties: Certified seeds with >98% purity and >85% germination rate.
-3. Sowing / Planting: Follow recommended spacing and seed rate. Treat seed with fungicide + biofertilizers before sowing.
-4. Fertilizer Schedule (NPK kg/ha): Apply balanced N:P2O5:K2O according to soil test card recommendations.
-5. Water Management: Irrigate at critical growth milestones, avoiding waterlogging and extreme moisture deficit.
-6. Plant Protection: Follow Integrated Pest Management (IPM) with Economic Threshold Level (ETL) monitoring.
-7. Expected Yield: High yield with good management practices.
+PAGE 72: LIVESTOCK FEED - FODDER PRODUCTION & SILAGE PRESERVATION
+Year-Round Green Fodder Security:
+1. High-Yielding Perennial Grasses: Super Napier (CO-4 / CO-5) yielding 150-200 tonnes/acre/year across 6-8 cuts at 45-day intervals.
+2. Winter & Leguminous Fodder: Berseem (Trifolium alexandrinum) and Lucerne (Alfalfa) providing 20-22% crude protein, cutting concentrate feed cost by 35%.
+3. Bunker & Pit Silage Making (Maize Fodder):
+- Harvest single-cross fodder maize at 50% milk-line (30-35% dry matter).
+- Chop to 1.5-2.0 cm, inoculate with Lactobacillus plantarum (1x10^6 CFU/g) or 1% jaggery water.
+- Compact tightly in concrete bunker silos to expel oxygen; seal hermetically with 200-micron UV plastic.
+- Ferments in 45 days into golden-brown aromatic silage (pH 3.8-4.2, lactic acid >6%), stored safely for up to 2 years.
 
 --- [PAGE 73] ---
 Document: Farming Dataset
 Page: 73
-Topic: Complete Agronomic Package of Practices: Onion & Garlic
-Crop: Onion & Garlic
+Topic: Goat & Sheep Farming & Stall-Fed Rearing
+Crop: Black Bengal, Jamnapari, Sirohi, Osmanabadi, Boer
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 73: COMPREHENSIVE PRODUCTION PACKAGE FOR ONION & GARLIC
-1. Climate & Soil: Well-drained fertile loam with pH 6.0 to 7.8.
-2. High-Yielding Varieties: Certified seeds with >98% purity and >85% germination rate.
-3. Sowing / Planting: Follow recommended spacing and seed rate. Treat seed with fungicide + biofertilizers before sowing.
-4. Fertilizer Schedule (NPK kg/ha): Apply balanced N:P2O5:K2O according to soil test card recommendations.
-5. Water Management: Irrigate at critical growth milestones, avoiding waterlogging and extreme moisture deficit.
-6. Plant Protection: Follow Integrated Pest Management (IPM) with Economic Threshold Level (ETL) monitoring.
-7. Expected Yield: High yield with good management practices.
+PAGE 73: LIVESTOCK FARMING - SMALL RUMINANT MANAGEMENT (GOAT & SHEEP)
+Commercial Goat & Sheep Production:
+1. Prolific Breeds: Black Bengal (high twinning rate >80%), Jamnapari & Sirohi (dual-purpose meat & milk), Boer crosses (rapid daily weight gain 150-200 g/day).
+2. Elevated Slatted Housing: Wooden/plastic slatted floors elevated 1.0 meter above ground. Separates feces and urine, eliminating 90% foot rot and respiratory diseases.
+3. Stall-Feeding (Zero-Grazing): Intensive stall-feeding with chopped fodder (Subabul, Moringa, Lucerne) + concentrate pellet feed (16% CP) achieving Feed Conversion Ratio (FCR) of 1:5.
+4. Deworming & Health Schedule: Strategic deworming using Albendazole / Ivermectin rotating every 3 months; vaccinate against Peste des Petits Ruminants (PPR) and Enterotoxemia (ETV).
 
 --- [PAGE 74] ---
 Document: Farming Dataset
 Page: 74
-Topic: Complete Agronomic Package of Practices: Millets (Bajra/Ragi)
-Crop: Millets (Bajra/Ragi)
+Topic: Poultry Farming (Broiler, Layer & Backyard Kadaknath)
+Crop: Kadaknath, Vanaraja, Cobb 500, BV 300
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 74: COMPREHENSIVE PRODUCTION PACKAGE FOR MILLETS (BAJRA/RAGI)
-1. Climate & Soil: Well-drained fertile loam with pH 6.0 to 7.8.
-2. High-Yielding Varieties: Certified seeds with >98% purity and >85% germination rate.
-3. Sowing / Planting: Follow recommended spacing and seed rate. Treat seed with fungicide + biofertilizers before sowing.
-4. Fertilizer Schedule (NPK kg/ha): Apply balanced N:P2O5:K2O according to soil test card recommendations.
-5. Water Management: Irrigate at critical growth milestones, avoiding waterlogging and extreme moisture deficit.
-6. Plant Protection: Follow Integrated Pest Management (IPM) with Economic Threshold Level (ETL) monitoring.
-7. Expected Yield: High yield with good management practices.
+PAGE 74: LIVESTOCK FARMING - POULTRY PRODUCTION & BIOSECURITY
+Poultry Systems & Management:
+1. Commercial Broiler Farming (Cobb 500 / Ross 308): Deep litter housing (rice husk 2 inches), automated pan feeding, and nipple drinking. Target 2.0 kg live body weight at 35-38 days with FCR < 1.55.
+2. Layer Farming (BV 300 / Hy-Line): Battery cage / enriched cage housing producing 310-325 eggs per bird over 72-week cycle.
+3. Backyard & Free-Range Poultry (Kadaknath, Gramapriya, Vanaraja): High-protein black meat Kadaknath commanding premium market price (Rs 600-800/kg). Requires semi-intensive night shelter and daytime scavenging with supplemental grain feed.
+4. Vaccination Protocol: Day 1 (Marek's Disease), Day 7 (Newcastle/Ranikhet F1 / Lasota), Day 14 (Infectious Bursal Disease IBD/Gumboro).
 
 --- [PAGE 75] ---
 Document: Farming Dataset
 Page: 75
-Topic: Complete Agronomic Package of Practices: Exotic Vegetables
-Crop: Exotic Vegetables
+Topic: Integrated Farming System (IFS) 1-Hectare Model
+Crop: Crops + Dairy (2 Cows) + Fishery + Biogas + Vermicompost
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 75: COMPREHENSIVE PRODUCTION PACKAGE FOR EXOTIC VEGETABLES
-1. Climate & Soil: Well-drained fertile loam with pH 6.0 to 7.8.
-2. High-Yielding Varieties: Certified seeds with >98% purity and >85% germination rate.
-3. Sowing / Planting: Follow recommended spacing and seed rate. Treat seed with fungicide + biofertilizers before sowing.
-4. Fertilizer Schedule (NPK kg/ha): Apply balanced N:P2O5:K2O according to soil test card recommendations.
-5. Water Management: Irrigate at critical growth milestones, avoiding waterlogging and extreme moisture deficit.
-6. Plant Protection: Follow Integrated Pest Management (IPM) with Economic Threshold Level (ETL) monitoring.
-7. Expected Yield: High yield with good management practices.
+PAGE 75: INTEGRATED FARMING SYSTEM (IFS) & RESOURCE RECYCLING
+1-Hectare High-Income Integrated Farming System (IFS):
+1. Spatial Allocation: Crops & Horticulture (0.75 ha), Dairy Unit (2 Cows + 2 Buffaloes - 0.05 ha), Farm Pond & Aquaculture (0.10 ha), Agroforestry & Boundary (0.05 ha), Biogas & Vermicompost Unit (0.05 ha).
+2. Nutrient & Energy Waste Cycling:
+- Cattle dung and urine (40 kg/day) feed a 2 m3 Biogas Plant providing clean cooking gas + enriched bio-slurry.
+- Bio-slurry and crop straw feed Eisenia fetida earthworms in Vermicomposting beds, generating 12 tonnes/year organic fertilizer.
+- Farm pond (1000 m2) stocked with Indian Major Carps (Catla, Rohu, Mrigal) fertilized with cattle manure, producing 400-500 kg fish/year.
+3. Economics & Sustainability: Generates steady daily income (milk, eggs, vegetables, fish), reduces external purchased inputs by 75%, and triples net farm profit to Rs 3,50,000 - 5,00,000/ha/year.
 
 --- [PAGE 76] ---
 Document: Farming Dataset
@@ -1594,13 +1589,13 @@ Management Framework:
 --- [PAGE 86] ---
 Document: Farming Dataset
 Page: 86
-Topic: Farm Safety & Agricultural Precautions: Farming Safety & Precautions Overview
+Topic: Farm Procedures & Safety: Farming Safety & Precautions Overview
 Crop: All Farming Operations
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 86: FARM SAFETY & PRECAUTIONS - FARMING SAFETY & PRECAUTIONS OVERVIEW
+PAGE 86: FARM SAFETY & PRECAUTIONS - 10 COMMANDMENTS
 Essential Farming Precautions & Safety Guidelines:
 1. Chemical Spraying Precautions: Always wear Personal Protective Equipment (PPE) including chemical-resistant nitrile gloves, N95/respirator mask, protective goggles, and full-sleeve coveralls. Never spray against wind direction or in high heat (>35°C).
 2. Storage & Labeling: Store all pesticides in original labeled containers inside locked, well-ventilated sheds away from food, animal feed, and children.
@@ -1611,104 +1606,97 @@ Essential Farming Precautions & Safety Guidelines:
 --- [PAGE 87] ---
 Document: Farming Dataset
 Page: 87
-Topic: Farm Safety & Agricultural Precautions: Personal Protective Equipment (PPE) for Chemical Spraying
-Crop: All Farming Operations
+Topic: Farm Procedures & Safety: Farming Equipment & Modern Agricultural Machinery
+Crop: Tractors, Harvesters, Planters, Drones
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 87: FARM SAFETY & PRECAUTIONS - PERSONAL PROTECTIVE EQUIPMENT (PPE) FOR CHEMICAL SPRAYING
-Essential Farming Precautions & Safety Guidelines:
-1. Chemical Spraying Precautions: Always wear Personal Protective Equipment (PPE) including chemical-resistant nitrile gloves, N95/respirator mask, protective goggles, and full-sleeve coveralls. Never spray against wind direction or in high heat (>35°C).
-2. Storage & Labeling: Store all pesticides in original labeled containers inside locked, well-ventilated sheds away from food, animal feed, and children.
-3. Pre-Harvest Interval (PHI): Observe mandatory PHI waiting periods (e.g. 3-7 days for vegetables, 14-21 days for cereals) between the final chemical spray and harvesting to prevent toxic residue exceedances.
-4. Machinery Safety: Ensure all tractor PTO shafts, belt drives, and combine augers are fitted with protective safety shields. Disengage power before unclogging machinery.
-5. Container Disposal: Triple-rinse empty pesticide containers, puncture bottom to prevent reuse, and dispose of through authorized agricultural hazardous waste channels.
+PAGE 87: FARMING EQUIPMENT & AGRICULTURAL MACHINERY
+Modern Mechanization Solutions:
+1. Primary Tillage Implements: Mouldboard (MB) Plough for deep inversion; Disc Plough for trashy soils; Chisel Plough (Subsoiler) for breaking hardpan at 45-60 cm depth.
+2. Secondary Tillage: Tractor Rotavator (PTO driven 540 RPM) preparing fine tilth in single pass; Disc Harrow for breaking clods.
+3. Precision Sowing & Planting Machinery: Multi-crop Pneumatic Planter ensuring singulated seed placement; Happy Seeder / Super Seeder for direct sowing into standing stubble; Rice Transplanter (4-8 row walk-behind/ride-on) planting 3-4 acres/day at 30x14 cm.
+4. Crop Protection & Harvest: Boom Sprayers (12-18 meter swath); Drone Sprayers (10 L tank, 1 acre/7 mins); Self-Propelled Combine Harvester with SMS (Straw Management System).
 
 --- [PAGE 88] ---
 Document: Farming Dataset
 Page: 88
-Topic: Farm Safety & Agricultural Precautions: Re-Entry Interval (REI) & Pre-Harvest Interval (PHI)
-Crop: All Farming Operations
+Topic: Farm Procedures & Safety: Agricultural Sustainability & Carbon Neutral Farming
+Crop: Regenerative & Climate-Smart Farming
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 88: FARM SAFETY & PRECAUTIONS - RE-ENTRY INTERVAL (REI) & PRE-HARVEST INTERVAL (PHI)
-Essential Farming Precautions & Safety Guidelines:
-1. Chemical Spraying Precautions: Always wear Personal Protective Equipment (PPE) including chemical-resistant nitrile gloves, N95/respirator mask, protective goggles, and full-sleeve coveralls. Never spray against wind direction or in high heat (>35°C).
-2. Storage & Labeling: Store all pesticides in original labeled containers inside locked, well-ventilated sheds away from food, animal feed, and children.
-3. Pre-Harvest Interval (PHI): Observe mandatory PHI waiting periods (e.g. 3-7 days for vegetables, 14-21 days for cereals) between the final chemical spray and harvesting to prevent toxic residue exceedances.
-4. Machinery Safety: Ensure all tractor PTO shafts, belt drives, and combine augers are fitted with protective safety shields. Disengage power before unclogging machinery.
-5. Container Disposal: Triple-rinse empty pesticide containers, puncture bottom to prevent reuse, and dispose of through authorized agricultural hazardous waste channels.
+PAGE 88: AGRICULTURAL SUSTAINABILITY & REGENERATIVE PRACTICES
+Core Pillars of Sustainable Agriculture:
+1. Soil Carbon Sequestration: Retaining crop residues in-situ increases soil organic carbon (SOC) by 0.15-0.25% annually, improving soil water retention and locking 2-3 tonnes CO2 equivalent per hectare.
+2. Biochar Soil Amendment: Pyrolysis of agricultural biomass (cotton stalks, rice husk) into stable porous biochar applied @ 2-5 tonnes/ha permanently sequesters carbon for 100+ years and enhances CEC by 40%.
+3. Solar Pumping & Clean Energy: Replacing diesel pumps with solar PV systems (PM-KUSUM) reduces farm greenhouse gas emissions by 4.5 tonnes CO2/pump/year.
+4. Water Sustainability: Drip micro-irrigation and Alternate Wetting and Drying (AWD) reduce agricultural freshwater extraction by 40-50%.
 
 --- [PAGE 89] ---
 Document: Farming Dataset
 Page: 89
-Topic: Farm Safety & Agricultural Precautions: Chemical Storage & Safe Disposal Protocols
-Crop: All Farming Operations
+Topic: Farm Procedures & Safety: Seasonal Farming Activities & Monthly Crop Calendar
+Crop: Kharif, Rabi & Zaid Operations
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 89: FARM SAFETY & PRECAUTIONS - CHEMICAL STORAGE & SAFE DISPOSAL PROTOCOLS
-Essential Farming Precautions & Safety Guidelines:
-1. Chemical Spraying Precautions: Always wear Personal Protective Equipment (PPE) including chemical-resistant nitrile gloves, N95/respirator mask, protective goggles, and full-sleeve coveralls. Never spray against wind direction or in high heat (>35°C).
-2. Storage & Labeling: Store all pesticides in original labeled containers inside locked, well-ventilated sheds away from food, animal feed, and children.
-3. Pre-Harvest Interval (PHI): Observe mandatory PHI waiting periods (e.g. 3-7 days for vegetables, 14-21 days for cereals) between the final chemical spray and harvesting to prevent toxic residue exceedances.
-4. Machinery Safety: Ensure all tractor PTO shafts, belt drives, and combine augers are fitted with protective safety shields. Disengage power before unclogging machinery.
-5. Container Disposal: Triple-rinse empty pesticide containers, puncture bottom to prevent reuse, and dispose of through authorized agricultural hazardous waste channels.
+PAGE 89: SEASONAL FARMING ACTIVITIES & MONTHLY CALENDAR
+Comprehensive Month-by-Month Farming Guide:
+- May - June (Pre-Kharif): Summer deep ploughing, cleaning irrigation channels, soil testing, farmyard manure application, raising paddy nurseries, sowing cotton and direct-seeded rice (DSR).
+- July - August (Peak Kharif): Sowing soybean, maize, pulses, transplanting paddy (2-3 seedlings/hill), pre-emergence weed control, split urea application.
+- September - October (Kharif Harvest & Rabi Prep): Pest scouting (BPH, Bollworm), harvesting early kharif crops, field preparation for wheat and mustard, seed purchase and treatment.
+- November - December (Peak Rabi): Sowing wheat (Nov 1-20), CRI irrigation at 21 DAS, sowing mustard and chickpea, winter vegetable transplanting.
+- January - February (Rabi Care): Second/third irrigation for wheat (tillering, jointing), aphid monitoring in mustard, frost management (smoke/irrigation).
+- March - April (Rabi Harvest & Zaid Sowing): Harvesting wheat, mustard, chickpea, threshing and grain drying to <12% moisture, immediate sowing of summer moong and cucurbits.
 
 --- [PAGE 90] ---
 Document: Farming Dataset
 Page: 90
-Topic: Farm Safety & Agricultural Precautions: Pesticide Toxicity Classifications & First Aid
-Crop: All Farming Operations
+Topic: Farm Procedures & Safety: Re-Entry Interval (REI) & Pre-Harvest Interval (PHI) Regulations
+Crop: Pesticide Safety & Residue Control
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 90: FARM SAFETY & PRECAUTIONS - PESTICIDE TOXICITY CLASSIFICATIONS & FIRST AID
-Essential Farming Precautions & Safety Guidelines:
-1. Chemical Spraying Precautions: Always wear Personal Protective Equipment (PPE) including chemical-resistant nitrile gloves, N95/respirator mask, protective goggles, and full-sleeve coveralls. Never spray against wind direction or in high heat (>35°C).
-2. Storage & Labeling: Store all pesticides in original labeled containers inside locked, well-ventilated sheds away from food, animal feed, and children.
-3. Pre-Harvest Interval (PHI): Observe mandatory PHI waiting periods (e.g. 3-7 days for vegetables, 14-21 days for cereals) between the final chemical spray and harvesting to prevent toxic residue exceedances.
-4. Machinery Safety: Ensure all tractor PTO shafts, belt drives, and combine augers are fitted with protective safety shields. Disengage power before unclogging machinery.
-5. Container Disposal: Triple-rinse empty pesticide containers, puncture bottom to prevent reuse, and dispose of through authorized agricultural hazardous waste channels.
+PAGE 90: RE-ENTRY INTERVAL (REI) & RESIDUE MANAGEMENT
+Safe Agricultural Chemical Protocols:
+- Re-Entry Interval (REI): The minimum time required between pesticide application and safe entry into the field without PPE (typically 24 to 48 hours).
+- Pre-Harvest Interval (PHI): Mandatory duration between last spray and harvest: Mancozeb (7 days in vegetables), Chlorantraniliprole (3 days in tomato, 14 days in rice), Imidacloprid (14-21 days in cereals).
+- Maximum Residue Limits (MRL): Strict compliance ensures domestic food safety and agricultural export acceptance without rejected consignments.
 
 --- [PAGE 91] ---
 Document: Farming Dataset
 Page: 91
-Topic: Farm Safety & Agricultural Precautions: Farm Machinery & Tractor Safety Protocols
-Crop: All Farming Operations
+Topic: Farm Procedures & Safety: Farm Machinery & Tractor Safety Protocols
+Crop: All Farm Machinery
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 91: FARM SAFETY & PRECAUTIONS - FARM MACHINERY & TRACTOR SAFETY PROTOCOLS
-Essential Farming Precautions & Safety Guidelines:
-1. Chemical Spraying Precautions: Always wear Personal Protective Equipment (PPE) including chemical-resistant nitrile gloves, N95/respirator mask, protective goggles, and full-sleeve coveralls. Never spray against wind direction or in high heat (>35°C).
-2. Storage & Labeling: Store all pesticides in original labeled containers inside locked, well-ventilated sheds away from food, animal feed, and children.
-3. Pre-Harvest Interval (PHI): Observe mandatory PHI waiting periods (e.g. 3-7 days for vegetables, 14-21 days for cereals) between the final chemical spray and harvesting to prevent toxic residue exceedances.
-4. Machinery Safety: Ensure all tractor PTO shafts, belt drives, and combine augers are fitted with protective safety shields. Disengage power before unclogging machinery.
-5. Container Disposal: Triple-rinse empty pesticide containers, puncture bottom to prevent reuse, and dispose of through authorized agricultural hazardous waste channels.
+PAGE 91: TRACTOR & MACHINERY OPERATIONAL SAFETY
+Safety Protocols:
+1. Tractor Rollover Protective Structures (ROPS) and seatbelts save lives in 99% of rollover accidents.
+2. PTO Safety: Keep all Power Take-Off (PTO) safety guards intact; never step over rotating PTO shaft.
+3. Combine Harvester: Disengage cutter bar clutch and shut off engine before clearing clogged augers or belts.
+4. Electrical Safety: Maintain safe clearance (>3 meters) from overhead 11 kV high-tension farm power lines when transporting ladders or pipe sprayers.
 
 --- [PAGE 92] ---
 Document: Farming Dataset
 Page: 92
-Topic: Farm Safety & Agricultural Precautions: Extreme Weather Precautions & Labor Safety
-Crop: All Farming Operations
+Topic: Farm Procedures & Safety: Extreme Weather Precautions & Labor Safety
+Crop: Heat, Frost, Lightning, Storms
 Season: All Seasons
 Region: Pan-India
 Category: Agronomic Dataset
 
-PAGE 92: FARM SAFETY & PRECAUTIONS - EXTREME WEATHER PRECAUTIONS & LABOR SAFETY
-Essential Farming Precautions & Safety Guidelines:
-1. Chemical Spraying Precautions: Always wear Personal Protective Equipment (PPE) including chemical-resistant nitrile gloves, N95/respirator mask, protective goggles, and full-sleeve coveralls. Never spray against wind direction or in high heat (>35°C).
-2. Storage & Labeling: Store all pesticides in original labeled containers inside locked, well-ventilated sheds away from food, animal feed, and children.
-3. Pre-Harvest Interval (PHI): Observe mandatory PHI waiting periods (e.g. 3-7 days for vegetables, 14-21 days for cereals) between the final chemical spray and harvesting to prevent toxic residue exceedances.
-4. Machinery Safety: Ensure all tractor PTO shafts, belt drives, and combine augers are fitted with protective safety shields. Disengage power before unclogging machinery.
-5. Container Disposal: Triple-rinse empty pesticide containers, puncture bottom to prevent reuse, and dispose of through authorized agricultural hazardous waste channels.
+PAGE 92: EXTREME WEATHER PRECAUTIONS & LABOR SAFETY
+1. Lightning Safety: Stop all field work during thunderstorms; avoid sheltering under isolated trees, metal sheds, or near tubewells. Take refuge in a masonry building or vehicle.
+2. Heatstroke Prevention: Provide potable drinking water with electrolytes (ORS) to farm laborers during summer (>40°C); schedule heavy fieldwork before 10 AM and after 4 PM.
+3. Cold Wave & Frost: Protect nursery beds with plastic tunnels or thatch coverings; irrigate fields during frost alerts.
 
 --- [PAGE 93] ---
 Document: Farming Dataset
