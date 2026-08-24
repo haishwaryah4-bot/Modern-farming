@@ -218,35 +218,67 @@ def handle_chat_query(user_query: str, session_id: str = "default_session", farm
     elif "soil" in lower or "npk" in lower or "ph" in lower or "zinc" in lower:
         intent = "Soil Health Amelioration"
 
-    farm_ctx = farm_context or config.DEFAULT_FARM_PROFILE
-    res = ai_agent.plan_and_execute(user_query=user_query, farm_context=farm_ctx, image_data=image_data)
+    from src.rag.rag_engine import rag_engine
 
-    citations = []
-    for trace in res.get("execution_traces", []):
-        if trace.get("tool") == "rag_knowledge_search":
-            citations = trace.get("citations", [])
-    if not citations and "Source:" in res["answer"]:
-        citations = [{"source": "Farming Dataset", "page": "Verified Chapter", "topic": intent}]
+    # If photo provided from camera/file, process through computer vision AI agent
+    if image_data:
+        from src.agents.agent_core import ai_agent
+        farm_ctx = farm_context or config.DEFAULT_FARM_PROFILE
+        res = ai_agent.plan_and_execute(user_query=user_query, farm_context=farm_ctx, image_data=image_data)
+        return {
+            "answer": res["answer"],
+            "intent": intent,
+            "clarification_needed": clarification_needed,
+            "clarification_question": clarification_q,
+            "citations": [{"source": "Visual Disease Dataset", "page": "CV Diagnostic", "topic": intent}],
+            "images": res.get("images", []),
+            "execution_traces": res.get("execution_traces", []),
+            "session_id": session_id,
+        }
 
-    # Backend Request Logging (Requirement 9)
-    print(f"\n{'='*70}")
-    print(f"[API CHAT/VOICE REQUEST]")
-    print(f"• User Question: {user_query}")
-    print(f"• Inferred Intent: {intent}")
-    print(f"• Citations Retrieved: {len(citations)}")
-    for c in citations:
-        print(f"  - Source: {c.get('source')} | Page: {c.get('page')}")
-    print(f"• Final Answer:\n{res['answer'][:250]}...")
-    print(f"{'='*70}\n")
+    # Primary Dataset RAG Pipeline
+    rag_result = rag_engine.query(
+        question=user_query,
+        top_k=4,
+        filters=None,
+        use_reranker=True
+    )
+
+    answer = rag_result.get("answer", "")
+    citations = rag_result.get("citations", [])
+    retrieved_chunks = rag_result.get("retrieved_chunks", [])
+
+    print("\n" + "=" * 70)
+    print("[RAG CHAT REQUEST]")
+    print(f"Question: {user_query}")
+    print(f"Retrieved chunks: {len(retrieved_chunks)}")
+
+    for chunk in retrieved_chunks:
+        m = chunk.get("metadata", {})
+        print(
+            f"Source: {m.get('source')} | "
+            f"Page: {m.get('page')} | "
+            f"Topic: {m.get('topic')} | "
+            f"Score: {chunk.get('relevance_score')}"
+        )
+
+    print(f"Answer:\n{answer[:250]}...")
+    print("=" * 70 + "\n")
 
     return {
-        "answer": res["answer"],
+        "answer": answer,
         "intent": intent,
         "clarification_needed": clarification_needed,
         "clarification_question": clarification_q,
         "citations": citations,
-        "images": res.get("images", []),
-        "execution_traces": res.get("execution_traces", []),
+        "images": rag_result.get("images", []),
+        "execution_traces": [
+            {
+                "tool": "rag_knowledge_search",
+                "retrieved_chunks": retrieved_chunks,
+                "citations": citations,
+            }
+        ],
         "session_id": session_id,
     }
 

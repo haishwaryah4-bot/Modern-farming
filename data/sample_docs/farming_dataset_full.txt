@@ -382,22 +382,21 @@ Shoot and Fruit Borer (Leucinodes orbonalis) IPM:
 --- [PAGE 21] ---
 Document: Farming Dataset
 Page: 21
-Topic: Precision Drip & Micro-Sprinkler Irrigation Systems
+Topic: Precision Agriculture, Smart Farming Technologies & IoT Integration
 Crop: General
 Season: All Seasons
 Region: Pan-India
 Category: Modern Technology
 
-PAGE 21: PRECISION DRIP & MICRO-SPRINKLER IRRIGATION
-System Architecture: Pump station -> Media/Disc Filter -> Fertigation Venturi / Dosing Injector -> Submain pipes -> Pressure Compensating (PC) Inline Dripper laterals.
-Key Agronomic Benefits:
-- Water Savings: 40-60% reduction in water consumption compared to flood irrigation. Water Application Efficiency > 90%.
-- Yield Gain: 20-35% higher productivity due to deficit-free moisture maintenance at field capacity.
-- Weed Suppression: Inter-row soil remains dry, reducing weed germination by 50%.
-Maintenance Protocols:
-- Flush lateral lines weekly by opening end caps at 1.5 bar operating pressure.
-- Acid Treatment (Hydrochloric or Phosphoric acid @ pH 4.0) once every season to dissolve Calcium/Magnesium carbonate precipitates.
-- Chlorine Treatment (Sodium hypochlorite 20-50 ppm) to clear biological algae and bacterial slime.
+PAGE 21: PRECISION AGRICULTURE & SMART FARMING FRAMEWORK
+Definition & Core Principles: Precision Agriculture (Smart Farming) is a data-driven farming management concept that uses digital technologies to observe, measure, and respond to spatial and temporal field variability, ensuring that crops receive exactly the inputs (water, nutrients, protection) required for maximum yield and sustainability.
+Key Pillars & Technologies of Precision Farming:
+1. Precision Drip & Micro-Irrigation: Sensor-guided drip systems and automated solenoid valves delivering precise water volume directly to crop roots, conserving 40-60% water.
+2. Variable Rate Application (VRA): Dynamic rate adjustment of fertilizers and seeds based on soil fertility grid mapping and satellite NDVI prescription zones.
+3. Drone Remote Sensing & Ultra-Low Volume Spraying: DGCA-certified UAV drones equipped with multispectral cameras and rotary atomizers for 10 L/acre precision spraying.
+4. IoT Soil & Weather Telemetry: Wireless capacitance probes and automated weather stations (AWS) monitoring soil moisture tension, ambient temperature, and leaf wetness.
+5. Automated Drip Fertigation: Injecting 100% water-soluble fertilizers in sync with daily crop uptake curves, increasing Nutrient Use Efficiency (NUE) from 35% to 80%.
+6. Computer Vision Pathology: Deep learning models (CNNs/Vision Transformers) for real-time field disease diagnosis and weed spot-spraying.
 
 
 --- [PAGE 22] ---
