@@ -338,14 +338,21 @@ def query_rag(req: RAGQueryRequest):
 @app.get("/api/documents")
 @app.get("/documents")
 def list_documents():
-    """Lists all active and indexed knowledge base documents."""
+    """Lists all active and indexed knowledge base documents with exact chunk counts."""
     from src.rag.rag_engine import get_rag_engine
     engine = get_rag_engine()
     engine._ensure_initialized()
     return {
         "total_documents": len(engine.indexed_files),
         "total_chunks": engine.total_chunks,
-        "files": [{"filename": fname, "status": "Indexed & Active"} for fname in engine.indexed_files],
+        "files": [
+            {
+                "filename": fname,
+                "chunk_count": engine.file_chunk_counts.get(fname, 0),
+                "status": "Indexed & Active"
+            }
+            for fname in engine.indexed_files
+        ],
     }
 
 

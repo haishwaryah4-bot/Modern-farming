@@ -9,6 +9,13 @@ from typing import List, Dict, Any, Optional, Tuple
 from src.rag.vector_store import VectorStore
 
 
+STOPWORDS = {
+    "what", "is", "the", "of", "in", "and", "a", "to", "for", "are", "how", "on", "with",
+    "as", "at", "by", "this", "that", "it", "from", "an", "be", "or", "can", "do", "does",
+    "which", "who", "whose", "where", "when", "why", "give", "tell", "me", "about", "explain", "please"
+}
+
+
 class BM25Retriever:
     """
     Pure Python BM25 implementation for high-speed lexical search.
@@ -26,6 +33,7 @@ class BM25Retriever:
         self.corpus = chunks
         self.doc_len = []
         self.df = {}
+        self.idf = {}
 
         for chunk in chunks:
             tokens = self._tokenize(chunk["text"])
@@ -40,7 +48,7 @@ class BM25Retriever:
             self.idf[t] = math.log((n_docs - freq + 0.5) / (freq + 0.5) + 1.0)
 
     def _tokenize(self, text: str) -> List[str]:
-        return [w.lower() for w in re.findall(r"\b[a-zA-Z0-9_\-]{2,}\b", text)]
+        return [w.lower() for w in re.findall(r"\b[a-zA-Z0-9_\-]{2,}\b", text) if w.lower() not in STOPWORDS]
 
     def search(
         self,
@@ -149,9 +157,14 @@ class HybridRetriever:
             chunk = chunk_map[cid].copy()
             dense_s = raw_scores.get(cid, {}).get("dense", 0.5)
             bm25_s = raw_scores.get(cid, {}).get("bm25", 0.0)
-            calibrated_score = min(0.99, max(0.55, (dense_s * 0.3 + min(1.0, bm25_s / 4.0) * 0.7)))
+            
+            # If no keyword overlap exists in the chunk, keep score low to enable accurate refusal
+            if bm25_s <= 0.0:
+                calibrated_score = round(dense_s * 0.35, 3)
+            else:
+                calibrated_score = round(min(0.99, max(0.55, 0.45 + min(0.50, bm25_s / 3.5))), 3)
 
-            chunk["relevance_score"] = round(calibrated_score, 3)
+            chunk["relevance_score"] = calibrated_score
             chunk["rrf_score"] = round(rrf, 4)
             chunk["retrieval_method"] = "Hybrid (Dense + BM25)"
             final_chunks.append(chunk)

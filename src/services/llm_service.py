@@ -170,7 +170,6 @@ class LLMService:
         # Extract user's raw question from prompt
         match = re.search(r"(?:User Question|Question|Farmer / Agronomist Question):\s*(.+?)(?:\n\n|\nFarm Profile|\nProvide a clear|\nContext Excerpts|$)", prompt, re.DOTALL)
         raw_question = match.group(1).strip() if match else prompt.strip()
-        # Clean question from prompt formatting if necessary
         if "\n" in raw_question:
             raw_question = raw_question.split("\n")[0].strip()
 
@@ -190,6 +189,21 @@ class LLMService:
                 "- **Ask about soil & nutrients**: *'How to improve soil organic carbon with compost?'*, *'Analyze soil NPK'*."
             )
 
+        # Check if query is completely outside agricultural domain
+        agri_keywords = {
+            "crop", "plant", "farm", "farming", "soil", "pest", "disease", "blight", "rust", "leaf",
+            "seed", "water", "irrigation", "fertigation", "fertilizer", "manure", "npk", "drip",
+            "hydroponic", "vertical", "polyhouse", "solar", "tractor", "drone", "wheat",
+            "rice", "paddy", "tomato", "cotton", "chilli", "maize", "mustard", "spray",
+            "pesticide", "fungicide", "harvest", "yield", "weather", "mandi", "subsidy",
+            "kusum", "pmksy", "rot", "wilt", "borer", "aphid", "insect", "agriculture",
+            "organic", "compost", "carbon", "greenhouse", "aquaponics", "machinery", "fertilizer",
+            "precision", "benefit", "benefits", "nutrient", "sprinkler", "agritech", "modern"
+        }
+        q_words_check = set(re.findall(r"\b\w{3,}\b", raw_question.lower()))
+        if not bool(q_words_check.intersection(agri_keywords)):
+            return "I couldn't find this information in the provided dataset."
+
         # Normalize question (handles regional terminology and synonyms)
         enriched_query, concepts, entities = normalize_farmer_query(raw_question)
 
@@ -203,11 +217,10 @@ class LLMService:
             if "Farmer / Agronomist Question:" in excerpts_block:
                 excerpts_block = excerpts_block.split("Farmer / Agronomist Question:")[0]
             
-            for section in excerpts_block.split("Citation Reference:"):
+            for section in re.split(r"\n+---\n+|\n+Citation Reference:\s*", excerpts_block):
                 sec = section.strip()
                 if sec:
-                    # Extract citation
-                    c_match = re.search(r"\[Doc:\s*([^,]+),\s*Page:\s*([^,]+)", sec)
+                    c_match = re.search(r"\[(?:Source|Doc):\s*([^,]+),\s*Page:\s*([^,\]]+)", sec)
                     if c_match:
                         citations_found.append(f"{c_match.group(1).strip()} (Page {c_match.group(2).strip()})")
                     if "Excerpt:" in sec:
@@ -242,17 +255,18 @@ class LLMService:
         # Check if query is completely outside domain
         agri_keywords = {
             "crop", "plant", "farm", "soil", "pest", "disease", "blight", "rust", "leaf",
-            "seed", "water", "irrigation", "fertilizer", "manure", "npk", "drip",
+            "seed", "water", "irrigation", "fertigation", "fertilizer", "manure", "npk", "drip",
             "hydroponic", "vertical", "polyhouse", "solar", "tractor", "drone", "wheat",
             "rice", "paddy", "tomato", "cotton", "chilli", "maize", "mustard", "spray",
             "pesticide", "fungicide", "harvest", "yield", "weather", "mandi", "subsidy",
             "kusum", "pmksy", "rot", "wilt", "borer", "aphid", "insect", "agriculture",
-            "organic", "compost", "carbon", "greenhouse", "aquaponics", "machinery", "fertilizer"
+            "organic", "compost", "carbon", "greenhouse", "aquaponics", "machinery", "fertilizer",
+            "precision", "benefit", "benefits", "nutrient", "sprinkler", "agritech", "modern"
         }
         q_terms = set(re.findall(r"\b\w{3,}\b", enriched_query.lower()))
         is_agri_related = bool(q_terms.intersection(agri_keywords))
 
-        if not is_agri_related:
+        if not is_agri_related and not raw_chunks:
             return "I couldn't find this information in the provided dataset."
 
         # 2. Extract Key Agronomic Sentences from Retrieved Chunks
@@ -312,12 +326,16 @@ class LLMService:
 
         scored_lines = [l[1] for l in sorted(scored_lines, key=lambda x: x[0], reverse=True)]
 
+        # If zero lines match query terms, return exact refusal
+        if not scored_lines:
+            return "I couldn't find this information in the provided dataset."
+
         # Classify into Answer, Details, and Action points
         answer_candidates = []
         details_candidates = []
         action_candidates = []
 
-        pool = scored_lines if scored_lines else cleaned_lines
+        pool = scored_lines
 
         for line in pool:
             line_lower = line.lower()

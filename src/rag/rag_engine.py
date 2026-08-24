@@ -22,6 +22,7 @@ class RAGEngine:
         self.splitter = TextSplitter(chunk_size=config.RAG_CHUNK_SIZE, chunk_overlap=config.RAG_CHUNK_OVERLAP)
         self.retriever = HybridRetriever(alpha=config.RAG_HYBRID_ALPHA)
         self.indexed_files: List[str] = []
+        self.file_chunk_counts: Dict[str, int] = {}
         self.total_chunks = 0
         self._initialized = False
 
@@ -33,24 +34,34 @@ class RAGEngine:
 
     def _auto_index_sample_docs(self):
         """
-        Automatically index sample agricultural documents on demand.
+        Automatically index the complete Modern Farming dataset on demand.
+        Supports PDF, MD, TXT, CSV, DOCX formats.
         """
         sample_dir = config.SAMPLE_DOCS_DIR
         if not sample_dir.exists():
+            print(f"[RAG INDEX WARNING] Dataset directory not found: {sample_dir}")
             return
 
         all_chunks = []
-        for file_path in sample_dir.iterdir():
-            if file_path.is_file() and file_path.suffix.lower() in [".txt", ".csv", ".pdf", ".docx"]:
+        print(f"\n{'='*70}\n[RAG DATASET INDEXING] Loading Modern Farming Knowledge Base from: {sample_dir}")
+
+        supported_exts = [".txt", ".csv", ".pdf", ".docx", ".md"]
+        for file_path in sorted(sample_dir.iterdir()):
+            if file_path.is_file() and file_path.suffix.lower() in supported_exts:
                 docs = self.loader.load_file(str(file_path))
                 chunks = self.splitter.split_documents(docs)
                 all_chunks.extend(chunks)
+                
                 if file_path.name not in self.indexed_files:
                     self.indexed_files.append(file_path.name)
+                self.file_chunk_counts[file_path.name] = len(chunks)
+
+                print(f"  • Ingested: '{file_path.name}' | Documents: {len(docs)} | Chunks Created: {len(chunks)}")
 
         if all_chunks:
             self.retriever.index_documents(all_chunks)
             self.total_chunks = len(all_chunks)
+            print(f"[RAG INDEX COMPLETE] Successfully indexed {len(self.indexed_files)} files ({self.total_chunks} total semantic chunks).\n{'='*70}\n")
 
     def ingest_file(self, file_path: str, metadata: Optional[Dict[str, Any]] = None) -> int:
         """
@@ -65,27 +76,17 @@ class RAGEngine:
             filename = Path(file_path).name
             if filename not in self.indexed_files:
                 self.indexed_files.append(filename)
+            self.file_chunk_counts[filename] = self.file_chunk_counts.get(filename, 0) + len(chunks)
             self.total_chunks = len(updated_chunks)
             return len(chunks)
         return 0
 
     def expand_query(self, query: str) -> List[str]:
         """
-        Generate semantic variations of agronomic queries for higher recall.
+        Generic query handling without hard-coded domain biases.
         """
-        queries = [query]
-        lower = query.lower()
-        if "rice" in lower or "paddy" in lower:
-            queries.append(f"{query} Oryza sativa grain yield water AWD")
-        if "tomato" in lower:
-            queries.append(f"{query} Solanum lycopersicum fertigation blossom rot")
-        if "nitrogen" in lower or "npk" in lower:
-            queries.append(f"{query} soil macronutrient top dressing fertilizer dose")
-        if "pest" in lower or "disease" in lower:
-            queries.append(f"{query} symptom diagnostic pesticide IPM ETL threshold")
-        if "drip" in lower or "irrigation" in lower:
-            queries.append(f"{query} micro-irrigation water requirement ET0 scheduling")
-        return list(set(queries))
+        cleaned = query.strip()
+        return [cleaned] if cleaned else []
 
     def rerank_chunks(self, query: str, chunks: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         """
@@ -96,14 +97,17 @@ class RAGEngine:
         for c in chunks:
             text_lower = c["text"].lower()
             overlap = sum(1 for w in q_words if w in text_lower)
-            density_boost = (overlap / len(q_words)) if q_words else 0.0
-            
             meta = c.get("metadata", {})
-            meta_str = f"{meta.get('crop', '')} {meta.get('doc_type', '')}".lower()
-            meta_boost = 0.08 if any(w in meta_str for w in q_words) else 0.0
+            meta_str = f"{meta.get('crop', '')} {meta.get('topic', '')} {meta.get('category', '')}".lower()
+            meta_match = any(w in meta_str for w in q_words)
 
-            base_score = c.get("relevance_score", 0.75)
-            c["rerank_score"] = round(min(0.99, base_score * 0.7 + density_boost * 0.22 + meta_boost), 3)
+            if overlap == 0 and not meta_match:
+                c["rerank_score"] = round(c.get("relevance_score", 0.2) * 0.4, 3)
+            else:
+                density_boost = (overlap / len(q_words)) if q_words else 0.0
+                meta_boost = 0.10 if meta_match else 0.0
+                base_score = c.get("relevance_score", 0.75)
+                c["rerank_score"] = round(min(0.99, base_score * 0.65 + density_boost * 0.25 + meta_boost), 3)
 
         return sorted(chunks, key=lambda x: x.get("rerank_score", 0.0), reverse=True)
 
@@ -147,46 +151,46 @@ class RAGEngine:
                 "answer": refusal_text,
                 "citations": [],
                 "images": [],
-                "retrieved_chunks": [],
-                "grounded": False,
                 "groundedness_confidence": "0%",
-                "retrieval_method": "Hybrid Vector + BM25 (No Matches)",
+                "retrieved_chunks": [],
             }
 
-        # Step 4: Build Grounded Context & Citations
-        context_parts = []
+        # Step 4: Construct Context from Retrieved Dataset Chunks
+        context_blocks = []
         citations = []
-        total_score = 0.0
-
-        for idx, c in enumerate(ranked_chunks):
-            meta = c["metadata"]
-            source = meta.get("source", "Document")
+        for i, c in enumerate(ranked_chunks):
+            meta = c.get("metadata", {})
+            source = meta.get("source", "Knowledge Base")
             page = meta.get("page", 1)
-            chunk_id = meta.get("chunk_id", f"C{idx+1}")
-            score = c.get("rerank_score", c.get("relevance_score", 0.85))
-            total_score += score
-            score_pct = int(score * 100)
+            topic = meta.get("topic")
+            crop = meta.get("crop")
+            score = c.get("rerank_score", c.get("relevance_score", 0.8))
 
-            ref_tag = f"[Doc: {source}, Page: {page}, Chunk: {chunk_id}, Score: {score_pct}%]"
-            context_parts.append(f"Citation Reference: {ref_tag}\nExcerpt: {c['text']}\n")
+            header = f"[Source: {source}, Page: {page}" + (f", Topic: {topic}" if topic else "") + f", Score: {score}]"
+            context_blocks.append(f"{header}\n{c['text']}")
+
             citations.append({
                 "source": source,
                 "page": page,
-                "chunk_id": chunk_id,
+                "chunk_id": meta.get("chunk_id", f"chunk_{i}"),
+                "topic": topic,
+                "crop": crop,
                 "relevance_score": score,
-                "relevance_pct": f"{score_pct}%",
+                "relevance_pct": f"{int(score * 100)}%",
                 "text_snippet": c["text"][:220] + "...",
             })
 
-        avg_confidence = int((total_score / len(ranked_chunks)) * 100)
-        context_str = "\n---\n".join(context_parts)
+        context_str = "\n\n---\n\n".join(context_blocks)
+        avg_confidence = int((sum(c["relevance_score"] for c in citations) / len(citations)) * 100) if citations else 80
 
         # Step 5: Grounded LLM Prompting
         system_prompt = (
-            "You are an expert agronomist and agricultural researcher. Answer the farmer's question strictly "
-            "based on the provided verified documents. Always cite source documents explicitly using bracketed "
-            "citations like [Doc: <name>, Page: <page>]. If information is missing or cannot be answered from the dataset, "
-            "state clearly: 'I couldn't find this information in the provided dataset.'"
+            "You are the AgriSense Modern Farming Knowledge Assistant. Your job is to answer questions using ONLY the provided dataset context excerpts.\n"
+            "CRITICAL INSTRUCTIONS:\n"
+            "1. Answer strictly and only based on facts provided in the Context Excerpts.\n"
+            "2. If the answer is not in the context, reply EXACTLY with: 'I couldn't find this information in the provided dataset.'\n"
+            "3. Do not extrapolate, assume, or use general external knowledge outside the dataset.\n"
+            "4. Cite explicit pages and document sources from the context."
         )
 
         user_prompt = (
@@ -197,15 +201,20 @@ class RAGEngine:
 
         answer = llm_client.complete(user_prompt, system_prompt=system_prompt)
 
-        # Retrieve relevant images from ingested dataset
-        matched_images = image_retriever.search_images(question, top_k=2)
-        image_cards_md = image_retriever.format_image_cards_markdown(matched_images, question)
-        if image_cards_md:
-            full_answer = f"{image_cards_md}\n\n{answer}"
+        # Refusal check: if LLM returns refusal, do not prepend images
+        if "I couldn't find this information in the provided dataset." in answer:
+            full_answer = "I couldn't find this information in the provided dataset."
+            matched_images = []
         else:
-            full_answer = answer
+            # Retrieve relevant images from ingested dataset
+            matched_images = image_retriever.search_images(question, top_k=2)
+            image_cards_md = image_retriever.format_image_cards_markdown(matched_images, question)
+            if image_cards_md:
+                full_answer = f"{image_cards_md}\n\n{answer}"
+            else:
+                full_answer = answer
 
-        # Backend RAG Logging (Requirement 9)
+        # Backend RAG Logging
         print(f"\n{'='*70}")
         print(f"[RAG BACKEND LOG]")
         print(f"• User Question: {question}")
@@ -213,7 +222,7 @@ class RAGEngine:
         for idx, c in enumerate(ranked_chunks):
             m = c.get('metadata', {})
             print(f"  [{idx+1}] Source: {m.get('source')} | Page: {m.get('page')} | Topic: {m.get('topic')} | Score: {c.get('relevance_score')} (RRF: {c.get('rrf_score')})")
-        print(f"• Final Answer:\n{answer[:250]}...")
+        print(f"• Final Answer:\n{full_answer[:250]}...")
         print(f"{'='*70}\n")
 
         return {
