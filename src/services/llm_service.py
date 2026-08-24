@@ -191,17 +191,21 @@ class LLMService:
 
         # Check if query is completely outside agricultural domain
         agri_keywords = {
-            "crop", "crops", "plant", "plants", "farm", "farming", "soil", "soils", "pest", "pests", "disease", "diseases",
-            "blight", "rust", "leaf", "leaves", "seed", "seeds", "water", "irrigation", "fertigation", "fertilizer", "fertilizers",
-            "manure", "npk", "drip", "hydroponic", "hydroponics", "vertical", "polyhouse", "greenhouse", "solar", "tractor",
-            "drone", "drones", "wheat", "rice", "paddy", "tomato", "tomatoes", "cotton", "chilli", "maize", "corn", "mustard",
-            "spray", "pesticide", "pesticides", "fungicide", "fungicides", "harvest", "harvesting", "yield", "weather", "mandi",
-            "msp", "subsidy", "kusum", "pmksy", "rot", "wilt", "borer", "aphid", "aphids", "insect", "insects", "agriculture",
-            "organic", "compost", "carbon", "precision", "benefit", "benefits", "nutrient", "nutrients", "sprinkler", "agritech",
-            "modern", "kharif", "rabi", "zaid", "season", "seasons", "testing", "stage", "stages", "growth", "precaution",
-            "precautions", "safety", "phenology", "weed", "weeds", "herbicide", "herbicides", "potash", "nitrogen", "phosphorus",
-            "zinc", "iron", "boron", "drainage", "humidity", "loam", "clay", "gypsum", "lime", "awd", "tillering", "flowering",
-            "anthesis", "booting", "germination", "technolog", "technology", "technologies"
+            "crop", "crops", "plant", "plants", "farm", "farms", "farmer", "farmers", "farming", "soil", "soils",
+            "pest", "pests", "disease", "diseases", "blight", "rust", "leaf", "leaves", "seed", "seeds", "water",
+            "irrigation", "fertigation", "fertilizer", "fertilizers", "manure", "npk", "drip", "hydroponic", "hydroponics",
+            "vertical", "polyhouse", "greenhouse", "solar", "tractor", "drone", "drones", "wheat", "rice", "paddy",
+            "tomato", "tomatoes", "cotton", "chilli", "maize", "corn", "mustard", "spray", "pesticide", "pesticides",
+            "fungicide", "fungicides", "harvest", "harvesting", "yield", "weather", "mandi", "msp", "subsidy", "kusum",
+            "pmksy", "rot", "wilt", "borer", "aphid", "aphids", "insect", "insects", "agriculture", "organic", "compost",
+            "carbon", "precision", "benefit", "benefits", "nutrient", "nutrients", "sprinkler", "agritech", "modern",
+            "kharif", "rabi", "zaid", "season", "seasons", "testing", "stage", "stages", "growth", "precaution", "precautions",
+            "safety", "phenology", "weed", "weeds", "herbicide", "herbicides", "potash", "nitrogen", "phosphorus", "zinc",
+            "iron", "boron", "drainage", "humidity", "loam", "clay", "gypsum", "lime", "awd", "tillering", "flowering",
+            "anthesis", "booting", "germination", "technolog", "technology", "technologies", "risk", "risks", "loss",
+            "losses", "challenge", "challenges", "livestock", "dairy", "cattle", "cow", "buffalo", "poultry", "goat",
+            "sheep", "fodder", "silage", "machinery", "equipment", "planter", "harvester", "sustainability", "sustainable",
+            "procedure", "procedures", "practice", "practices", "calendar", "activity", "activities", "management"
         }
         q_words_check = set(re.findall(r"\b\w{3,}\b", raw_question.lower()))
         if not bool(q_words_check.intersection(agri_keywords)):

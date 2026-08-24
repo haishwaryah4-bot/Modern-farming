@@ -160,7 +160,8 @@ if HAS_FASTAPI and CORSMiddleware:
 
 # --- REQUEST & RESPONSE DATA SCHEMAS ---
 class ChatRequest(BaseModel):
-    message: str = Field(default="", description="Farmer question or inquiry")
+    message: Optional[str] = Field(default="", description="Farmer question or inquiry")
+    query: Optional[str] = Field(default="", description="Farmer question alias")
     session_id: Optional[str] = Field(default="default_session", description="Session identifier for memory")
     farm_context: Optional[Dict[str, Any]] = Field(default=None, description="Optional farm profile parameters")
     image_data: Optional[str] = Field(default=None, description="Base64 encoded photo from camera or field upload")
@@ -313,13 +314,14 @@ def health_check():
     }
 
 
-@app.post("/api")
 @app.post("/api/chat", response_model=ChatResponse if HAS_FASTAPI else None)
 @app.post("/chat", response_model=ChatResponse if HAS_FASTAPI else None)
+@app.post("/api", response_model=ChatResponse if HAS_FASTAPI else None)
 def chat_with_agent(req: ChatRequest):
     """Main conversational AI agent endpoint with multi-agent orchestration, camera image diagnostics, and visual images."""
+    q = (getattr(req, "message", "") or getattr(req, "query", "") or "").strip()
     data = handle_chat_query(
-        user_query=req.message,
+        user_query=q,
         session_id=getattr(req, "session_id", "default_session"),
         farm_context=getattr(req, "farm_context", None),
         image_data=getattr(req, "image_data", None)
