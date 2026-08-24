@@ -141,12 +141,10 @@ class RAGEngine:
 
         # Step 3: Out-of-Domain Refusal Guardrail
         if not ranked_chunks or (ranked_chunks and ranked_chunks[0].get("rerank_score", ranked_chunks[0].get("relevance_score", 0)) < 0.35):
+            refusal_text = "I couldn't find this information in the provided dataset."
+            print(f"[RAG DEBUG] User Question: '{question}' | Chunks Retrieved: 0 | Final Answer: {refusal_text}")
             return {
-                "answer": (
-                    "⚠️ **Out of Knowledge Base Scope**: The uploaded agricultural documents and knowledge base "
-                    "do not contain sufficient verified agronomic evidence to answer this query reliably. "
-                    "Please upload relevant manuals, reports, or consult local agricultural university authorities."
-                ),
+                "answer": refusal_text,
                 "citations": [],
                 "images": [],
                 "retrieved_chunks": [],
@@ -187,7 +185,8 @@ class RAGEngine:
         system_prompt = (
             "You are an expert agronomist and agricultural researcher. Answer the farmer's question strictly "
             "based on the provided verified documents. Always cite source documents explicitly using bracketed "
-            "citations like [Doc: <name>, Page: <page>]. If information is missing, state limitations clearly."
+            "citations like [Doc: <name>, Page: <page>]. If information is missing or cannot be answered from the dataset, "
+            "state clearly: 'I couldn't find this information in the provided dataset.'"
         )
 
         user_prompt = (
@@ -205,6 +204,17 @@ class RAGEngine:
             full_answer = f"{image_cards_md}\n\n{answer}"
         else:
             full_answer = answer
+
+        # Backend RAG Logging (Requirement 9)
+        print(f"\n{'='*70}")
+        print(f"[RAG BACKEND LOG]")
+        print(f"• User Question: {question}")
+        print(f"• Number of Chunks Retrieved: {len(ranked_chunks)}")
+        for idx, c in enumerate(ranked_chunks):
+            m = c.get('metadata', {})
+            print(f"  [{idx+1}] Source: {m.get('source')} | Page: {m.get('page')} | Topic: {m.get('topic')} | Score: {c.get('relevance_score')} (RRF: {c.get('rrf_score')})")
+        print(f"• Final Answer:\n{answer[:250]}...")
+        print(f"{'='*70}\n")
 
         return {
             "answer": full_answer,

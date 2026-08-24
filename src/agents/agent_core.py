@@ -7,6 +7,7 @@ and explicit Farming Dataset source citations.
 
 from typing import Dict, Any, List, Optional
 import json
+import re
 from src.agents.tools import TOOL_REGISTRY
 from src.services.llm_service import llm_client
 from src.services.image_retriever_service import image_retriever
@@ -58,15 +59,44 @@ class AIAgricultureAgent:
                 "observation": f"Visual Diagnostic: {res_cv['diagnosis']} (Confidence: {res_cv['confidence']}). Pathogen: {res_cv['pathogen_type']}. Curative: {res_cv['prescription']['chemical_control']}. Organic: {res_cv['prescription']['organic_control']}"
             })
 
+        # Check if query is out-of-domain / not in agricultural dataset
+        agri_keywords = {
+            "crop", "plant", "farm", "soil", "pest", "disease", "blight", "rust", "leaf",
+            "seed", "water", "irrigation", "fertilizer", "manure", "npk", "drip",
+            "hydroponic", "vertical", "polyhouse", "solar", "tractor", "drone", "wheat",
+            "rice", "paddy", "tomato", "cotton", "chilli", "maize", "mustard", "spray",
+            "pesticide", "fungicide", "harvest", "yield", "weather", "mandi", "subsidy",
+            "kusum", "pmksy", "rot", "wilt", "borer", "aphid", "insect", "agriculture",
+            "organic", "compost", "carbon", "greenhouse", "aquaponics", "machinery",
+            "nitrogen", "potash", "phosphorus", "zinc", "boron", "sulfur", "drainage",
+            "humidity", "loam", "cultivation", "agronomy", "kharif", "rabi", "zaid",
+            "pm-kisan", "pmfby", "kcc", "smam", "schemes", "sowing", "transplant",
+            "tillering", "flowering", "bph", "bollworm", "armyworm", "weeds", "pr-126", "pusa"
+        }
+        q_words = set(re.findall(r"\b\w{3,}\b", lower))
+        is_agri = bool(q_words.intersection(agri_keywords)) or bool(image_data)
+
+        if not is_agri and not any(k in lower for k in ["hi", "hello", "hey", "namaste", "help", "who are you"]):
+            refusal = "I couldn't find this information in the provided dataset."
+            print(f"[AGENT DEBUG] Out of domain question: '{user_query}' -> Refusing with exact message: {refusal}")
+            return {
+                "answer": refusal,
+                "intent": "Out of Domain Query",
+                "plan": ["Query is outside the scope of the agricultural dataset."],
+                "execution_traces": [],
+                "tools_used": [],
+                "images": [],
+            }
+
         # Intent Routing
         is_rice_poor_drainage = "poor drainage" in lower or ("drainage" in lower and "humidity" in lower)
         is_tomato_flowering = "tomato" in lower and ("flowering" in lower or "fertigation" in lower or "irrigation" in lower)
         is_small_farm_tech = ("small farm" in lower or "limited water" in lower or "suitable" in lower) and "technolog" in lower
         is_complex_plan = "plan" in lower or "7-day" in lower or ("soil" in lower and "weather" in lower) or is_rice_poor_drainage or is_tomato_flowering or is_small_farm_tech
-        is_weather_market = "weather" in lower or "market" in lower or "price" in lower or "mandi" in lower or "msp" in lower or "rate" in lower
-        is_soil = "soil" in lower or "nitrogen" in lower or "npk" in lower or "ph" in lower or "zinc" in lower or "carbon" in lower
-        is_disease = "disease" in lower or "pest" in lower or "blast" in lower or "rust" in lower or "blight" in lower or "curl" in lower or "thrips" in lower
-        is_tech = "technolog" in lower or "drip" in lower or "sensor" in lower or "drone" in lower or "solar" in lower or "polyhouse" in lower
+        is_weather_market = ("weather" in lower or "mandi" in lower or "msp" in lower) and is_agri
+        is_soil = ("soil" in lower or "nitrogen" in lower or "npk" in lower or "ph" in lower or "zinc" in lower or "carbon" in lower) and is_agri
+        is_disease = ("disease" in lower or "pest" in lower or "blast" in lower or "rust" in lower or "blight" in lower or "curl" in lower or "thrips" in lower) and is_agri
+        is_tech = ("technolog" in lower or "drip" in lower or "sensor" in lower or "drone" in lower or "solar" in lower or "polyhouse" in lower) and is_agri
 
         # --- SCENARIO 1: Rice in Kharif with Poor Drainage & High Humidity ---
         if is_rice_poor_drainage:
@@ -299,12 +329,17 @@ class AIAgricultureAgent:
 
         final_answer = llm_client.complete(prompt_with_context)
 
-        # Attach formatted image cards at the top of response per Requirement 17
-        image_cards_md = image_retriever.format_image_cards_markdown(matched_images, user_query)
-        if image_cards_md:
-            full_answer = f"{image_cards_md}\n\n{final_answer}"
+        # If the answer is an out-of-dataset refusal, do not prepend images
+        if "I couldn't find this information in the provided dataset." in final_answer:
+            full_answer = "I couldn't find this information in the provided dataset."
+            matched_images = []
         else:
-            full_answer = final_answer
+            # Attach formatted image cards at the top of response
+            image_cards_md = image_retriever.format_image_cards_markdown(matched_images, user_query)
+            if image_cards_md:
+                full_answer = f"{image_cards_md}\n\n{final_answer}"
+            else:
+                full_answer = final_answer
 
         # Append to conversational session memory
         self.chat_history.append({"role": "user", "content": user_query})

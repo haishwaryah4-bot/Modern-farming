@@ -252,16 +252,8 @@ class LLMService:
         q_terms = set(re.findall(r"\b\w{3,}\b", enriched_query.lower()))
         is_agri_related = bool(q_terms.intersection(agri_keywords))
 
-        if not is_agri_related and not raw_chunks:
-            return (
-                "**Answer:**\n"
-                "The requested information is not available in the current farming dataset. AgriSense AI specializes exclusively in agricultural decision support, crops, soil fertility, pest/disease management, precision irrigation, and modern farm technologies.\n\n"
-                "**Details:**\n"
-                "No verified records matched your search query in the current agricultural knowledge base.\n\n"
-                "**What to do:**\n"
-                "- Please ask questions related to farming, crops (e.g. Rice, Tomato, Wheat, Cotton), pests, fertilizers, soil testing, or modern agriculture.\n"
-                "- You can also upload new agricultural production manuals or consult your local Krishi Vigyan Kendra (KVK)."
-            )
+        if not is_agri_related:
+            return "I couldn't find this information in the provided dataset."
 
         # 2. Extract Key Agronomic Sentences from Retrieved Chunks
         raw_lines = []

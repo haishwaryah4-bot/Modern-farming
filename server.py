@@ -228,6 +228,17 @@ def handle_chat_query(user_query: str, session_id: str = "default_session", farm
     if not citations and "Source:" in res["answer"]:
         citations = [{"source": "Farming Dataset", "page": "Verified Chapter", "topic": intent}]
 
+    # Backend Request Logging (Requirement 9)
+    print(f"\n{'='*70}")
+    print(f"[API CHAT/VOICE REQUEST]")
+    print(f"• User Question: {user_query}")
+    print(f"• Inferred Intent: {intent}")
+    print(f"• Citations Retrieved: {len(citations)}")
+    for c in citations:
+        print(f"  - Source: {c.get('source')} | Page: {c.get('page')}")
+    print(f"• Final Answer:\n{res['answer'][:250]}...")
+    print(f"{'='*70}\n")
+
     return {
         "answer": res["answer"],
         "intent": intent,
@@ -258,16 +269,19 @@ def read_root():
     return HTMLResponse(content="<h1>AgriSense AI Backend API Active</h1>")
 
 
+@app.get("/api")
 @app.get("/api/health")
 @app.get("/health")
 def health_check():
     """Lightweight health check endpoint for instant response on Vercel without loading RAG."""
     return {
         "status": "healthy",
-        "service": "AgriSense AI REST API"
+        "service": "AgriSense AI REST API",
+        "dataset_ready": True
     }
 
 
+@app.post("/api")
 @app.post("/api/chat", response_model=ChatResponse if HAS_FASTAPI else None)
 @app.post("/chat", response_model=ChatResponse if HAS_FASTAPI else None)
 def chat_with_agent(req: ChatRequest):
@@ -396,7 +410,7 @@ class AgriSenseHTTPHandler(BaseHTTPRequestHandler):
                 with open(asset_path, "rb") as f:
                     self.wfile.write(f.read())
                 return
-        if path == "/api/health":
+        if path == "/api" or path == "/api/health":
             self.send_response(200)
             self.send_header("Content-Type", "application/json")
             self._send_cors_headers()
@@ -428,8 +442,8 @@ class AgriSenseHTTPHandler(BaseHTTPRequestHandler):
         except Exception:
             payload = {}
 
-        if path == "/api/chat" or path == "/chat":
-            msg = payload.get("message", "").strip()
+        if path == "/api" or path == "/api/chat" or path == "/chat":
+            msg = payload.get("message", "").strip() or payload.get("query", "").strip()
             sess_id = payload.get("session_id", "default_session")
             farm_ctx = payload.get("farm_context")
             img_d = payload.get("image_data")

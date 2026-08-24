@@ -25,6 +25,8 @@ class TextSplitter:
                 chunk_meta = meta.copy()
                 chunk_meta["chunk_id"] = f"{meta.get('source', 'doc')}_p{meta.get('page', 1)}_c{idx+1}"
                 chunk_meta["chunk_index"] = idx + 1
+                chunk_meta["category"] = meta.get("doc_type", meta.get("category", "Agronomic Dataset"))
+                chunk_meta["original_text"] = c
                 chunks.append({"text": c, "metadata": chunk_meta})
         return chunks
 
