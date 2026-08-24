@@ -1083,7 +1083,7 @@
 
               <div className="status-pill">
                 <div className="pulse-dot"></div>
-                <span>145 RAG Chunks • 16 Photos • Camera AI Active</span>
+                <span>🌿 Modern Farming RAG • 115 Chunks • Vector DB Online</span>
               </div>
             </div>
           </nav>
@@ -1095,9 +1095,9 @@
             <section className="hero-box">
               <div className="hero-header">
                 <div className="hero-content">
-                  <h2>Autonomous Precision Agriculture Copilot</h2>
+                  <h2>Modern Farming Knowledge & Precision Agriculture Copilot</h2>
                   <p>
-                    Ground-truth agronomy engine powered by Multi-Agent RAG, camera computer vision diagnostics, and verified photographic dataset evidence. Ask any question in plain English, speak hands-free, or snap a field photo.
+                    Ground-truth agronomy intelligence powered by our verified <b>Modern Farming Dataset</b> with dense vector + BM25 hybrid search, camera computer vision diagnostics, and exact source citations.
                   </p>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
@@ -1154,6 +1154,12 @@
                 🤖 AI Assistant & Camera Copilot
               </button>
               <button 
+                className={`tab-item ${activeTab === 'rag_pipeline' ? 'active' : ''}`}
+                onClick={() => setActiveTab('rag_pipeline')}
+              >
+                🌿 RAG Pipeline & Dataset Architecture
+              </button>
+              <button 
                 className={`tab-item ${activeTab === 'diagnostics' ? 'active' : ''}`}
                 onClick={() => setActiveTab('diagnostics')}
               >
@@ -1177,8 +1183,46 @@
             {activeTab === 'chat' && (
               <div className="grid-workspace">
                 
-                {/* Left Sidebar Tools */}
+                {/* Left Sidebar Tools & RAG Pipeline Stepper */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  
+                  {/* Live RAG Architecture Stepper Card */}
+                  <div className="glass-card" style={{ border: '1.5px solid rgba(16, 185, 129, 0.45)', background: 'rgba(3, 20, 11, 0.88)' }}>
+                    <div className="panel-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <span>🌿 RAG Pipeline Flow</span>
+                      <span style={{ fontSize: '0.72rem', background: '#059669', color: '#fff', padding: '2px 8px', borderRadius: '10px' }}>Active</span>
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '0.76rem' }}>
+                      <div style={{ background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '6px 10px', borderRadius: '8px' }}>
+                        <b>📂 Modern Farming Dataset</b> <span style={{ color: '#a7f3d0' }}>(8 Docs, 115 Chunks)</span>
+                      </div>
+                      <div style={{ textAlign: 'center', color: '#10b981', fontWeight: 800, lineHeight: 1 }}>↓</div>
+                      <div style={{ background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '6px 10px', borderRadius: '8px' }}>
+                        <b>⚙️ RAG Indexing</b> <span style={{ color: '#a7f3d0' }}>(384-Dim Dense + BM25)</span>
+                      </div>
+                      <div style={{ textAlign: 'center', color: '#10b981', fontWeight: 800, lineHeight: 1 }}>↓</div>
+                      <div style={{ background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '6px 10px', borderRadius: '8px' }}>
+                        <b>💾 Vector Database</b> <span style={{ color: '#a7f3d0' }}>(In-Memory Fast Store)</span>
+                      </div>
+                      <div style={{ textAlign: 'center', color: '#10b981', fontWeight: 800, lineHeight: 1 }}>↓</div>
+                      <div style={{ background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '6px 10px', borderRadius: '8px' }}>
+                        <b>👤 User ➔ Chat UI ➔ /api/chat</b>
+                      </div>
+                      <div style={{ textAlign: 'center', color: '#10b981', fontWeight: 800, lineHeight: 1 }}>↓</div>
+                      <div style={{ background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '6px 10px', borderRadius: '8px' }}>
+                        <b>🔍 rag_engine ➔ Similarity Search</b>
+                      </div>
+                      <div style={{ textAlign: 'center', color: '#10b981', fontWeight: 800, lineHeight: 1 }}>↓</div>
+                      <div style={{ background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '6px 10px', borderRadius: '8px' }}>
+                        <b>📑 Relevant Chunks ➔ Citations</b>
+                      </div>
+                      <div style={{ textAlign: 'center', color: '#10b981', fontWeight: 800, lineHeight: 1 }}>↓</div>
+                      <div style={{ background: 'rgba(16, 185, 129, 0.22)', border: '1.5px solid #10b981', padding: '6px 10px', borderRadius: '8px', color: '#34d399' }}>
+                        <b>🧠 LLM ➔ Grounded Answer</b>
+                      </div>
+                    </div>
+                  </div>
+
                   <div className="glass-card">
                     <div className="panel-title">📸 Visual Camera Copilot</div>
                     <p style={{ fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.5, marginBottom: '14px' }}>
@@ -1208,18 +1252,22 @@
                   </div>
 
                   <div className="glass-card">
-                    <div className="panel-title">💡 Guided Inquiries</div>
-                    <div className="widget-item" onClick={() => sendMessage('What pesticide is used for crop pests?')}>
-                      <h4>🐛 Pest & Insecticide Control</h4>
-                      <p>View ETL thresholds and biological interventions</p>
+                    <div className="panel-title">💡 Grounded Dataset Queries</div>
+                    <div className="widget-item" onClick={() => sendMessage('What is precision agriculture?')}>
+                      <h4>🌱 Precision Agriculture</h4>
+                      <p>VRA, IoT sensors, and drone mapping</p>
+                    </div>
+                    <div className="widget-item" onClick={() => sendMessage('What is fertigation?')}>
+                      <h4>💧 Automated Fertigation</h4>
+                      <p>100% water-soluble nutrient scheduling</p>
+                    </div>
+                    <div className="widget-item" onClick={() => sendMessage('What are the benefits of modern farming?')}>
+                      <h4>🚀 Benefits of Modern Farming</h4>
+                      <p>Water conservation & 30% yield boost</p>
                     </div>
                     <div className="widget-item" onClick={() => sendMessage('Show me solar pumps under PM-KUSUM scheme')}>
                       <h4>☀️ PM-KUSUM Solar Pumps</h4>
                       <p>Explore 60% government subsidy guidelines</p>
-                    </div>
-                    <div className="widget-item" onClick={() => sendMessage('What is vertical farming and greenhouse cultivation?')}>
-                      <h4>🌿 Vertical & Polyhouse Farming</h4>
-                      <p>Year-round climate-controlled cultivation</p>
                     </div>
                   </div>
 
@@ -1356,6 +1404,146 @@
                         Ask AI ➔
                       </button>
                     </form>
+                  </div>
+                </div>
+
+              </div>
+            )}
+
+            {/* Tab: RAG Pipeline & Dataset Architecture */}
+            {activeTab === 'rag_pipeline' && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                
+                {/* System Architecture Diagram Card */}
+                <div className="glass-card" style={{ border: '1.5px solid #10b981' }}>
+                  <div className="panel-title" style={{ fontSize: '1.25rem', marginBottom: '8px' }}>
+                    🌟 End-to-End Grounded RAG Architecture
+                  </div>
+                  <p style={{ color: '#cbd5e1', fontSize: '0.92rem', marginBottom: '20px' }}>
+                    Every user query flows through the verified <b>Modern Farming Dataset</b> pipeline, ensuring zero hallucinations, strict page citations, and exact refusals for out-of-domain questions.
+                  </p>
+
+                  <div style={{ 
+                    background: 'rgba(2, 14, 8, 0.95)', 
+                    border: '1.5px solid rgba(16, 185, 129, 0.4)', 
+                    borderRadius: '16px', 
+                    padding: '24px', 
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    alignItems: 'center', 
+                    gap: '12px' 
+                  }}>
+                    
+                    {/* Top Box: Modern Farming Dataset */}
+                    <div style={{ background: 'linear-gradient(135deg, #065f46, #047857)', border: '2px solid #34d399', borderRadius: '12px', padding: '12px 28px', color: '#fff', fontWeight: '800', textAlign: 'center', boxShadow: '0 6px 20px rgba(5, 150, 105, 0.4)' }}>
+                      📂 Modern Farming Dataset (data/sample_docs/)
+                    </div>
+                    
+                    <div style={{ color: '#34d399', fontSize: '1.2rem', fontWeight: '900' }}>↓</div>
+
+                    {/* Step 2: RAG Indexing */}
+                    <div style={{ background: 'rgba(16, 185, 129, 0.15)', border: '1.5px solid #10b981', borderRadius: '10px', padding: '10px 24px', color: '#ecfdf5', fontWeight: '700', textAlign: 'center' }}>
+                      ⚙️ RAG Indexing (Semantic Chunking • 384-Dim Dense Vectorizer • BM25 Lexical Index)
+                    </div>
+
+                    <div style={{ color: '#34d399', fontSize: '1.2rem', fontWeight: '900' }}>↓</div>
+
+                    {/* Step 3: Vector Database */}
+                    <div style={{ background: 'rgba(16, 185, 129, 0.22)', border: '2px solid #059669', borderRadius: '12px', padding: '12px 28px', color: '#fff', fontWeight: '800', textAlign: 'center' }}>
+                      💾 Vector Database (In-Memory Serverless Store • 115 Semantic Chunks)
+                    </div>
+
+                    <div style={{ color: '#34d399', fontSize: '1.2rem', fontWeight: '900' }}>↓ (Indexed Knowledge Base)</div>
+
+                    {/* Step 4: User Interaction Row */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
+                      <div style={{ background: '#022c15', border: '1.5px solid #10b981', borderRadius: '10px', padding: '8px 18px', color: '#a7f3d0', fontWeight: '700' }}>
+                        👤 User
+                      </div>
+                      <div style={{ color: '#34d399', fontWeight: '900' }}>➔</div>
+                      <div style={{ background: '#022c15', border: '1.5px solid #10b981', borderRadius: '10px', padding: '8px 18px', color: '#a7f3d0', fontWeight: '700' }}>
+                        💬 Chat UI (Web / Voice / Camera)
+                      </div>
+                      <div style={{ color: '#34d399', fontWeight: '900' }}>➔</div>
+                      <div style={{ background: 'linear-gradient(135deg, #059669, #10b981)', borderRadius: '10px', padding: '8px 18px', color: '#fff', fontWeight: '800' }}>
+                        🔌 /api/chat
+                      </div>
+                    </div>
+
+                    <div style={{ color: '#34d399', fontSize: '1.2rem', fontWeight: '900' }}>↓</div>
+
+                    {/* Step 5: rag_engine */}
+                    <div style={{ background: 'rgba(16, 185, 129, 0.18)', border: '1.5px solid #10b981', borderRadius: '10px', padding: '10px 26px', color: '#ecfdf5', fontWeight: '700' }}>
+                      🔍 rag_engine (Query Normalization & Reciprocal Rank Fusion RRF)
+                    </div>
+
+                    <div style={{ color: '#34d399', fontSize: '1.2rem', fontWeight: '900' }}>↓</div>
+
+                    {/* Step 6: Similarity Search */}
+                    <div style={{ background: 'rgba(16, 185, 129, 0.18)', border: '1.5px solid #10b981', borderRadius: '10px', padding: '10px 26px', color: '#ecfdf5', fontWeight: '700' }}>
+                      ⚡ Similarity Search (Dense Embedding Distance + BM25 Lexical Match)
+                    </div>
+
+                    <div style={{ color: '#34d399', fontSize: '1.2rem', fontWeight: '900' }}>↓</div>
+
+                    {/* Step 7: Relevant Chunks */}
+                    <div style={{ background: 'rgba(16, 185, 129, 0.22)', border: '1.5px solid #34d399', borderRadius: '10px', padding: '10px 26px', color: '#a7f3d0', fontWeight: '700' }}>
+                      📑 Relevant Chunks (Top-K Chunks with Exact Page Numbers & Relevance Scores)
+                    </div>
+
+                    <div style={{ color: '#34d399', fontSize: '1.2rem', fontWeight: '900' }}>↓</div>
+
+                    {/* Step 8: LLM */}
+                    <div style={{ background: 'rgba(5, 150, 105, 0.3)', border: '2px solid #10b981', borderRadius: '10px', padding: '10px 26px', color: '#fff', fontWeight: '800' }}>
+                      🧠 LLM (Strict Context Grounding • Never Hallucinates)
+                    </div>
+
+                    <div style={{ color: '#34d399', fontSize: '1.2rem', fontWeight: '900' }}>↓</div>
+
+                    {/* Final Step: Answer */}
+                    <div style={{ background: 'linear-gradient(135deg, #10b981, #047857)', border: '2px solid #a7f3d0', borderRadius: '12px', padding: '12px 32px', color: '#fff', fontWeight: '900', fontSize: '1.05rem', boxShadow: '0 6px 24px rgba(16, 185, 129, 0.6)' }}>
+                      ✅ Answer (Exact Agronomic Prescription + Page Citations + Visual Evidence)
+                    </div>
+
+                  </div>
+                </div>
+
+                {/* Dataset Files Table */}
+                <div className="glass-card">
+                  <div className="panel-title">📚 Active Modern Farming Dataset Documents</div>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '14px', marginTop: '12px' }}>
+                    <div style={{ background: 'rgba(6, 26, 15, 0.8)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '14px', borderRadius: '10px' }}>
+                      <div style={{ fontWeight: '800', color: '#34d399', marginBottom: '4px' }}>📄 farming_dataset_full.txt</div>
+                      <div style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>71 Semantic Chunks • 32 Pages • Major Indian Crops, AWD, Drip Fertigation, IPM, PM-KUSUM</div>
+                    </div>
+                    <div style={{ background: 'rgba(6, 26, 15, 0.8)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '14px', borderRadius: '10px' }}>
+                      <div style={{ fontWeight: '800', color: '#34d399', marginBottom: '4px' }}>📊 sample_soil_report_punjab.csv</div>
+                      <div style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>10 Semantic Chunks • NPK, pH, EC, Zinc, OC Ratings & Amelioration</div>
+                    </div>
+                    <div style={{ background: 'rgba(6, 26, 15, 0.8)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '14px', borderRadius: '10px' }}>
+                      <div style={{ fontWeight: '800', color: '#34d399', marginBottom: '4px' }}>🐛 aphid_and_sucking_pest_management.txt</div>
+                      <div style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>8 Semantic Chunks • Aphid ETL, Biological Parasitoids & Imidacloprid/Flonicamid</div>
+                    </div>
+                    <div style={{ background: 'rgba(6, 26, 15, 0.8)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '14px', borderRadius: '10px' }}>
+                      <div style={{ fontWeight: '800', color: '#34d399', marginBottom: '4px' }}>📜 pm_kisan_and_government_schemes.csv</div>
+                      <div style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>6 Semantic Chunks • PM-KUSUM, PMKSY, SMAM, PMFBY, KCC Guidelines</div>
+                    </div>
+                    <div style={{ background: 'rgba(6, 26, 15, 0.8)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '14px', borderRadius: '10px' }}>
+                      <div style={{ fontWeight: '800', color: '#34d399', marginBottom: '4px' }}>🌾 rice_cultivation_guide.txt</div>
+                      <div style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>6 Semantic Chunks • Alternate Wetting & Drying (AWD) & Split Urea Nitrogen</div>
+                    </div>
+                    <div style={{ background: 'rgba(6, 26, 15, 0.8)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '14px', borderRadius: '10px' }}>
+                      <div style={{ fontWeight: '800', color: '#34d399', marginBottom: '4px' }}>🧪 soil_health_and_nutrient_management.txt</div>
+                      <div style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>6 Semantic Chunks • 12-parameter Soil Health Card & Gypsum/Lime Treatment</div>
+                    </div>
+                    <div style={{ background: 'rgba(6, 26, 15, 0.8)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '14px', borderRadius: '10px' }}>
+                      <div style={{ fontWeight: '800', color: '#34d399', marginBottom: '4px' }}>🛡️ integrated_pest_management_wheat_cotton.txt</div>
+                      <div style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>5 Semantic Chunks • Cotton Pink Bollworm & Wheat Rust Diagnostics</div>
+                    </div>
+                    <div style={{ background: 'rgba(6, 26, 15, 0.8)', border: '1px solid rgba(16, 185, 129, 0.3)', padding: '14px', borderRadius: '10px' }}>
+                      <div style={{ fontWeight: '800', color: '#34d399', marginBottom: '4px' }}>📊 sample_soil_report_maharashtra.txt</div>
+                      <div style={{ fontSize: '0.82rem', color: '#cbd5e1' }}>3 Semantic Chunks • Black Cotton Vertisol Soil Health Evaluation</div>
+                    </div>
                   </div>
                 </div>
 
