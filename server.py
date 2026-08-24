@@ -59,13 +59,13 @@ except ImportError:
                 except Exception:
                     payload = {}
 
-                if path == "/api/health":
+                if (path == "/api/health" or path == "/health" or (path == "/api" and method == "GET")):
                     res = health_check()
                     body = json.dumps(res).encode("utf-8")
-                    await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json"), (b"access-control-allow-origin", b"*")]})
+                    await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json; charset=utf-8"), (b"access-control-allow-origin", b"*")]})
                     await send({"type": "http.response.body", "body": body})
-                elif (path == "/api/chat" or path == "/chat") and method == "POST":
-                    msg = payload.get("message", "")
+                elif (path == "/api/chat" or path == "/chat" or (path == "/api" and method == "POST")) and method == "POST":
+                    msg = payload.get("message", "") or payload.get("query", "")
                     sess = payload.get("session_id", "default_session")
                     f_ctx = payload.get("farm_context")
                     img_d = payload.get("image_data")
@@ -74,15 +74,15 @@ except ImportError:
                     await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json; charset=utf-8"), (b"access-control-allow-origin", b"*")]})
                     await send({"type": "http.response.body", "body": body})
                 elif (path == "/api/rag/query" or path == "/rag/query") and method == "POST":
-                    q = payload.get("query", "")
+                    q = payload.get("query", "") or payload.get("message", "")
                     res = handle_rag_query(q)
                     body = json.dumps(res).encode("utf-8")
                     await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json; charset=utf-8"), (b"access-control-allow-origin", b"*")]})
                     await send({"type": "http.response.body", "body": body})
-                elif path == "/api/documents":
+                elif path == "/api/documents" or path == "/documents":
                     res = list_documents()
                     body = json.dumps(res).encode("utf-8")
-                    await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json"), (b"access-control-allow-origin", b"*")]})
+                    await send({"type": "http.response.start", "status": 200, "headers": [(b"content-type", b"application/json; charset=utf-8"), (b"access-control-allow-origin", b"*")]})
                     await send({"type": "http.response.body", "body": body})
                 elif path == "/" or path == "/index.html":
                     import config
@@ -389,7 +389,7 @@ def openai_status():
 
 
 # Static Asset Handling
-@app.get("/static/{asset_name}")
+@app.get("/static/{asset_name:path}")
 def get_static_asset(asset_name: str):
     """Serves static assets and photographic dataset files."""
     asset_path = config.BASE_DIR / "static" / asset_name
