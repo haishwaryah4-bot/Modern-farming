@@ -145,6 +145,11 @@ Category: Crop Production
 PAGE 8: WHEAT (TRITICUM AESTIVUM) PRODUCTION GUIDE
 Soil Requirement: Well-drained alluvial and clay loam soils, pH 6.0-7.5.
 Sowing Window: Timely sown: Nov 1 to Nov 20; Late sown: Nov 25 to Dec 15. Seed rate: 40-45 kg/acre (timely) and 50-55 kg/acre (late). Line spacing 20 cm at 4-5 cm depth.
+Nutrient & Fertilizer Schedule (Per Acre):
+- Basal Dose (At Sowing): Apply 55 kg DAP (Diammonium Phosphate) + 25 kg MOP (Muriate of Potash) + 10 kg Zinc Sulfate (21%) + 20 kg Starter Urea drilled below seed depth.
+- 1st Top Dressing (CRI Stage - 20-22 DAS): Apply 45 kg Urea along with first irrigation.
+- 2nd Top Dressing (Late Tillering / Jointing Stage - 40-45 DAS): Apply 45 kg Urea along with second irrigation.
+- Total Recommended N:P:K: 120:60:40 kg/ha. Avoid late nitrogen application to prevent lodging and foliar rust vulnerability.
 Critical Irrigation Stages (6 Stage Model):
 1. Crown Root Initiation (CRI) at 20-22 DAS (Most critical; missing this reduces tillers by 30%).
 2. Tillering Stage (40-45 DAS).

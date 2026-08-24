@@ -64,7 +64,15 @@ class DocumentLoader:
                     p_meta["doc_type"] = DocumentLoader._extract_field(page_text, "Category") or "Agronomic Dataset"
                     p_meta["source"] = "Farming Dataset"
 
-                    docs.append({"text": page_text, "metadata": p_meta})
+                    # Strip metadata headers from text body so chunks contain pure agronomic guidance
+                    clean_body_lines = []
+                    for l in page_text.split("\n"):
+                        if any(l.strip().startswith(k) for k in ["Document:", "Page:", "Topic:", "Crop:", "Season:", "Region:", "Category:"]):
+                            continue
+                        clean_body_lines.append(l)
+                    cleaned_body = "\n".join(clean_body_lines).strip()
+
+                    docs.append({"text": cleaned_body or page_text, "metadata": p_meta})
                     i += 2
                 return docs
 
@@ -81,7 +89,14 @@ class DocumentLoader:
             if year: item_meta["year"] = year
             item_meta["page"] = 1
 
-            return [{"text": content, "metadata": item_meta}]
+            clean_body_lines = []
+            for l in content.split("\n"):
+                if any(l.strip().startswith(k) for k in ["Title:", "Category:", "Crop:", "Geography:", "Year:", "Language:", "Author:"]):
+                    continue
+                clean_body_lines.append(l)
+            cleaned_content = "\n".join(clean_body_lines).strip()
+
+            return [{"text": cleaned_content or content, "metadata": item_meta}]
         except Exception:
             return []
 

@@ -124,19 +124,22 @@ class HybridRetriever:
         chunk_map: Dict[str, Dict[str, Any]] = {}
         raw_scores: Dict[str, Dict[str, float]] = {}
 
+        # BM25 RRF (High weight for exact agricultural terminology)
+        for rank, (chunk, score) in enumerate(bm25_results):
+            cid = chunk["metadata"].get("chunk_id", str(id(chunk)))
+            chunk_map[cid] = chunk
+            # If BM25 has a strong keyword hit, prioritize it heavily
+            bm25_weight = 0.70
+            rrf_scores[cid] = rrf_scores.get(cid, 0.0) + bm25_weight * (1.0 / (30.0 + rank + 1.0))
+            raw_scores.setdefault(cid, {})["bm25"] = score
+
         # Dense RRF
         for rank, (chunk, score) in enumerate(dense_results):
             cid = chunk["metadata"].get("chunk_id", str(id(chunk)))
             chunk_map[cid] = chunk
-            rrf_scores[cid] = rrf_scores.get(cid, 0.0) + self.alpha * (1.0 / (60.0 + rank + 1.0))
+            dense_weight = 0.30
+            rrf_scores[cid] = rrf_scores.get(cid, 0.0) + dense_weight * (1.0 / (30.0 + rank + 1.0))
             raw_scores.setdefault(cid, {})["dense"] = score
-
-        # BM25 RRF
-        for rank, (chunk, score) in enumerate(bm25_results):
-            cid = chunk["metadata"].get("chunk_id", str(id(chunk)))
-            chunk_map[cid] = chunk
-            rrf_scores[cid] = rrf_scores.get(cid, 0.0) + (1.0 - self.alpha) * (1.0 / (60.0 + rank + 1.0))
-            raw_scores.setdefault(cid, {})["bm25"] = score
 
         # Sort by RRF score
         sorted_candidates = sorted(rrf_scores.items(), key=lambda x: x[1], reverse=True)
@@ -144,10 +147,9 @@ class HybridRetriever:
         final_chunks = []
         for cid, rrf in sorted_candidates[:top_k]:
             chunk = chunk_map[cid].copy()
-            # Normalize relevance score between 0.65 and 0.99 for clean display
             dense_s = raw_scores.get(cid, {}).get("dense", 0.5)
-            bm25_s = raw_scores.get(cid, {}).get("bm25", 0.5)
-            calibrated_score = min(0.99, max(0.55, (dense_s * 0.5 + min(1.0, bm25_s / 5.0) * 0.5)))
+            bm25_s = raw_scores.get(cid, {}).get("bm25", 0.0)
+            calibrated_score = min(0.99, max(0.55, (dense_s * 0.3 + min(1.0, bm25_s / 4.0) * 0.7)))
 
             chunk["relevance_score"] = round(calibrated_score, 3)
             chunk["rrf_score"] = round(rrf, 4)
