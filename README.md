@@ -1,34 +1,65 @@
-# 🌾 AgriSense AI - Production Agriculture AI Agent & Advanced RAG Platform
+# 🌾 AgriSense AI - Modern Farming Knowledge RAG Platform
 
-An India-focused, production-grade Smart Agriculture platform featuring an **Autonomous ReAct AI Agent**, **Advanced Hybrid RAG** (Dense Vector + BM25 + Cross-Encoder Re-Ranking), multi-format document ingestion (**PDF, DOCX, XLSX/CSV, TXT**), a **FastAPI Backend**, a modern **React Frontend**, and an interactive **Streamlit Agriculture Portal**.
+An India-focused Smart Agriculture platform featuring an **Advanced Hybrid RAG Pipeline** (Dense Vector + BM25 + Re-Ranking), full **Modern Farming Dataset indexing** (PDF, MD, DOCX, CSV, TXT), a **FastAPI Backend** (`server.py`), and a modern **React Chat Interface**.
 
 ---
 
-## 🌟 Production System Architecture
+## 🌟 System Architecture & RAG Pipeline Flow
 
 ```
-                                  ┌────────────────────────┐
-                                  │      User Clients      │
-                                  │ (React Web / Streamlit)│
-                                  └───────────┬────────────┘
-                                              │
-                                  ┌───────────▼────────────┐
-                                  │     FastAPI Backend    │
-                                  │      (server.py)       │
-                                  └───────────┬────────────┘
-                                              │
-                        ┌─────────────────────┴─────────────────────┐
-                        │                                           │
-            ┌───────────▼───────────┐                   ┌───────────▼───────────┐
-            │  ReAct AI Agent Core  │                   │  Advanced Hybrid RAG  │
-            │  (src/agents/core.py) │                   │  (src/rag/engine.py)  │
-            └───────────┬───────────┘                   └───────────┬───────────┘
-                        │                                           │
-            ┌───────────▼───────────┐                   ┌───────────▼───────────┐
-            │ 8 Typed Domain Tools  │                   │ Multi-Format Ingester │
-            │ (Weather, Soil, IPM)  │                   │ (PDF, DOCX, XLSX, TXT)│
-            └───────────────────────┘                   └───────────────────────┘
+                  ┌─────────────────────────────────┐
+                  │     Modern Farming Dataset      │
+                  └────────────────┬────────────────┘
+                                   │
+                                   ▼
+                  ┌─────────────────────────────────┐
+                  │          RAG Indexing           │
+                  └────────────────┬────────────────┘
+                                   │
+                                   ▼
+                  ┌─────────────────────────────────┐
+                  │         Vector Database         │
+                  └────────────────┬────────────────┘
+                                   │
+                                   │ (Indexed Knowledge Base)
+                                   ▼
+┌──────────────┐     ┌─────────────────────────────┐     ┌───────────────────────────────┐
+│     User     │ ──► │           Chat UI           │ ──► │           /api/chat           │
+└──────────────┘     └─────────────────────────────┘     └───────────────┬───────────────┘
+                                                                         │
+                                                                         ▼
+                                                         ┌───────────────────────────────┐
+                                                         │          rag_engine           │
+                                                         └───────────────┬───────────────┘
+                                                                         │
+                                                                         ▼
+                                                         ┌───────────────────────────────┐
+                                                         │       Similarity Search       │
+                                                         └───────────────┬───────────────┘
+                                                                         │
+                                                                         ▼
+                                                         ┌───────────────────────────────┐
+                                                         │        Relevant Chunks        │
+                                                         └───────────────┬───────────────┘
+                                                                         │
+                                                                         ▼
+                                                         ┌───────────────────────────────┐
+                                                         │              LLM              │
+                                                         └───────────────┬───────────────┘
+                                                                         │
+                                                                         ▼
+                                                         ┌───────────────────────────────┐
+                                                         │            Answer             │
+                                                         └───────────────────────────────┘
 ```
+
+### 🔄 End-to-End Execution Flow
+1. **Dataset Ingestion**: The complete **Modern Farming Dataset** is parsed and split into semantic chunks during **RAG Indexing**.
+2. **Vector Storage**: Chunk embeddings and metadata are stored in the in-memory **Vector Database** (with BM25 lexical indexing).
+3. **User Interaction**: The **User** inputs questions via the **Chat UI**, which dispatches requests to the `/api/chat` endpoint.
+4. **RAG Engine Processing**: `/api/chat` invokes **`rag_engine`** directly to perform **Similarity Search** against the Vector Database.
+5. **Context Retrieval**: The top **Relevant Chunks** with citations and page metadata are retrieved and passed to the **LLM**.
+6. **Strictly Grounded Response**: The **LLM** generates the final **Answer** strictly grounded in the retrieved dataset excerpts (or returns an exact refusal for ungrounded queries).
 
 ---
 
