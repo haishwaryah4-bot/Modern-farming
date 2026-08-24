@@ -1064,17 +1064,28 @@
 
       const formatMessageContent = (content) => {
         if (!content) return { __html: '' };
-        // If content already contains formatted HTML tags (like verified image cards), pass through cleanly
-        if (content.includes('<div') || content.includes('<img') || content.includes('<table')) {
-          return { __html: content };
+        
+        // If content contains visual HTML card, separate HTML card and format the markdown text part
+        let htmlCard = '';
+        let textPart = content;
+        
+        const lastDivIndex = content.lastIndexOf('</div>');
+        if (content.trim().startsWith('<div') && lastDivIndex !== -1) {
+          htmlCard = content.substring(0, lastDivIndex + 6);
+          textPart = content.substring(lastDivIndex + 6).trim();
         }
-        let html = content
+        
+        let formattedText = textPart
           .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
           .replace(/\*(.*?)\*/g, '<em>$1</em>')
           .replace(/`([^`]+)`/g, '<code style="background: rgba(16, 185, 129, 0.18); color: #34d399; padding: 2px 6px; border-radius: 4px;">$1</code>')
           .replace(/\n\n/g, '<br/><br/>')
           .replace(/\n/g, '<br/>');
-        return { __html: html };
+
+        if (htmlCard) {
+          return { __html: htmlCard + (formattedText ? '<div style="margin-top: 14px; line-height: 1.6; font-size: 0.94rem;">' + formattedText + '</div>' : '') };
+        }
+        return { __html: '<div style="line-height: 1.6; font-size: 0.94rem;">' + formattedText + '</div>' };
       };
 
       return (

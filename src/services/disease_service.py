@@ -48,6 +48,7 @@ class DiseaseService:
         image_bytes: Optional[bytes] = None,
         filename: str = "",
         crop_hint: Optional[str] = None,
+        **kwargs
     ) -> Dict[str, Any]:
         """
         Computer Vision model diagnosis layer.
@@ -86,18 +87,30 @@ class DiseaseService:
 
         # Calibrated confidence rating
         confidence = selected.get("confidence_baseline", 0.94)
+        treatments = selected.get("treatment", [])
+        chemical = treatments[0] if treatments else "Follow certified integrated pest management"
+        organic = treatments[1] if len(treatments) > 1 else "Apply neem oil 1500 ppm @ 3 ml/L"
 
         return {
             "disease_id": selected.get("id"),
             "disease_name": selected.get("disease_name"),
+            "diagnosis": selected.get("disease_name"),
             "crop": selected.get("crop"),
             "pathogen_type": selected.get("type"),
             "confidence_score": confidence,
+            "confidence": f"{int(confidence * 100)}%",
             "confidence_percentage": f"{int(confidence * 100)}%",
             "symptoms": selected.get("symptoms", []),
             "favorable_conditions": selected.get("favorable_conditions", "High humidity and warm weather."),
             "prevention_measures": selected.get("prevention", []),
-            "treatment_suggestions": selected.get("treatment", []),
+            "prevention": selected.get("prevention", []),
+            "treatment_suggestions": treatments,
+            "treatments": treatments,
+            "prescription": {
+                "chemical_control": chemical,
+                "organic_control": organic,
+                "preventive_actions": selected.get("prevention", [])
+            },
             "cv_model_architecture": "ResNet-50 / EfficientNet-B4 Backbone (PlantVillage Pretrained)",
             "verification_status": "High Confidence - Informational Advisory",
         }

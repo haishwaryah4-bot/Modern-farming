@@ -308,12 +308,32 @@ def tool_weather_market_placeholder(
     }
 
 
+# Tool 9: Computer Vision & Camera Diagnostic
+def tool_disease_cv_diagnostic(
+    crop: str = "Tomato",
+    image_bytes: Any = None,
+    filename: str = "camera_photo.jpg",
+    **kwargs
+) -> Dict[str, Any]:
+    return disease_service.diagnose_image(
+        image_bytes=image_bytes,
+        filename=filename,
+        crop_hint=crop,
+        **kwargs
+    )
+
+
 # Typed Tool Registry
 TOOL_REGISTRY = {
     "rag_knowledge_search": {
         "function": tool_rag_knowledge_search,
         "description": "Searches Agricultural Knowledge Base for source-grounded agronomy, IPM, and technology advice.",
         "icon": "📚",
+    },
+    "disease_cv_diagnostic": {
+        "function": tool_disease_cv_diagnostic,
+        "description": "Diagnoses field photographs for fungal, bacterial, viral, insect pest, or physiological disorders.",
+        "icon": "📸",
     },
     "farm_profile_analyzer": {
         "function": tool_farm_profile_analyzer,

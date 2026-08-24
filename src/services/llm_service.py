@@ -300,6 +300,10 @@ class LLMService:
             txt_words = set(re.findall(r"\b\w{3,}\b", txt_lower))
             overlap = len(txt_words.intersection(q_words))
             
+            # High priority for agent tool diagnostic observations
+            if txt.startswith("[") and ("Diagnostic" in txt or "Assessment" in txt or "Recommendation" in txt):
+                overlap += 5
+            
             # High weight if explicit crop or disease or key noun is in the sentence
             if any(w in txt_lower for w in q_words):
                 overlap += 2
