@@ -596,18 +596,26 @@ def render_unified_chat_box(key_prefix: str = "dash"):
           }}
         }}
 
-        function speakDirect(text) {{
+        function speakDirect(text) {
           if (!('speechSynthesis' in window)) return;
           window.speechSynthesis.cancel();
-          const utt = new SpeechSynthesisUtterance(text);
-          utt.lang = document.getElementById('voiceLangSelect').value;
-          utt.rate = 1.0;
+          let clean = (text || '')
+            .replace(/<[^>]*>?/gm, ' ')
+            .replace(/\[(?:Source|Doc):[^\]]*\]/gi, ' ')
+            .replace(/[*_#`~>]/g, ' ')
+            .replace(/\s+/g, ' ')
+            .trim();
+          if (!clean) return;
+          const utt = new SpeechSynthesisUtterance(clean);
+          utt.lang = document.getElementById('voiceLangSelect').value || 'en-IN';
+          utt.rate = 0.95;
           document.getElementById('voiceStatusNotice').innerText = '🔊 Reading response aloud...';
-          utt.onend = function() {{
+          utt.onend = function() {
             document.getElementById('voiceStatusNotice').innerText = '⚡ Ready for Voice or Text';
-          }};
+          };
+          try { window.speechSynthesis.resume(); } catch(e) {}
           window.speechSynthesis.speak(utt);
-        }}
+        }
 
         function stopAllSpeech() {{
           if ('speechSynthesis' in window) {{

@@ -495,6 +495,14 @@
       border-color: #10b981;
     }
 
+    .action-icon-btn.speaking-active {
+      background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+      border-color: #f87171 !important;
+      color: #ffffff !important;
+      box-shadow: 0 0 14px rgba(239, 68, 68, 0.6) !important;
+      animation: pulse 1.2s infinite;
+    }
+
     /* Attachment Preview Bar */
     .attachment-preview-bar {
       display: flex;
@@ -849,6 +857,7 @@
       const [loading, setLoading] = useState(false);
       const [isListening, setIsListening] = useState(false);
       const [voiceStatus, setVoiceStatus] = useState('');
+      const [speakingIndex, setSpeakingIndex] = useState(null);
       const [adminMsg, setAdminMsg] = useState('');
       
       // Camera states
@@ -864,6 +873,16 @@
       useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
       }, [messages]);
+
+      // Pre-load Speech Synthesis Voices
+      useEffect(() => {
+        if ('speechSynthesis' in window) {
+          window.speechSynthesis.getVoices();
+          window.speechSynthesis.onvoiceschanged = () => {
+            window.speechSynthesis.getVoices();
+          };
+        }
+      }, []);
 
       // Speech Recognition setup
       useEffect(() => {
@@ -967,15 +986,65 @@
         }
       };
 
-      const speakText = (text) => {
-        if ('speechSynthesis' in window) {
-          window.speechSynthesis.cancel();
-          const clean = text.replace(/<[^>]*>?/gm, '').replace(/[*_#`~]/g, '');
-          const utterance = new SpeechSynthesisUtterance(clean.slice(0, 300));
-          utterance.lang = 'en-IN';
-          utterance.rate = 1.0;
-          window.speechSynthesis.speak(utterance);
+      // Full Natural Text-To-Speech (TTS) Voice Engine with Stop/Toggle & Voice Pitching
+      const speakText = (text, index) => {
+        if (!('speechSynthesis' in window)) {
+          alert('Text-to-Speech is not supported in this browser. Please use Chrome, Edge, Safari, or Firefox.');
+          return;
         }
+
+        // If clicking on the actively speaking message, stop reading
+        if (speakingIndex === index) {
+          window.speechSynthesis.cancel();
+          setSpeakingIndex(null);
+          setVoiceStatus('🟢 Voice & Speech Recognition ready');
+          return;
+        }
+
+        // Stop any currently ongoing speech
+        window.speechSynthesis.cancel();
+
+        // Extract clean conversational agricultural text, stripping HTML cards and markup
+        let clean = (text || '')
+          .replace(/<[^>]*>?/gm, ' ')
+          .replace(/\[(?:Source|Doc):[^\]]*\]/gi, ' ')
+          .replace(/[*_#`~>]/g, ' ')
+          .replace(/\s+/g, ' ')
+          .trim();
+
+        if (!clean) return;
+
+        const utterance = new SpeechSynthesisUtterance(clean);
+        utterance.lang = 'en-IN';
+        utterance.rate = 0.95; // Natural, clear cadence for agricultural advisory
+        utterance.pitch = 1.0;
+
+        // Choose best available English / Indian voice
+        const voices = window.speechSynthesis.getVoices();
+        const preferredVoice = voices.find(v => v.lang === 'en-IN' || v.lang === 'hi-IN' || v.name.includes('India')) ||
+                               voices.find(v => v.lang === 'en-GB' || v.lang === 'en-US' || v.lang.startsWith('en'));
+        if (preferredVoice) {
+          utterance.voice = preferredVoice;
+        }
+
+        setSpeakingIndex(index);
+        setVoiceStatus('🔊 Reading answer aloud... Click ⏹️ Stop to pause.');
+
+        utterance.onend = () => {
+          setSpeakingIndex(null);
+          setVoiceStatus('🟢 Voice & Speech Recognition ready');
+        };
+
+        utterance.onerror = (e) => {
+          console.warn('SpeechSynthesis error:', e);
+          setSpeakingIndex(null);
+          setVoiceStatus('🟢 Voice & Speech Recognition ready');
+        };
+
+        try {
+          window.speechSynthesis.resume();
+        } catch(e) {}
+        window.speechSynthesis.speak(utterance);
       };
 
       const sendMessage = async (textToSend) => {
@@ -1361,8 +1430,12 @@
                           <div dangerouslySetInnerHTML={formatMessageContent(m.content)} />
                           {m.role === 'assistant' && (
                             <div className="msg-actions">
-                              <button className="action-icon-btn" onClick={() => speakText(m.content)}>
-                                🔊 Read Aloud
+                              <button 
+                                className={`action-icon-btn ${speakingIndex === idx ? 'speaking-active' : ''}`} 
+                                onClick={() => speakText(m.content, idx)}
+                                title={speakingIndex === idx ? "Click to stop reading aloud" : "Read this agricultural answer aloud"}
+                              >
+                                {speakingIndex === idx ? '⏹️ Stop Reading' : '🔊 Read Aloud'}
                               </button>
                               <button 
                                 className="action-icon-btn" 
