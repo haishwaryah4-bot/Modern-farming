@@ -191,14 +191,17 @@ class LLMService:
 
         # Check if query is completely outside agricultural domain
         agri_keywords = {
-            "crop", "plant", "farm", "farming", "soil", "pest", "disease", "blight", "rust", "leaf",
-            "seed", "water", "irrigation", "fertigation", "fertilizer", "manure", "npk", "drip",
-            "hydroponic", "vertical", "polyhouse", "solar", "tractor", "drone", "wheat",
-            "rice", "paddy", "tomato", "cotton", "chilli", "maize", "mustard", "spray",
-            "pesticide", "fungicide", "harvest", "yield", "weather", "mandi", "subsidy",
-            "kusum", "pmksy", "rot", "wilt", "borer", "aphid", "insect", "agriculture",
-            "organic", "compost", "carbon", "greenhouse", "aquaponics", "machinery", "fertilizer",
-            "precision", "benefit", "benefits", "nutrient", "sprinkler", "agritech", "modern"
+            "crop", "crops", "plant", "plants", "farm", "farming", "soil", "soils", "pest", "pests", "disease", "diseases",
+            "blight", "rust", "leaf", "leaves", "seed", "seeds", "water", "irrigation", "fertigation", "fertilizer", "fertilizers",
+            "manure", "npk", "drip", "hydroponic", "hydroponics", "vertical", "polyhouse", "greenhouse", "solar", "tractor",
+            "drone", "drones", "wheat", "rice", "paddy", "tomato", "tomatoes", "cotton", "chilli", "maize", "corn", "mustard",
+            "spray", "pesticide", "pesticides", "fungicide", "fungicides", "harvest", "harvesting", "yield", "weather", "mandi",
+            "msp", "subsidy", "kusum", "pmksy", "rot", "wilt", "borer", "aphid", "aphids", "insect", "insects", "agriculture",
+            "organic", "compost", "carbon", "precision", "benefit", "benefits", "nutrient", "nutrients", "sprinkler", "agritech",
+            "modern", "kharif", "rabi", "zaid", "season", "seasons", "testing", "stage", "stages", "growth", "precaution",
+            "precautions", "safety", "phenology", "weed", "weeds", "herbicide", "herbicides", "potash", "nitrogen", "phosphorus",
+            "zinc", "iron", "boron", "drainage", "humidity", "loam", "clay", "gypsum", "lime", "awd", "tillering", "flowering",
+            "anthesis", "booting", "germination", "technolog", "technology", "technologies"
         }
         q_words_check = set(re.findall(r"\b\w{3,}\b", raw_question.lower()))
         if not bool(q_words_check.intersection(agri_keywords)):
@@ -253,16 +256,6 @@ class LLMService:
                 citations_found.append(f"{source} (Page {page})")
 
         # Check if query is completely outside domain
-        agri_keywords = {
-            "crop", "plant", "farm", "soil", "pest", "disease", "blight", "rust", "leaf",
-            "seed", "water", "irrigation", "fertigation", "fertilizer", "manure", "npk", "drip",
-            "hydroponic", "vertical", "polyhouse", "solar", "tractor", "drone", "wheat",
-            "rice", "paddy", "tomato", "cotton", "chilli", "maize", "mustard", "spray",
-            "pesticide", "fungicide", "harvest", "yield", "weather", "mandi", "subsidy",
-            "kusum", "pmksy", "rot", "wilt", "borer", "aphid", "insect", "agriculture",
-            "organic", "compost", "carbon", "greenhouse", "aquaponics", "machinery", "fertilizer",
-            "precision", "benefit", "benefits", "nutrient", "sprinkler", "agritech", "modern"
-        }
         q_terms = set(re.findall(r"\b\w{3,}\b", enriched_query.lower()))
         is_agri_related = bool(q_terms.intersection(agri_keywords))
 
