@@ -124,8 +124,35 @@ class RAGEngine:
         """
         self._ensure_initialized()
 
-        # Step 1: Query Expansion
-        expanded = self.expand_query(question)
+        # Step 1: Greeting & Intent Fast-Path
+        import re
+        from src.utils.language_processor import normalize_farmer_query, is_telugu, is_kannada, detect_language
+        clean_q = re.sub(r'[^a-zA-Z0-9\u0C00-\u0C7F\u0C80-\u0CFF\s]', ' ', question.lower()).strip()
+        clean_q = re.sub(r'\s+', ' ', clean_q)
+        greetings_list = [
+            "hi", "hello", "hey", "namaste", "good morning", "good afternoon", "who are you", "hello who are you", "help", "can you help me",
+            "నమస్కారం", "నమస్తే", "హలో", "హాయ్", "బాగున్నారా", "సహాయం", "ఎవరు మీరు",
+            "ನಮಸ್ಕಾರ", "ನಮಸ್ಕಾರಗಳು", "ಹಲೋ", "ಹಾಯ್", "ಹೇಗಿದ್ದೀರಾ", "ಸಹಾಯ", "ಯಾರು ನೀವು"
+        ]
+        if clean_q in greetings_list or any(clean_q == g for g in greetings_list):
+            greeting_ans = llm_client.complete(question, system_prompt="You are AgriSense AI Smart Farming Assistant.")
+            return {
+                "answer": greeting_ans,
+                "citations": [{"source": "AgriSense Knowledge Base", "page": 1, "topic": "Welcome & System Introduction"}],
+                "images": [],
+                "groundedness_confidence": "100%",
+                "retrieved_chunks": [],
+            }
+
+        # Step 2: Query Normalization & Expansion (supports Telugu & Kannada Unicode, Transliterations, Typos)
+        enriched_query, concepts, entities = normalize_farmer_query(question)
+
+        expanded = self.expand_query(enriched_query or question)
+        if enriched_query and enriched_query not in expanded:
+            expanded.append(enriched_query)
+        if question not in expanded:
+            expanded.append(question)
+
         all_candidates = []
         seen_ids = set()
 
@@ -137,15 +164,21 @@ class RAGEngine:
                     seen_ids.add(cid)
                     all_candidates.append(c)
 
-        # Step 2: Re-ranking
+        # Step 3: Re-ranking
+        rerank_query = enriched_query if enriched_query else question
         if use_reranker and all_candidates:
-            ranked_chunks = self.rerank_chunks(question, all_candidates)[:top_k]
+            ranked_chunks = self.rerank_chunks(rerank_query, all_candidates)[:top_k]
         else:
             ranked_chunks = all_candidates[:top_k]
 
-        # Step 3: Out-of-Domain Refusal Guardrail
-        if not ranked_chunks or (ranked_chunks and ranked_chunks[0].get("rerank_score", ranked_chunks[0].get("relevance_score", 0)) < 0.35):
-            refusal_text = "I couldn't find this information in the provided dataset."
+        # Step 4: Out-of-Domain Refusal Guardrail
+        if not ranked_chunks or (ranked_chunks and ranked_chunks[0].get("rerank_score", ranked_chunks[0].get("relevance_score", 0)) < 0.25):
+            if is_kannada(question):
+                refusal_text = "ನೀಡಿದ ಡೇಟಾಸೆಟ್‌ನಲ್ಲಿ ಈ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ."
+            elif is_telugu(question):
+                refusal_text = "అందించిన డేటాసెట్‌లో ఈ సమాచారం లభించలేదు."
+            else:
+                refusal_text = "I couldn't find this information in the provided dataset."
             print(f"[RAG DEBUG] User Question: '{question}' | Chunks Retrieved: 0 | Final Answer: {refusal_text}")
             return {
                 "answer": refusal_text,

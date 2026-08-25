@@ -173,9 +173,15 @@ class LLMService:
         if "\n" in raw_question:
             raw_question = raw_question.split("\n")[0].strip()
 
+        from src.utils.language_processor import normalize_farmer_query, is_telugu, is_kannada
+
+        user_is_kannada = is_kannada(raw_question) or is_kannada(prompt) or ("language: kannada" in prompt.lower()) or ("language: kn" in prompt.lower())
+        user_is_telugu = is_telugu(raw_question) or is_telugu(prompt) or ("language: telugu" in prompt.lower()) or ("language: te" in prompt.lower())
+
         # Handle greetings & introductory questions
-        clean_q = raw_question.lower().strip(",.?! ")
-        if clean_q in ["hi", "hello", "hey", "namaste", "good morning", "good afternoon", "who are you", "help", "can you help me"]:
+        clean_q = re.sub(r'[^a-zA-Z0-9\u0C00-\u0C7F\u0C80-\u0CFF\s]', ' ', raw_question.lower()).strip()
+        clean_q = re.sub(r'\s+', ' ', clean_q)
+        if clean_q in ["hi", "hello", "hey", "namaste", "good morning", "good afternoon", "who are you", "hello who are you", "help", "can you help me"] or any(clean_q == g for g in ["hi", "hello", "hey", "namaste", "who are you", "hello who are you"]):
             return (
                 "**Answer:**\n"
                 "Hello! I am your **AgriSense AI Assistant**. You can ask me any farming question by typing, speaking, or uploading a field crop photo. I search verified farming datasets and provide practical advice along with real photographic evidence.\n\n"
@@ -187,6 +193,32 @@ class LLMService:
                 "- **Ask about crops & fertilizer**: *'What is the fertilizer schedule for wheat?'*, *'Rice NPK schedule'*\n"
                 "- **Ask about modern tech**: *'What is hydroponic farming?'*, *'Show me examples of smart irrigation'*\n"
                 "- **Ask about soil & nutrients**: *'How to improve soil organic carbon with compost?'*, *'Analyze soil NPK'*."
+            )
+        elif clean_q in ["ನಮಸ್ಕಾರ", "ನಮಸ್ಕಾರಗಳು", "ಹಲೋ", "ಹಾಯ್", "ಹೇಗಿದ್ದೀರಾ", "ಸಹಾಯ", "ಯಾರು ನೀವು"]:
+            return (
+                "**ಉತ್ತರ:**\n"
+                "ನಮಸ್ಕಾರ! ನಾನು ನಿಮ್ಮ **ಅಗ್ರಿಸೆನ್ಸ್ AI ಕೃಷಿ ಸಹಾಯಕ** (AgriSense AI Assistant). ನೀವು ಟೈಪ್ ಮಾಡುವ ಮೂಲಕ, ಮಾತನಾಡುವ ಮೂಲಕ (🎙️), ಅಥವಾ ಬೆಳೆ ಫೋಟೋ ತೆಗೆದು (📷) ಕೃಷಿ ಪ್ರಶ್ನೆಗಳನ್ನು ಕೇಳಬಹುದು. ನಾನು 100 ಪುಟಗಳ ದೃಢೀಕೃತ ಆಧುನಿಕ ಕೃಷಿ ಜ್ಞಾನಕೋಶದ ಆಧಾರದ ಮೇಲೆ ನಿಖರವಾದ ಪರಿಹಾರಗಳನ್ನು ಒದಗಿಸುತ್ತೇನೆ.\n\n"
+                "**ವಿವರಗಳು:**\n"
+                "- ಬೆಳೆ ರಕ್ಷಣೆ, ಕೀಟ ಮತ್ತು ರೋಗಗಳ ನಿಯಂತ್ರಣ, ಸಮತೋಲಿತ ರಸಗೊಬ್ಬರ ಬಳಕೆ ಮತ್ತು ಹನಿ ನೀರಾವರಿ (Drip Irrigation) ವಿಧಾನಗಳು.\n"
+                "- ಮಣ್ಣಿನ ಆರೋಗ್ಯ ಕಾರ್ಡ್, ಹೈನುಗಾರಿಕೆ (Dairy & Silage) ಮತ್ತು ಕೃಷಿ ಯಂತ್ರೋಪಕರಣಗಳ ಮಾಹಿತಿ.\n\n"
+                "**ನೀವು ಕೇಳಬಹುದಾದ ಪ್ರಶ್ನೆಗಳು:**\n"
+                "- *'ಟೊಮೆಟೊ ಎಲೆಗಳು ಹಳದಿಯಾಗುತ್ತಿವೆ, ಏನು ಮಾಡಬೇಕು?'*\n"
+                "- *'ಭತ್ತದ ಬೆಳೆಗೆ ಗೊಬ್ಬರ ಮತ್ತು ನೀರಾವರಿ ನಿರ್ವಹಣೆ ಹೇಗೆ ಮಾಡಬೇಕು?'*\n"
+                "- *'ಹತ್ತಿಯಲ್ಲಿ ಗುಲಾಬಿ ಕಾಯಿಕೊರಕ ಹುಳು ನಿಯಂತ್ರಣ ಹೇಗೆ?'*\n"
+                "- *'ಹೈನು ಹಸುಗಳಿಗೆ ಸೈಲೇಜ್ ತಯಾರಿಕೆ ಹೇಗೆ ಮಾಡಬೇಕು?'*."
+            )
+        elif clean_q in ["నమస్కారం", "నమస్తే", "హలో", "హాయ్", "బాగున్నారా", "సహాయం", "ఎవరు మీరు"]:
+            return (
+                "**సమాధానం:**\n"
+                "నమస్కారం! నేను మీ **అగ్రిసెన్స్ AI సహాయకుడిని** (AgriSense AI Assistant). మీరు టైప్ చేయడం ద్వారా, మాట్లాడటం ద్వారా (🎙️), లేదా పంట ఫోటో తీసి (📷) వ్యవసాయ ప్రశ్నలు అడగవచ్చు. నేను 100 పేజీల ధృవీకరించబడిన వ్యవసాయ డేటా ఆధారంగా ఖచ్చితమైన పరిష్కారాలు అందిస్తాను.\n\n"
+                "**వివరాలు:**\n"
+                "- పంట రక్షణ, చీడపీడల నివారణ, ఎరువుల యాజమాన్యం, బిందు సేద్యం (Drip Irrigation) మరియు ఆధునిక పరికరాలు.\n"
+                "- నేల ఆరోగ్య కార్డు, పాడి పశువుల పోషణ మరియు ప్రభుత్వ వ్యవసాయ పథకాల సమాచారం.\n\n"
+                "**మీరు అడగగల ప్రశ్నలు:**\n"
+                "- *'టమోటా ఆకులు పసుపు రంగులోకి మారుతున్నాయి ఏమి చేయాలి?'*\n"
+                "- *'వరి పంటకు ఎరువుల మోతాదు & నీటి యాజమాన్యం ఎలా ఉండాలి?'*\n"
+                "- *'పత్తిలో గులాబీ రంగు కాయతొలుచు పురుగు నివారణ ఏమిటి?'*\n"
+                "- *'పాడి పశువులకు సైలేజ్ ఎలా తయారు చేయాలి?'*."
             )
 
         # Check if query is completely outside agricultural domain
@@ -208,7 +240,7 @@ class LLMService:
             "procedure", "procedures", "practice", "practices", "calendar", "activity", "activities", "management"
         }
         q_words_check = set(re.findall(r"\b\w{3,}\b", raw_question.lower()))
-        if not bool(q_words_check.intersection(agri_keywords)):
+        if not (user_is_telugu or user_is_kannada) and not bool(q_words_check.intersection(agri_keywords)):
             return "I couldn't find this information in the provided dataset."
 
         # Normalize question (handles regional terminology and synonyms)
@@ -407,9 +439,33 @@ class LLMService:
         citation_str = f"\n\n📄 *Verified Knowledge Source: {', '.join(unique_citations)}*" if unique_citations else "\n\n📄 *Verified Knowledge Source: National Agricultural Dataset*"
 
         # Determine section header based on query type
-        is_disease_pest = bool(any(w in raw_question.lower() for w in ["disease", "pest", "yellow", "blight", "spot", "purugu", "aaku", "insect", "fungus", "wilt", "rot"]))
+        is_disease_pest = bool(any(w in raw_question.lower() for w in [
+            "disease", "pest", "yellow", "blight", "spot", "purugu", "aaku", "insect", "fungus", "wilt", "rot",
+            "పురుగు", "తెగులు", "మచ్చలు", "కాయతొలుచు",
+            "ಕೀಟ", "ಹುಳು", "ರೋಗ", "ಹಳದಿ", "ಮಚ್ಚೆ", "ಕೊರಕ", "ಬಾಡುವಿಕೆ"
+        ]))
         detail_header = "**Possible problem / Field Benchmark:**" if is_disease_pest else "**Details:**"
         action_header = "**What to do:**"
+
+        if user_is_kannada:
+            kn_detail_header = "**ಕ್ಷೇತ್ರ ತಪಾಸಣೆ / ಮುಖ್ಯ ಲಕ್ಷಣಗಳು (Field Diagnosis):**" if is_disease_pest else "**ಮುಖ್ಯ ವಿವರಗಳು (Details):**"
+            kn_action_header = "**ಮಾಡಬೇಕಾದ ಕ್ರಮಗಳು & ಶಿಫಾರಸುಗಳು (Recommended Actions):**"
+            kn_citation_str = f"\n\n📄 *ದಾಖಲಿತ ಆಧಾರ ಮಾಹಿತಿ (Verified Source): {', '.join(unique_citations)}*" if unique_citations else "\n\n📄 *ದಾಖಲಿತ ಆಧಾರ ಮಾಹಿತಿ: 100 ಪುಟಗಳ ಆಧುನಿಕ ಕೃಷಿ ಡೇಟಾಸೆಟ್*"
+            return (
+                f"**ಉತ್ತರ (Answer):**\n{primary_answer}\n\n"
+                f"{kn_detail_header}\n{formatted_details}\n\n"
+                f"{kn_action_header}\n{formatted_actions}{kn_citation_str}"
+            )
+
+        if user_is_telugu:
+            te_detail_header = "**ఫీల్డ్ నిర్ధారణ / ప్రధాన లక్షణాలు (Field Diagnosis):**" if is_disease_pest else "**ముఖ్యమైన వివరాలు (Details):**"
+            te_action_header = "**చేయవలసిన పనులు & నివారణ చర్యలు (Recommended Actions):**"
+            te_citation_str = f"\n\n📄 *ధృవీకరించబడిన ఆధార సమాచారం (Verified Source): {', '.join(unique_citations)}*" if unique_citations else "\n\n📄 *ధృవీకరించబడిన ఆధార సమాచారం: 100 పేజీల ఆధునిక వ్యవసాయ డేటాసెట్*"
+            return (
+                f"**సమాధానం (Answer):**\n{primary_answer}\n\n"
+                f"{te_detail_header}\n{formatted_details}\n\n"
+                f"{te_action_header}\n{formatted_actions}{te_citation_str}"
+            )
 
         return (
             f"**Answer:**\n{primary_answer}\n\n"

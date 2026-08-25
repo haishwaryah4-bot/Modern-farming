@@ -173,6 +173,26 @@
       box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
     }
 
+    .lang-picker-select {
+      background: rgba(4, 24, 13, 0.92);
+      border: 1.5px solid #10b981;
+      color: #ffffff;
+      padding: 6px 12px;
+      border-radius: var(--radius-pill);
+      font-family: inherit;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      outline: none;
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.35);
+      transition: var(--transition);
+    }
+
+    .lang-picker-select:hover {
+      background: rgba(16, 185, 129, 0.3);
+      border-color: #34d399;
+    }
+
     .status-pill {
       display: inline-flex;
       align-items: center;
@@ -846,13 +866,150 @@
       }
     };
 
+    // Multilingual English, Telugu & Kannada UI & Knowledge Translations
+    const TRANSLATIONS = {
+      en: {
+        brand_title: 'AgriSense AI',
+        brand_subtitle: 'National Smart Agriculture Portal',
+        theme_sunrise: '🌅 Sunrise Smart Farm',
+        theme_greenhouse: '🌿 High-Tech Polyhouse',
+        theme_drip: '💧 Drip Crop Canopy',
+        theme_iot: '🛰️ Precision IoT Fields',
+        rag_badge: '🌿 100-Page Farming Dataset • 265 Chunks Active',
+        hero_title: 'Modern Farming Knowledge & Precision Agriculture Copilot',
+        hero_desc: 'Ground-truth agronomy intelligence powered by our verified Modern Farming Dataset with dense vector + BM25 hybrid search, camera computer vision diagnostics, and exact source citations.',
+        switch_bg: '🖼️ Switch Background',
+        resync_kb: '⚡ Re-Sync Knowledge Base',
+        chip_tomato: '🍅 Tomato Yellow Leaves',
+        chip_tomato_q: 'My tomato leaves are turning yellow. What should I do?',
+        chip_camera: '📷 Take Field Photo',
+        chip_rice: '🌾 Rice NPK Fertigation',
+        chip_rice_q: 'What is the recommended fertilizer schedule for rice?',
+        chip_drip: '💧 Drip & AWD Irrigation',
+        chip_drip_q: 'How to set up inline drip irrigation and fertigation?',
+        chip_cotton: '🐛 Cotton Pink Bollworm',
+        chip_cotton_q: 'How to control pink bollworm and sucking pests in cotton?',
+        chip_equipment: '🚜 Modern Farming Equipment',
+        chip_equipment_q: 'What modern farming equipment and machinery are used?',
+        chip_dairy: '🐄 Dairy Cattle & Silage',
+        chip_dairy_q: 'What are the best feeding and silage practices for dairy cattle?',
+        tab_assistant: '🤖 AI Assistant & Camera Copilot',
+        tab_rag: '🌿 RAG Pipeline & Dataset Architecture',
+        tab_diagnostics: '🔬 Pest & Disease Diagnostics',
+        tab_irrigation: '💧 Smart Irrigation & Subsidy',
+        tab_soil: '📊 Soil Health & Market Mandi',
+        chat_title: 'AgriSense AI Assistant',
+        chat_subtitle: '🟢 Multi-Agent Reasoning & Camera Diagnostics Online',
+        chat_tag: 'Camera + Voice + RAG Grounded Advice',
+        rag_flow_title: '🌿 RAG Pipeline Flow',
+        input_placeholder: 'Ask any farming question or click 📷 to snap crop photo...',
+        ask_btn: 'Ask AI ➔',
+        read_aloud: '🔊 Read Aloud',
+        stop_audio: '⏹️ Stop Reading',
+        copy_btn: '📋 Copy',
+        voice_ready: '🟢 Voice & Speech Recognition ready',
+        voice_listening: '🎙️ Listening to your question... Speak now.',
+        voice_speaking: '🔊 Reading answer aloud... Click ⏹️ Stop to pause.',
+        welcome_msg: '🌾 **Welcome to AgriSense AI 3.0!**\n\nI am your **Autonomous Smart Agriculture Copilot**. You can ask any farming question by typing, speaking (🎙️), or taking/uploading a field photo (📷) to diagnose crop diseases and pests.\n\nEvery farming answer includes **verified photographic evidence** from the ingested dataset.',
+      },
+      te: {
+        brand_title: 'అగ్రిసెన్స్ AI (AgriSense)',
+        brand_subtitle: 'జాతీయ స్మార్ట్ వ్యవసాయ పోర్టల్',
+        theme_sunrise: '🌅 సూర్యోదయ స్మార్ట్ ఫార్మ్',
+        theme_greenhouse: '🌿 హైటెక్ పాలీహౌస్',
+        theme_drip: '💧 బిందు సేద్యం (డ్రిప్)',
+        theme_iot: '🛰️ ప్రెసిషన్ IoT క్షేత్రం',
+        rag_badge: '🌿 100 పేజీల ఆధునిక వ్యవసాయ డేటాసెట్ సిద్ధంగా ఉంది',
+        hero_title: 'ఆధునిక వ్యవసాయ పరిజ్ఞానం & స్మార్ట్ ఫార్మింగ్ సహాయకుడు',
+        hero_desc: '100 పేజీల ధృవీకరించబడిన ఆధునిక వ్యవసాయ డేటాసెట్, AI కెమెరా పంట వ్యాధి నిర్ధారణ, తెలుగు వాయిస్ అసిస్టెంట్ మరియు ఖచ్చితమైన వ్యవసాయ సలహాలు.',
+        switch_bg: '🖼️ నేపథ్యం మార్చండి',
+        resync_kb: '⚡ నాలెడ్జ్ బేస్ రిఫ్రెష్',
+        chip_tomato: '🍅 టమోటా ఆకులు పసుపు రంగు',
+        chip_tomato_q: 'టమోటా ఆకులు పసుపు రంగులోకి మారుతున్నాయి, నివారణ ఏమిటి?',
+        chip_camera: '📷 పంట ఫోటో తీయండి',
+        chip_rice: '🌾 వరి ఎరువులు & నీటి యాజమాన్యం',
+        chip_rice_q: 'వరి పంటకు ఎరువుల మోతాదు మరియు ఏడబ్ల్యుడి నీటి యాజమాన్యం ఎలా ఉండాలి?',
+        chip_drip: '💧 బిందు సేద్యం (డ్రిప్ & AWD)',
+        chip_drip_q: 'డ్రిప్ ఇరిగేషన్ మరియు ఫెర్టిగేషన్ విధానం ఎలా అమలు చేయాలి?',
+        chip_cotton: '🐛 పత్తిలో గులాబీ రంగు పురుగు',
+        chip_cotton_q: 'పత్తిలో గులాబీ రంగు కాయతొలుచు పురుగు మరియు రసం పీల్చే పురుగుల నివారణ ఏమిటి?',
+        chip_equipment: '🚜 ఆధునిక వ్యవసాయ పరికరాలు',
+        chip_equipment_q: 'ఆధునిక వ్యవసాయంలో ఉపయోగించే యంత్రాలు మరియు పరికరాలు ఏమిటి?',
+        chip_dairy: '🐄 పాడి పశువుల పోషణ & సైలేజ్',
+        chip_dairy_q: 'పాడి పశువులకు పచ్చిమేత, సైలేజ్ తయారీ మరియు దాణా యాజమాన్యం ఎలా చేయాలి?',
+        tab_assistant: '🤖 AI సహాయకుడు & కెమెరా నిర్ధారణ',
+        tab_rag: '🌿 RAG ఆర్కిటెక్చర్ & డేటాసెట్',
+        tab_diagnostics: '🔬 చీడపీడలు & తెగుళ్ళ నివారణ',
+        tab_irrigation: '💧 స్మార్ట్ నీటిపారుదల & సబ్సిడీలు',
+        tab_soil: '📊 నేల ఆరోగ్యం & మార్కెట్ ధరలు',
+        chat_title: 'అగ్రిసెన్స్ AI సహాయకుడు',
+        chat_subtitle: '🟢 మల్టీ-ఏజెంట్ రీజనింగ్ & కెమెరా నిర్ధారణ సిద్ధంగా ఉంది',
+        chat_tag: 'కెమెరా + తెలుగు వాయిస్ + ఆధునిక వ్యవసాయ సలహాలు',
+        rag_flow_title: '🌿 RAG సమాచార ప్రవాహం',
+        input_placeholder: 'ఏదైనా వ్యవసాయ ప్రశ్న అడగండి లేదా పంట ఫోటో తీయండి...',
+        ask_btn: 'ప్రశ్నించండి ➔',
+        read_aloud: '🔊 చదవండి (వినండి)',
+        stop_audio: '⏹️ ఆపండి',
+        copy_btn: '📋 కాపీ చేయండి',
+        voice_ready: '🟢 తెలుగు, కన్నడ & ఇంగ్లీష్ వాయిస్ సహాయకుడు సిద్ధంగా ఉంది',
+        voice_listening: '🎙️ మీ ప్రశ్న వింటున్నాను, మాట్లాడండి...',
+        voice_speaking: '🔊 చదివి వినిపిస్తున్నాను... ఆపడానికి ⏹️ నొక్కండి.',
+        welcome_msg: '🌾 **అగ్రిసెన్స్ AI కి స్వాగతం!**\n\nనేను మీ **స్మార్ట్ వ్యవసాయ సహాయకుడిని** (AgriSense AI). మీరు టైప్ చేయడం ద్వారా, మాట్లాడటం ద్వారా (🎙️), లేదా పంట ఫోటో తీసి (📷) చీడపీడలు, ఎరువులు, నీటి యాజమాన్యం మరియు ఆధునిక పద్ధతుల గురించి తెలుసుకోవచ్చు.\n\nప్రతి సమాధానం 100 పేజీల ధృవీకరించబడిన వ్యవసాయ డేటాసెట్ ఆధారంగా అందించబడుతుంది.',
+      },
+      kn: {
+        brand_title: 'ಅಗ್ರಿಸೆನ್ಸ್ AI (AgriSense)',
+        brand_subtitle: 'ರಾಷ್ಟ್ರೀಯ ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಪೋರ್ಟಲ್',
+        theme_sunrise: '🌅 ಸೂರ್ಯೋದಯ ಸ್ಮಾರ್ಟ್ ಫಾರ್ಮ್',
+        theme_greenhouse: '🌿 ಹೈಟೆಕ್ ಪಾಲಿಹೌಸ್',
+        theme_drip: '💧 ಹನಿ ನೀರಾವರಿ (ಡ್ರಿಪ್)',
+        theme_iot: '🛰️ ಪ್ರೆಸಿಷನ್ IoT ಕ್ಷೇತ್ರ',
+        rag_badge: '🌿 100 ಪುಟಗಳ ಆಧುನಿಕ ಕೃಷಿ ಡೇಟಾಸೆಟ್ ಲಭ್ಯವಿದೆ',
+        hero_title: 'ಆಧುನಿಕ ಕೃಷಿ ಜ್ಞಾನ & ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಸಹಾಯಕ',
+        hero_desc: '100 ಪುಟಗಳ ದೃಢೀಕೃತ ಆಧುನಿಕ ಕೃಷಿ ಡೇಟಾಸೆಟ್, AI ಕ್ಯಾಮೆರಾ ಬೆಳೆ ರೋಗ ಪತ್ತೆ, ಕನ್ನಡ ಧ್ವನಿ ಸಹಾಯಕ ಮತ್ತು ನಿಖರವಾದ ಕೃಷಿ ಸಲಹೆಗಳು.',
+        switch_bg: '🖼️ ಹಿನ್ನೆಲೆ ಬದಲಾಯಿಸಿ',
+        resync_kb: '⚡ ಡೇಟಾಬೇಸ್ ರಿಫ್ರೆಶ್',
+        chip_tomato: '🍅 ಟೊಮೆಟೊ ಎಲೆ ಹಳದಿ ರೋಗ',
+        chip_tomato_q: 'ಟೊಮೆಟೊ ಎಲೆಗಳು ಹಳದಿಯಾಗುತ್ತಿವೆ, ಏನು ಮಾಡಬೇಕು?',
+        chip_camera: '📷 ಬೆಳೆ ಫೋಟೋ ತೆಗೆಯಿರಿ',
+        chip_rice: '🌾 ಭತ್ತದ ಗೊಬ್ಬರ & ನೀರಾವರಿ',
+        chip_rice_q: 'ಭತ್ತದ ಬೆಳೆಗೆ ಗೊಬ್ಬರ ಮತ್ತು ನೀರಾವರಿ ನಿರ್ವಹಣೆ ಹೇಗೆ ಮಾಡಬೇಕು?',
+        chip_drip: '💧 ಹನಿ ನೀರಾವರಿ (ಡ್ರಿಪ್ & AWD)',
+        chip_drip_q: 'ಹನಿ ನೀರಾವರಿ ಮತ್ತು ಫರ್ಟಿಗೇಷನ್ ವಿಧಾನವನ್ನು ಹೇಗೆ ಅಳವಡಿಸಬೇಕು?',
+        chip_cotton: '🐛 ಹತ್ತಿಯಲ್ಲಿ ಗುಲಾಬಿ ಕಾಯಿಕೊರಕ ಹುಳು',
+        chip_cotton_q: 'ಹತ್ತಿಯಲ್ಲಿ ಗುಲಾಬಿ ಕಾಯಿಕೊರಕ ಮತ್ತು ರಸಹೀರುವ ಕೀಟಗಳ ನಿಯಂತ್ರಣ ಹೇಗೆ?',
+        chip_equipment: '🚜 ಆಧುನಿಕ ಕೃಷಿ ಯಂತ್ರೋಪಕರಣಗಳು',
+        chip_equipment_q: 'ಆಧುನಿಕ ಕೃಷಿಯಲ್ಲಿ ಬಳಸುವ ಯಂತ್ರಗಳು ಮತ್ತು ಉಪಕರಣಗಳು ಯಾವುವು?',
+        chip_dairy: '🐄 ಹೈನುಗಾರಿಕೆ & ಸೈಲೇಜ್',
+        chip_dairy_q: 'ಹೈನು ಹಸುಗಳಿಗೆ ಹಸಿರು ಮೇವು ಮತ್ತು ಸೈಲೇಜ್ ತಯಾರಿಕೆ ಹೇಗೆ ಮಾಡಬೇಕು?',
+        tab_assistant: '🤖 AI ಸಹಾಯಕ & ಕ್ಯಾಮೆರಾ ತಪಾಸಣೆ',
+        tab_rag: '🌿 RAG ಆರ್ಕಿಟೆಕ್ಚರ್ & ಡೇಟಾಸೆಟ್',
+        tab_diagnostics: '🔬 ಕೀಟ & ರೋಗಗಳ ನಿಯಂತ್ರಣ',
+        tab_irrigation: '💧 ಸ್ಮಾರ್ಟ್ ನೀರಾವರಿ & ಸಬ್ಸಿಡಿ',
+        tab_soil: '📊 ಮಣ್ಣಿನ ಆರೋಗ್ಯ & ಮಾರುಕಟ್ಟೆ ಬೆಲೆ',
+        chat_title: 'ಅಗ್ರಿಸೆನ್ಸ್ AI ಸಹಾಯಕ',
+        chat_subtitle: '🟢 ಮಲ್ಟಿ-ಏಜೆಂಟ್ ತಪಾಸಣೆ & ಕ್ಯಾಮೆರಾ ವಿಶ್ಲೇಷಣೆ ಸಿದ್ಧವಾಗಿದೆ',
+        chat_tag: 'ಕ್ಯಾಮೆರಾ + ಕನ್ನಡ ಧ್ವನಿ + ಆಧುನಿಕ ಕೃಷಿ ಸಲಹೆಗಳು',
+        rag_flow_title: '🌿 RAG ಮಾಹಿತಿ ಪ್ರವಾಹ',
+        input_placeholder: 'ಯಾವುದೇ ಕೃಷಿ ಪ್ರಶ್ನೆ ಕೇಳಿ ಅಥವಾ ಬೆಳೆ ಫೋಟೋ ತೆಗೆಯಿರಿ...',
+        ask_btn: 'ಕೇಳಿ ➔',
+        read_aloud: '🔊 ಓದಿ (ಕೇಳಿ)',
+        stop_audio: '⏹️ ನಿಲ್ಲಿಸಿ',
+        copy_btn: '📋 ನಕಲಿಸಿ',
+        voice_ready: '🟢 ಕನ್ನಡ, ತೆಲುಗು & ಇಂಗ್ಲಿಷ್ ಧ್ವನಿ ಸಹಾಯಕ ಸಿದ್ಧವಾಗಿದೆ',
+        voice_listening: '🎙️ ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಕೇಳುತ್ತಿದ್ದೇನೆ, ಮಾತನಾಡಿ...',
+        voice_speaking: '🔊 ಓದಿ ಹೇಳುತ್ತಿದ್ದೇನೆ... ನಿಲ್ಲಿಸಲು ⏹️ ಒತ್ತಿರಿ.',
+        welcome_msg: '🌾 **ಅಗ್ರಿಸೆನ್ಸ್ AI ಗೆ ಸುಸ್ವಾಗತ!**\n\nನಾನು ನಿಮ್ಮ **ಸ್ಮಾರ್ಟ್ ಕೃಷಿ ಸಹಾಯಕ** (AgriSense AI). ನೀವು ಟೈಪ್ ಮಾಡುವ ಮೂಲಕ, ಮಾತನಾಡುವ ಮೂಲಕ (🎙️), ಅಥವಾ ಬೆಳೆ ಫೋಟೋ ತೆಗೆದು (📷) ಕೀಟಗಳು, ಗೊಬ್ಬರಗಳು, ನೀರಾವರಿ ಮತ್ತು ಆಧುನಿಕ ಕೃಷಿ ಪದ್ಧತಿಗಳ ಬಗ್ಗೆ ತಿಳಿದುಕೊಳ್ಳಬಹುದು.\n\nಪ್ರತಿಯೊಂದು ಉತ್ತರವು 100 ಪುಟಗಳ ದೃಢೀಕೃತ ಕೃಷಿ ಡೇಟಾಸೆಟ್ ಆಧಾರಿತವಾಗಿರುತ್ತದೆ.',
+      }
+    };
+
     function App() {
+      const [currentLang, setCurrentLang] = useState('en');
       const [currentTheme, setCurrentTheme] = useState('sunrise');
       const [activeTab, setActiveTab] = useState('chat');
       const [messages, setMessages] = useState([
         {
           role: 'assistant',
-          content: '🌾 **Welcome to AgriSense AI 3.0!**\n\nI am your **Autonomous Smart Agriculture Copilot**. You can ask any farming question by typing, speaking (🎙️), or taking/uploading a field photo (📷) to diagnose crop diseases and pests.\n\nEvery farming answer includes **verified photographic evidence** from the ingested dataset.',
+          content: TRANSLATIONS.en.welcome_msg,
           intent: 'System Online',
           citations: [{ source: 'National Agricultural Dataset', page: 'Verified Knowledge Base', topic: 'Agronomic Intelligence' }]
         }
@@ -873,6 +1030,29 @@
 
       const messagesEndRef = useRef(null);
       const recognitionRef = useRef(null);
+
+      const t = TRANSLATIONS[currentLang] || TRANSLATIONS.en;
+
+      // Handle Language Switching
+      const changeLanguage = (newLang) => {
+        setCurrentLang(newLang);
+        const trans = TRANSLATIONS[newLang] || TRANSLATIONS.en;
+        setVoiceStatus(trans.voice_ready);
+        if (recognitionRef.current) {
+          recognitionRef.current.lang = newLang === 'kn' ? 'kn-IN' : (newLang === 'te' ? 'te-IN' : 'en-IN');
+        }
+        // If only initial welcome message exists, translate it
+        if (messages.length === 1 && messages[0].role === 'assistant') {
+          setMessages([
+            {
+              role: 'assistant',
+              content: trans.welcome_msg,
+              intent: 'System Online',
+              citations: [{ source: 'National Agricultural Dataset', page: 'Verified Knowledge Base', topic: 'Agronomic Intelligence' }]
+            }
+          ]);
+        }
+      };
 
       useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -895,11 +1075,11 @@
           const rec = new SpeechRec();
           rec.continuous = false;
           rec.interimResults = false;
-          rec.lang = 'en-IN';
+          rec.lang = currentLang === 'kn' ? 'kn-IN' : (currentLang === 'te' ? 'te-IN' : 'en-IN');
 
           rec.onstart = () => {
             setIsListening(true);
-            setVoiceStatus('🎙️ Listening to your question...');
+            setVoiceStatus(t.voice_listening);
           };
 
           rec.onresult = (event) => {
@@ -920,7 +1100,7 @@
 
           recognitionRef.current = rec;
         }
-      }, []);
+      }, [currentLang]);
 
       // Start Camera Stream
       const openCamera = async () => {
@@ -983,6 +1163,7 @@
           setIsListening(false);
         } else {
           try {
+            recognitionRef.current.lang = currentLang === 'kn' ? 'kn-IN' : (currentLang === 'te' ? 'te-IN' : 'en-IN');
             recognitionRef.current.start();
           } catch(e) {
             recognitionRef.current.stop();
@@ -990,7 +1171,7 @@
         }
       };
 
-      // Full Natural Text-To-Speech (TTS) Voice Engine with Stop/Toggle & Voice Pitching
+      // Full Natural Text-To-Speech (TTS) Voice Engine with Kannada, Telugu & English Support
       const speakText = (text, index) => {
         if (!('speechSynthesis' in window)) {
           alert('Text-to-Speech is not supported in this browser. Please use Chrome, Edge, Safari, or Firefox.');
@@ -1001,7 +1182,7 @@
         if (speakingIndex === index) {
           window.speechSynthesis.cancel();
           setSpeakingIndex(null);
-          setVoiceStatus('🟢 Voice & Speech Recognition ready');
+          setVoiceStatus(t.voice_ready);
           return;
         }
 
@@ -1011,7 +1192,7 @@
         // Extract clean conversational agricultural text, stripping HTML cards and markup
         let clean = (text || '')
           .replace(/<[^>]*>?/gm, ' ')
-          .replace(/\[(?:Source|Doc):[^\]]*\]/gi, ' ')
+          .replace(/\[(?:Source|Doc|ఆధార|ದಾಖಲೆ):[^\]]*\]/gi, ' ')
           .replace(/[*_#`~>]/g, ' ')
           .replace(/\s+/g, ' ')
           .trim();
@@ -1019,30 +1200,41 @@
         if (!clean) return;
 
         const utterance = new SpeechSynthesisUtterance(clean);
-        utterance.lang = 'en-IN';
-        utterance.rate = 0.95; // Natural, clear cadence for agricultural advisory
+        utterance.lang = currentLang === 'kn' ? 'kn-IN' : (currentLang === 'te' ? 'te-IN' : 'en-IN');
+        utterance.rate = 0.92; // Natural, clear cadence for agricultural advisory
         utterance.pitch = 1.0;
 
-        // Choose best available English / Indian voice
+        // Choose best available voice for language
         const voices = window.speechSynthesis.getVoices();
-        const preferredVoice = voices.find(v => v.lang === 'en-IN' || v.lang === 'hi-IN' || v.name.includes('India')) ||
-                               voices.find(v => v.lang === 'en-GB' || v.lang === 'en-US' || v.lang.startsWith('en'));
+        let preferredVoice = null;
+        if (currentLang === 'kn') {
+          preferredVoice = voices.find(v => v.lang === 'kn-IN' || v.lang.startsWith('kn') || v.name.toLowerCase().includes('kannada')) ||
+                                 voices.find(v => v.lang === 'hi-IN' || v.name.includes('India')) ||
+                                 voices.find(v => v.lang.startsWith('en'));
+        } else if (currentLang === 'te') {
+          preferredVoice = voices.find(v => v.lang === 'te-IN' || v.lang.startsWith('te') || v.name.toLowerCase().includes('telugu')) ||
+                                 voices.find(v => v.lang === 'hi-IN' || v.name.includes('India')) ||
+                                 voices.find(v => v.lang.startsWith('en'));
+        } else {
+          preferredVoice = voices.find(v => v.lang === 'en-IN' || v.lang === 'hi-IN' || v.name.includes('India')) ||
+                                 voices.find(v => v.lang === 'en-GB' || v.lang === 'en-US' || v.lang.startsWith('en'));
+        }
         if (preferredVoice) {
           utterance.voice = preferredVoice;
         }
 
         setSpeakingIndex(index);
-        setVoiceStatus('🔊 Reading answer aloud... Click ⏹️ Stop to pause.');
+        setVoiceStatus(t.voice_speaking);
 
         utterance.onend = () => {
           setSpeakingIndex(null);
-          setVoiceStatus('🟢 Voice & Speech Recognition ready');
+          setVoiceStatus(t.voice_ready);
         };
 
         utterance.onerror = (e) => {
           console.warn('SpeechSynthesis error:', e);
           setSpeakingIndex(null);
-          setVoiceStatus('🟢 Voice & Speech Recognition ready');
+          setVoiceStatus(t.voice_ready);
         };
 
         try {
@@ -1057,9 +1249,13 @@
         
         if (!text && !photoToSend) return;
 
+        const photoLabel = currentLang === 'kn' 
+          ? '📷 [ಬೆಳೆ ರೋಗ ವಿಶ್ಲೇಷಣೆಗಾಗಿ ಫೋಟೋ ಲಗತ್ತಿಸಲಾಗಿದೆ]' 
+          : (currentLang === 'te' ? '📷 [పంట వ్యాధి విశ్లేషణ కోసం ఫోటో జతచేయబడింది]' : '📷 [Attached Field Photograph for Diagnostic Analysis]');
+
         const userMsg = { 
           role: 'user', 
-          content: text || (photoToSend ? '📷 [Attached Field Photograph for Diagnostic Analysis]' : ''),
+          content: text || (photoToSend ? photoLabel : ''),
           image: photoToSend
         };
 
@@ -1068,8 +1264,13 @@
         setAttachedImage(null);
         setLoading(true);
 
+        const defaultPhotoQuery = currentLang === 'kn'
+          ? 'ಈ ಬೆಳೆ ಫೋಟೋವನ್ನು ವಿಶ್ಲೇಷಿಸಿ ರೋಗ, ಕೀಟ ಅಥವಾ ಪೋಷಕಾಂಶಗಳ ಕೊರತೆಯನ್ನು ಗುರುತಿಸಿ.'
+          : (currentLang === 'te' ? 'ఈ పంట ఫోటోను విశ్లేషించి వ్యాధి, పురుగులు లేదా పోషకాల లోపాన్ని గుర్తించండి.' : 'Analyze this crop photograph for disease, pest, or nutrient deficiency.');
+
         const payload = { 
-          message: text || 'Analyze this crop photograph for disease, pest, or nutrient deficiency.',
+          message: text || defaultPhotoQuery,
+          lang: currentLang,
           session_id: 'react_web_session',
           image_data: photoToSend
         };
@@ -1085,7 +1286,7 @@
         for (const ep of apiEndpoints) {
           try {
             const controller = new AbortController();
-            const timeoutId = setTimeout(() => controller.abort(), 2600);
+            const timeoutId = setTimeout(() => controller.abort(), 2800);
             const res = await fetch(ep, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -1110,21 +1311,23 @@
         }
 
         if (responseData && responseData.answer) {
+          const defaultIntent = currentLang === 'kn' ? 'ಆಧುನಿಕ ಕೃಷಿ ಡೇಟಾಸೆಟ್ RAG' : (currentLang === 'te' ? 'ఆధునిక వ్యవసాయ డేటాసెట్ RAG' : 'Modern Farming RAG');
           setMessages((prev) => [
             ...prev,
             {
               role: 'assistant',
               content: responseData.answer,
-              intent: responseData.intent || 'Modern Farming RAG',
+              intent: responseData.intent || defaultIntent,
               citations: responseData.citations || []
             }
           ]);
         } else {
+          const refusalText = currentLang === 'kn' ? 'ನೀಡಿದ ಡೇಟಾಸೆಟ್‌ನಲ್ಲಿ ಈ ಮಾಹಿತಿ ಲಭ್ಯವಿಲ್ಲ.' : (currentLang === 'te' ? 'అందించిన డేటాసెట్‌లో ఈ సమాచారం లభించలేదు.' : `I couldn't find this information in the provided dataset.`);
           setMessages((prev) => [
             ...prev,
             {
               role: 'assistant',
-              content: `I couldn't find this information in the provided dataset.`,
+              content: refusalText,
               intent: 'Out of Domain Query'
             }
           ]);
@@ -1133,13 +1336,16 @@
       };
 
       const handleAdminReindex = async () => {
-        setAdminMsg('Indexing dataset...');
+        const loadingText = currentLang === 'kn' ? 'ಡೇಟಾಸೆಟ್ ಇಂಡೆಕ್ಸ್ ಆಗುತ್ತಿದೆ...' : (currentLang === 'te' ? 'డేటాసెట్ ఇండెక్స్ అవుతోంది...' : 'Indexing dataset...');
+        setAdminMsg(loadingText);
         try {
           const res = await fetch('/api/admin/reindex', { method: 'POST' });
           const data = await res.json();
-          setAdminMsg(`✅ Indexed ${data.total_chunks} chunks.`);
+          const successText = currentLang === 'kn' ? `✅ ${data.total_chunks} ಭಾಗಗಳು ಇಂಡೆಕ್ಸ್ ಆಗಿವೆ.` : (currentLang === 'te' ? `✅ ${data.total_chunks} భాగాలు ఇండెక్స్ అయ్యాయి.` : `✅ Indexed ${data.total_chunks} chunks.`);
+          setAdminMsg(successText);
         } catch (e) {
-          setAdminMsg('✅ Knowledge base indexed & active.');
+          const kbReady = currentLang === 'kn' ? '✅ ಜ್ಞಾನಕೋಶ ಸಿದ್ಧವಾಗಿದೆ.' : (currentLang === 'te' ? '✅ నాలెడ్జ్ బేస్ సిద్ధంగా ఉంది.' : '✅ Knowledge base indexed & active.');
+          setAdminMsg(kbReady);
         }
         setTimeout(() => setAdminMsg(''), 4000);
       };
@@ -1184,12 +1390,24 @@
             <a href="#" className="nav-brand">
               <div className="brand-badge-icon">🌾</div>
               <div className="brand-text">
-                <h1>AgriSense AI</h1>
-                <p>National Smart Agriculture Portal</p>
+                <h1>{t.brand_title}</h1>
+                <p>{t.brand_subtitle}</p>
               </div>
             </a>
 
             <div className="nav-status">
+              {/* Language Selector (English / Telugu / Kannada) */}
+              <select 
+                className="lang-picker-select"
+                value={currentLang}
+                onChange={(e) => changeLanguage(e.target.value)}
+                title="Select Language / ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ / భాషను ఎంచుకోండి"
+              >
+                <option value="en">🌐 English</option>
+                <option value="te">🌐 తెలుగు (Telugu)</option>
+                <option value="kn">🌐 ಕನ್ನಡ (Kannada)</option>
+              </select>
+
               {/* Background Theme Selector */}
               <select 
                 className="theme-picker-select"
@@ -1197,15 +1415,15 @@
                 onChange={(e) => setCurrentTheme(e.target.value)}
                 title="Change Agriculture Background Theme"
               >
-                <option value="sunrise">🌅 Sunrise Smart Farm</option>
-                <option value="greenhouse">🌿 High-Tech Polyhouse</option>
-                <option value="drip">💧 Drip Crop Canopy</option>
-                <option value="iot">🛰️ Precision IoT Fields</option>
+                <option value="sunrise">🌅 {t.theme_sunrise.split(' ').slice(1).join(' ')}</option>
+                <option value="greenhouse">🌿 {t.theme_greenhouse.split(' ').slice(1).join(' ')}</option>
+                <option value="drip">💧 {t.theme_drip.split(' ').slice(1).join(' ')}</option>
+                <option value="iot">🛰️ {t.theme_iot.split(' ').slice(1).join(' ')}</option>
               </select>
 
               <div className="status-pill">
                 <div className="pulse-dot"></div>
-                <span>🌿 Modern Farming RAG • 115 Chunks • Vector DB Online</span>
+                <span>{t.rag_badge}</span>
               </div>
             </div>
           </nav>
@@ -1217,10 +1435,8 @@
             <section className="hero-box">
               <div className="hero-header">
                 <div className="hero-content">
-                  <h2>Modern Farming Knowledge & Precision Agriculture Copilot</h2>
-                  <p>
-                    Ground-truth agronomy intelligence powered by our verified <b>Modern Farming Dataset</b> with dense vector + BM25 hybrid search, camera computer vision diagnostics, and exact source citations.
-                  </p>
+                  <h2>{t.hero_title}</h2>
+                  <p>{t.hero_desc}</p>
                 </div>
                 <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
                   <button 
@@ -1232,37 +1448,40 @@
                     className="action-icon-btn"
                     style={{ padding: '8px 16px', background: 'rgba(16, 185, 129, 0.25)', borderColor: '#10b981', color: '#a7f3d0' }}
                   >
-                    🖼️ Switch Background ({THEMES[currentTheme].name.split(' ')[1]})
+                    {t.switch_bg}
                   </button>
                   <button 
                     onClick={handleAdminReindex}
                     className="action-icon-btn" 
                     style={{ padding: '8px 16px', background: 'rgba(16, 185, 129, 0.25)', borderColor: '#10b981', color: '#a7f3d0' }}
                   >
-                    ⚡ {adminMsg || 'Re-Sync Knowledge Base'}
+                    {adminMsg || t.resync_kb}
                   </button>
                 </div>
               </div>
 
               {/* Quick Action Chips */}
               <div className="chip-container">
-                <button className="chip-btn" onClick={() => sendMessage('My tomato leaves are turning yellow. What should I do?')}>
-                  🍅 Tomato Yellow Leaves
+                <button className="chip-btn" onClick={() => sendMessage(t.chip_tomato_q)}>
+                  {t.chip_tomato}
                 </button>
                 <button className="chip-btn" onClick={() => openCamera()}>
-                  📷 Take Field Photo
+                  {t.chip_camera}
                 </button>
-                <button className="chip-btn" onClick={() => sendMessage('What is the recommended fertilizer schedule for rice?')}>
-                  🌾 Rice NPK Fertigation
+                <button className="chip-btn" onClick={() => sendMessage(t.chip_rice_q)}>
+                  {t.chip_rice}
                 </button>
-                <button className="chip-btn" onClick={() => sendMessage('What is hydroponic farming?')}>
-                  💧 Hydroponic Systems
+                <button className="chip-btn" onClick={() => sendMessage(t.chip_drip_q)}>
+                  {t.chip_drip}
                 </button>
-                <button className="chip-btn" onClick={() => sendMessage('Show me examples of smart irrigation.')}>
-                  🚰 Smart Drip Irrigation
+                <button className="chip-btn" onClick={() => sendMessage(t.chip_cotton_q)}>
+                  {t.chip_cotton}
                 </button>
-                <button className="chip-btn" onClick={() => sendMessage('Tomato aaku yellow aytundi enduku?')}>
-                  🇮🇳 Telugu-English Mixed Q
+                <button className="chip-btn" onClick={() => sendMessage(t.chip_equipment_q)}>
+                  {t.chip_equipment}
+                </button>
+                <button className="chip-btn" onClick={() => sendMessage(t.chip_dairy_q)}>
+                  {t.chip_dairy}
                 </button>
               </div>
             </section>
@@ -1273,31 +1492,31 @@
                 className={`tab-item ${activeTab === 'chat' ? 'active' : ''}`}
                 onClick={() => setActiveTab('chat')}
               >
-                🤖 AI Assistant & Camera Copilot
+                {t.tab_assistant}
               </button>
               <button 
                 className={`tab-item ${activeTab === 'rag_pipeline' ? 'active' : ''}`}
                 onClick={() => setActiveTab('rag_pipeline')}
               >
-                🌿 RAG Pipeline & Dataset Architecture
+                {t.tab_rag}
               </button>
               <button 
                 className={`tab-item ${activeTab === 'diagnostics' ? 'active' : ''}`}
                 onClick={() => setActiveTab('diagnostics')}
               >
-                🔬 Pest & Disease Diagnostics
+                {t.tab_diagnostics}
               </button>
               <button 
                 className={`tab-item ${activeTab === 'irrigation' ? 'active' : ''}`}
                 onClick={() => setActiveTab('irrigation')}
               >
-                💧 Smart Irrigation & Subsidy
+                {t.tab_irrigation}
               </button>
               <button 
                 className={`tab-item ${activeTab === 'soil' ? 'active' : ''}`}
                 onClick={() => setActiveTab('soil')}
               >
-                📊 Soil Health & Market Mandi
+                {t.tab_soil}
               </button>
             </div>
 
@@ -1311,20 +1530,20 @@
                   {/* Live RAG Architecture Stepper Card */}
                   <div className="glass-card" style={{ border: '1.5px solid rgba(16, 185, 129, 0.45)', background: 'rgba(3, 20, 11, 0.88)' }}>
                     <div className="panel-title" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span>🌿 RAG Pipeline Flow</span>
+                      <span>{t.rag_flow_title}</span>
                       <span style={{ fontSize: '0.72rem', background: '#059669', color: '#fff', padding: '2px 8px', borderRadius: '10px' }}>Active</span>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '0.76rem' }}>
                       <div style={{ background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '6px 10px', borderRadius: '8px' }}>
-                        <b>📂 Modern Farming Dataset</b> <span style={{ color: '#a7f3d0' }}>(8 Docs, 115 Chunks)</span>
+                        <b>📂 Modern Farming Dataset</b> <span style={{ color: '#a7f3d0' }}>(100 Pages, 265 Chunks)</span>
                       </div>
                       <div style={{ textAlign: 'center', color: '#10b981', fontWeight: 800, lineHeight: 1 }}>↓</div>
                       <div style={{ background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '6px 10px', borderRadius: '8px' }}>
-                        <b>⚙️ RAG Indexing</b> <span style={{ color: '#a7f3d0' }}>(384-Dim Dense + BM25)</span>
+                        <b>⚙️ RAG Indexing</b> <span style={{ color: '#a7f3d0' }}>(Dense Embeddings + BM25)</span>
                       </div>
                       <div style={{ textAlign: 'center', color: '#10b981', fontWeight: 800, lineHeight: 1 }}>↓</div>
                       <div style={{ background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '6px 10px', borderRadius: '8px' }}>
-                        <b>💾 Vector Database</b> <span style={{ color: '#a7f3d0' }}>(In-Memory Fast Store)</span>
+                        <b>💾 Vector Database</b> <span style={{ color: '#a7f3d0' }}>(ChromaDB / Fast Vector Store)</span>
                       </div>
                       <div style={{ textAlign: 'center', color: '#10b981', fontWeight: 800, lineHeight: 1 }}>↓</div>
                       <div style={{ background: 'rgba(16, 185, 129, 0.14)', border: '1px solid rgba(16, 185, 129, 0.35)', padding: '6px 10px', borderRadius: '8px' }}>
@@ -1346,23 +1565,23 @@
                   </div>
 
                   <div className="glass-card">
-                    <div className="panel-title">📸 Visual Camera Copilot</div>
+                    <div className="panel-title">{currentLang === 'te' ? '📸 AI కెమెరా డయాగ్నస్టిక్స్' : '📸 Visual Camera Copilot'}</div>
                     <p style={{ fontSize: '0.84rem', color: '#cbd5e1', lineHeight: 1.5, marginBottom: '14px' }}>
-                      Take a live picture of your affected crop leaf, stem, or pest with your camera to get an instant diagnosis and treatment protocol.
+                      {currentLang === 'te' ? 'మీ పంట ఆకు, కాండం లేదా పురుగు ఫోటో తీయడం ద్వారా వెంటనే వ్యాధి నిర్ధారణ మరియు నివారణ సూచనలు పొందండి.' : 'Take a live picture of your affected crop leaf, stem, or pest with your camera to get an instant diagnosis and treatment protocol.'}
                     </p>
                     <button 
                       onClick={openCamera}
                       className="send-btn" 
                       style={{ width: '100%', justifyContent: 'center', marginBottom: '10px' }}
                     >
-                      📷 Open Camera & Snap Photo
+                      {currentLang === 'te' ? '📷 కెమెరా ఓపెన్ చేసి ఫోటో తీయండి' : '📷 Open Camera & Snap Photo'}
                     </button>
                     <button 
                       onClick={() => fileInputRef.current && fileInputRef.current.click()}
                       className="action-icon-btn" 
                       style={{ width: '100%', justifyContent: 'center', padding: '9px 12px' }}
                     >
-                      📁 Choose From Gallery / Files
+                      {currentLang === 'te' ? '📁 గ్యాలరీ / ఫైల్స్ నుండి ఎంచుకోండి' : '📁 Choose From Gallery / Files'}
                     </button>
                     <input 
                       type="file" 
@@ -1374,29 +1593,29 @@
                   </div>
 
                   <div className="glass-card">
-                    <div className="panel-title">💡 Grounded Dataset Queries</div>
-                    <div className="widget-item" onClick={() => sendMessage('What is precision agriculture?')}>
-                      <h4>🌱 Precision Agriculture</h4>
-                      <p>VRA, IoT sensors, and drone mapping</p>
+                    <div className="panel-title">{currentLang === 'te' ? '💡 ప్రధాన వ్యవసాయాంశాలు' : '💡 Grounded Dataset Queries'}</div>
+                    <div className="widget-item" onClick={() => sendMessage(currentLang === 'te' ? 'ప్రెసిషన్ అగ్రికల్చర్ అంటే ఏమిటి?' : 'What is precision agriculture?')}>
+                      <h4>🌱 {currentLang === 'te' ? 'ప్రెసిషన్ అగ్రికల్చర్' : 'Precision Agriculture'}</h4>
+                      <p>{currentLang === 'te' ? 'డ్రోన్లు, IoT సెన్సార్లు మరియు స్మార్ట్ సాగు' : 'VRA, IoT sensors, and drone mapping'}</p>
                     </div>
-                    <div className="widget-item" onClick={() => sendMessage('What is fertigation?')}>
-                      <h4>💧 Automated Fertigation</h4>
-                      <p>100% water-soluble nutrient scheduling</p>
+                    <div className="widget-item" onClick={() => sendMessage(currentLang === 'te' ? 'ఫెర్టిగేషన్ అంటే ఏమిటి?' : 'What is fertigation?')}>
+                      <h4>💧 {currentLang === 'te' ? 'ఆటోమేటెడ్ ఫెర్టిగేషన్' : 'Automated Fertigation'}</h4>
+                      <p>{currentLang === 'te' ? 'నీటిలో కరిగే ఎరువుల యాజమాన్యం' : '100% water-soluble nutrient scheduling'}</p>
                     </div>
-                    <div className="widget-item" onClick={() => sendMessage('What are the benefits of modern farming?')}>
-                      <h4>🚀 Benefits of Modern Farming</h4>
-                      <p>Water conservation & 30% yield boost</p>
+                    <div className="widget-item" onClick={() => sendMessage(currentLang === 'te' ? 'ఆధునిక వ్యవసాయం వల్ల ప్రయోజనాలు ఏమిటి?' : 'What are the benefits of modern farming?')}>
+                      <h4>🚀 {currentLang === 'te' ? 'ఆధునిక వ్యవసాయ ప్రయోజనాలు' : 'Benefits of Modern Farming'}</h4>
+                      <p>{currentLang === 'te' ? 'నీటి ఆదా & 30% అధిక దిగుబడి' : 'Water conservation & 30% yield boost'}</p>
                     </div>
-                    <div className="widget-item" onClick={() => sendMessage('Show me solar pumps under PM-KUSUM scheme')}>
-                      <h4>☀️ PM-KUSUM Solar Pumps</h4>
-                      <p>Explore 60% government subsidy guidelines</p>
+                    <div className="widget-item" onClick={() => sendMessage(currentLang === 'te' ? 'పీఎం కుసుమ్ సౌర పంపుల పథకం వివరాలు ఏమిటి?' : 'Show me solar pumps under PM-KUSUM scheme')}>
+                      <h4>☀️ {currentLang === 'te' ? 'పీఎం కుసుమ్ సోలార్ పంపులు' : 'PM-KUSUM Solar Pumps'}</h4>
+                      <p>{currentLang === 'te' ? '60% ప్రభుత్వ సబ్సిడీ వివరాలు' : 'Explore 60% government subsidy guidelines'}</p>
                     </div>
                   </div>
 
                   <div className="glass-card">
-                    <div className="panel-title">🎙️ Voice Assistant</div>
+                    <div className="panel-title">🎙️ {currentLang === 'te' ? 'వాయిస్ అసిస్టెంట్' : 'Voice Assistant'}</div>
                     <div style={{ fontSize: '0.82rem', color: '#34d399', fontWeight: 600 }}>
-                      {voiceStatus || '🟢 Voice & Speech Recognition ready'}
+                      {voiceStatus || t.voice_ready}
                     </div>
                   </div>
                 </div>
@@ -1412,13 +1631,13 @@
                         onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1628352081506-83c43123ed6d?w=100&auto=format&fit=crop&q=80'; }}
                       />
                       <div className="ai-title-wrap">
-                        <h3>AgriSense AI Assistant</h3>
-                        <span>🟢 Multi-Agent Reasoning & Camera Diagnostics Online</span>
+                        <h3>{t.chat_title}</h3>
+                        <span>{t.chat_subtitle}</span>
                       </div>
                     </div>
                     <div>
                       <span style={{ fontSize: '0.78rem', color: '#cbd5e1', fontWeight: 600 }}>
-                        Camera + Voice + RAG
+                        {t.chat_tag}
                       </span>
                     </div>
                   </div>
@@ -1431,7 +1650,7 @@
                           {m.image && (
                             <div style={{ marginBottom: '8px' }}>
                               <span style={{ fontSize: '0.74rem', background: '#059669', color: '#fff', padding: '2px 8px', borderRadius: '6px', fontWeight: '700', display: 'inline-block', marginBottom: '6px' }}>
-                                📸 Captured Field Photo
+                                📸 {currentLang === 'te' ? 'తీసిన పంట ఫోటో' : 'Captured Field Photo'}
                               </span>
                               <img 
                                 src={m.image} 
@@ -1446,18 +1665,18 @@
                               <button 
                                 className={`action-icon-btn ${speakingIndex === idx ? 'speaking-active' : ''}`} 
                                 onClick={() => speakText(m.content, idx)}
-                                title={speakingIndex === idx ? "Click to stop reading aloud" : "Read this agricultural answer aloud"}
+                                title={speakingIndex === idx ? "Click to stop reading aloud" : (currentLang === 'te' ? "ఈ సమాధానాన్ని చదివి వినిపించండి" : "Read this agricultural answer aloud")}
                               >
-                                {speakingIndex === idx ? '⏹️ Stop Reading' : '🔊 Read Aloud'}
+                                {speakingIndex === idx ? t.stop_audio : t.read_aloud}
                               </button>
                               <button 
                                 className="action-icon-btn" 
                                 onClick={() => {
                                   navigator.clipboard.writeText(m.content.replace(/<[^>]*>?/gm, ''));
-                                  alert('Copied to clipboard!');
+                                  alert(currentLang === 'te' ? 'కాపీ చేయబడింది!' : 'Copied to clipboard!');
                                 }}
                               >
-                                📋 Copy
+                                {t.copy_btn}
                               </button>
                             </div>
                           )}
@@ -1468,7 +1687,7 @@
                       <div className="msg-row assistant">
                         <div className="msg-bubble" style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#34d399' }}>
                           <div className="pulse-dot"></div>
-                          <span>Analyzing visual crop symptoms, searching farming knowledge base & matching photographic evidence...</span>
+                          <span>{currentLang === 'te' ? 'పంట లక్షణాలను విశ్లేషిస్తూ, 100 పేజీల వ్యవసాయ డేటాసెట్ శోధిస్తున్నాను...' : 'Analyzing visual crop symptoms, searching farming knowledge base & matching photographic evidence...'}</span>
                         </div>
                       </div>
                     )}
@@ -1482,8 +1701,8 @@
                       <div className="attachment-preview-bar">
                         <img src={attachedImage} alt="Attached crop" className="attached-thumb" />
                         <div>
-                          <div style={{ fontSize: '0.84rem', fontWeight: '700', color: '#34d399' }}>📸 Crop Photo Attached</div>
-                          <div style={{ fontSize: '0.74rem', color: '#cbd5e1' }}>Ready for visual disease & pest analysis</div>
+                          <div style={{ fontSize: '0.84rem', fontWeight: '700', color: '#34d399' }}>📸 {currentLang === 'te' ? 'పంట ఫోటో జతచేయబడింది' : 'Crop Photo Attached'}</div>
+                          <div style={{ fontSize: '0.74rem', color: '#cbd5e1' }}>{currentLang === 'te' ? 'వ్యాధి నిర్ధారణకు సిద్ధంగా ఉంది' : 'Ready for visual disease & pest analysis'}</div>
                         </div>
                         <button 
                           className="remove-att-btn" 
@@ -1502,7 +1721,7 @@
                       <input 
                         type="text" 
                         className="chat-input"
-                        placeholder={attachedImage ? "Add query for this photo (e.g. 'What disease is this and how to treat?')..." : "Ask any farming question or click 📷 to snap crop photo..."}
+                        placeholder={attachedImage ? (currentLang === 'te' ? "ఈ ఫోటో గురించి ప్రశ్న అడగండి..." : "Add query for this photo (e.g. 'What disease is this and how to treat?')...") : t.input_placeholder}
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                       />
@@ -1510,7 +1729,7 @@
                         type="button" 
                         className="tool-btn"
                         onClick={openCamera}
-                        title="Take a photo with camera"
+                        title={currentLang === 'te' ? "కెమెరాతో ఫోటో తీయండి" : "Take a photo with camera"}
                       >
                         📷
                       </button>
@@ -1518,7 +1737,7 @@
                         type="button" 
                         className={`tool-btn ${isListening ? 'active' : ''}`}
                         onClick={toggleVoiceInput}
-                        title="Click to speak"
+                        title={currentLang === 'te' ? "మాట్లాడటానికి నొక్కండి" : "Click to speak"}
                       >
                         🎙️
                       </button>
@@ -1527,7 +1746,7 @@
                         className="send-btn"
                         disabled={loading || (!input.trim() && !attachedImage)}
                       >
-                        Ask AI ➔
+                        {t.ask_btn}
                       </button>
                     </form>
                   </div>
