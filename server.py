@@ -41,6 +41,12 @@ except ImportError:
         def post(self, path: str, *args, **kwargs):
             def decorator(f): return f
             return decorator
+        def api_route(self, path: str, *args, **kwargs):
+            def decorator(f): return f
+            return decorator
+        def options(self, path: str, *args, **kwargs):
+            def decorator(f): return f
+            return decorator
         def add_middleware(self, *args, **kwargs): pass
         def mount(self, *args, **kwargs): pass
         async def __call__(self, scope, receive, send):
@@ -291,15 +297,53 @@ def handle_rag_query(query: str, top_k: int = 4, filters: Optional[Dict[str, Any
 
 # --- FASTAPI ROUTE DEFINITIONS ---
 
+@app.api_route("/{full_path:path}", methods=["OPTIONS"])
+def preflight_handler(full_path: str):
+    """Fast preflight handler for CORS requests from any external device or browser."""
+    if HAS_FASTAPI and JSONResponse:
+        return JSONResponse(
+            content={"status": "ok"},
+            status_code=200,
+            headers={
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+                "Access-Control-Allow-Headers": "*",
+            }
+        )
+    return {"status": "ok"}
+
+
 @app.get("/", response_class=HTMLResponse if HAS_FASTAPI else None)
+@app.get("/index.html", response_class=HTMLResponse if HAS_FASTAPI else None)
 @app.get("/api/index.py", response_class=HTMLResponse if HAS_FASTAPI else None)
 def read_root():
-    """Serves the interactive React web application."""
-    index_file = config.BASE_DIR / "static" / "index.html"
-    if index_file.exists():
-        with open(index_file, "r", encoding="utf-8") as f:
-            return HTMLResponse(content=f.read())
-    return HTMLResponse(content="<h1>AgriSense AI Backend API Active</h1>")
+    """Serves the interactive React web application across local, Vercel, and cloud serverless environments."""
+    candidate_dirs = [
+        config.BASE_DIR,
+        Path(__file__).resolve().parent,
+        Path.cwd(),
+        Path("/var/task"),
+    ]
+    for cdir in candidate_dirs:
+        for sub in ["public", "static", ""]:
+            target = (cdir / sub / "index.html") if sub else (cdir / "index.html")
+            if target.exists() and target.is_file():
+                try:
+                    with open(target, "r", encoding="utf-8") as f:
+                        content = f.read()
+                    return HTMLResponse(
+                        content=content,
+                        headers={
+                            "Content-Type": "text/html; charset=utf-8",
+                            "Access-Control-Allow-Origin": "*",
+                            "Cache-Control": "public, max-age=0, must-revalidate",
+                        }
+                    )
+                except Exception:
+                    pass
+    return HTMLResponse(
+        content="""<!DOCTYPE html><html><head><title>AgriSense AI</title></head><body style='font-family:sans-serif;text-align:center;padding:40px;background:#03140b;color:#10b981;'><h1>🌾 AgriSense AI Online</h1><p>National Smart Agriculture Portal is active.</p><p><a href='/api/health' style='color:#34d399;'>API Health Check</a></p></body></html>"""
+    )
 
 
 @app.get("/api")
@@ -391,17 +435,35 @@ def openai_status():
 # Static Asset Handling
 @app.get("/static/{asset_name:path}")
 def get_static_asset(asset_name: str):
-    """Serves static assets and photographic dataset files."""
-    asset_path = config.BASE_DIR / "static" / asset_name
-    if not asset_path.exists():
-        asset_path = config.BASE_DIR / "assets" / "images" / asset_name
-
-    if asset_path.exists() and asset_path.is_file():
-        mime, _ = mimetypes.guess_type(str(asset_path))
-        if HAS_FASTAPI and FileResponse:
-            return FileResponse(str(asset_path), media_type=mime or "application/octet-stream")
-        with open(asset_path, "rb") as f:
-            return HTMLResponse(content=f.read(), media_type=mime or "application/octet-stream")
+    """Serves static assets and photographic dataset files reliably across local and serverless environments."""
+    candidate_dirs = [
+        config.BASE_DIR / "static",
+        config.BASE_DIR / "public",
+        config.BASE_DIR / "public" / "static",
+        config.BASE_DIR / "assets" / "images",
+        Path(__file__).resolve().parent / "static",
+        Path(__file__).resolve().parent / "public",
+        Path("/var/task/static"),
+        Path("/var/task/public"),
+    ]
+    for cdir in candidate_dirs:
+        asset_path = cdir / asset_name
+        if asset_path.exists() and asset_path.is_file():
+            mime, _ = mimetypes.guess_type(str(asset_path))
+            media_type = mime or "application/octet-stream"
+            try:
+                with open(asset_path, "rb") as f:
+                    data = f.read()
+                return HTMLResponse(
+                    content=data,
+                    media_type=media_type,
+                    headers={
+                        "Access-Control-Allow-Origin": "*",
+                        "Cache-Control": "public, max-age=86400",
+                    }
+                )
+            except Exception:
+                pass
     if HAS_FASTAPI:
         raise HTTPException(status_code=404, detail="Asset not found")
     return {"error": "Asset not found"}

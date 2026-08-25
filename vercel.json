@@ -1,5 +1,6 @@
 {
   "version": 2,
+  "cleanUrls": true,
   "builds": [
     {
       "src": "api/index.py",
@@ -7,6 +8,30 @@
     }
   ],
   "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/chat",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/rag/(.*)",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/documents",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/health",
+      "dest": "/api/index.py"
+    },
+    {
+      "src": "/static/(.*)",
+      "dest": "/static/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "/api/index.py"
