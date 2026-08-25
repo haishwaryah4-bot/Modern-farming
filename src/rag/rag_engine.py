@@ -234,18 +234,12 @@ class RAGEngine:
 
         answer = llm_client.complete(user_prompt, system_prompt=system_prompt)
 
-        # Refusal check: if LLM returns refusal, do not prepend images
+        # Refusal check: if LLM returns refusal
         if "I couldn't find this information in the provided dataset." in answer:
             full_answer = "I couldn't find this information in the provided dataset."
-            matched_images = []
         else:
-            # Retrieve relevant images from ingested dataset
-            matched_images = image_retriever.search_images(question, top_k=2)
-            image_cards_md = image_retriever.format_image_cards_markdown(matched_images, question)
-            if image_cards_md:
-                full_answer = f"{image_cards_md}\n\n{answer}"
-            else:
-                full_answer = answer
+            full_answer = answer
+        matched_images = []
 
         # Backend RAG Logging
         print(f"\n{'='*70}")

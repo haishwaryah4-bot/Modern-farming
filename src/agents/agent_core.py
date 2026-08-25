@@ -329,17 +329,12 @@ class AIAgricultureAgent:
 
         final_answer = llm_client.complete(prompt_with_context)
 
-        # If the answer is an out-of-dataset refusal, do not prepend images
+        # If the answer is an out-of-dataset refusal
         if "I couldn't find this information in the provided dataset." in final_answer:
             full_answer = "I couldn't find this information in the provided dataset."
-            matched_images = []
         else:
-            # Attach formatted image cards at the top of response
-            image_cards_md = image_retriever.format_image_cards_markdown(matched_images, user_query)
-            if image_cards_md:
-                full_answer = f"{image_cards_md}\n\n{final_answer}"
-            else:
-                full_answer = final_answer
+            full_answer = final_answer
+        matched_images = []
 
         # Append to conversational session memory
         self.chat_history.append({"role": "user", "content": user_query})
